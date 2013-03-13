@@ -13,14 +13,15 @@ function init() {
 	if (canvas.getContext) {
        	var c = canvas.getContext("2d");
 		//  "j" bezeichnet die x-Richtung und "i" die y-Richtung
-		for(i=2; i<15; i++) {
-			for(j=0; j<14; j++) {
+		for(j=0; j<14; j++) {
+			for(i=2; i<15; i++) {
+			
 				
-				/*
-				* Spaltennummerierung
-				* Ursprung links oben
-				if (i<2 && j>0) {
-				*/
+				//
+				// Spaltennummerierung
+				// Ursprung links oben
+				// if (i<2 && j>0) {
+				//
 				
 				// Ursprung links unten
 				if (i>13 && j>0) {
@@ -51,7 +52,7 @@ function init() {
 					}
 			}
 		}
-		// Rahmen zur Spielfeldbegrenzung zeichnen
+		// draw outer wall as playing field boundary
 		
 		c.beginPath();
 		c.fillStyle = "#000";
@@ -76,10 +77,10 @@ function init() {
 }
 
 
-/*
-* Initialisation of the position arrays for karel, beeper and wall 
-* Falls eine Postition im Array "true" ist, ist diese belegt, ansonsnten leer.	
-*/
+//
+// Initialisation of the position arrays for karel, beeper and wall 
+// Falls eine Postition im Array "true" ist, ist diese belegt, ansonsnten leer.	
+//
 
 // array for beeper position
 var beeper = new Array(15);
@@ -88,15 +89,21 @@ for(j=0; j<15; j++)
 
 for(j=0; j<15; j++) {
 	for(i=0; i<14; i++) {
-		beeper[j][i]= false;
+		beeper[j][i] = false;
 	}
 }
+beeper[5][1] = true;
+beeper[4][1] = true;
+beeper[3][1] = true;
+
 
 // variable, wich shows the amount of Beepers Karel got with him
+
 var countBeeper = 0;
 
 
 // array for karel's position		
+
 var karel = new Array(15);
 for(j=0; j<15; j++) 
 	karel[j] = new Array(14);
@@ -107,7 +114,9 @@ for(j=0; j<15; j++) {
 	}
 }
 
+
 // array for outer wall		
+
 var wall = new Array(15);
 for(j=0; j<15; j++) 
 	wall[j] = new Array(14)
@@ -121,31 +130,56 @@ for(j=0; j<15; j++) {
 }
 
 
+
 // basic functions
 
 function move() {
-	//  Überprüfen, wo Karel steht
+	//  check karel's position
 	for(j=0; j<15; j++) {
 		for(i=0; i<14; i++) {
 			if (karel[j][i] && facing.east && wall[j+1][i]==false) {
 				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
 				karel[j][i] = false;
 				j+=1;
+				if (beeper[j][i]) {
+					beepers.present = true;
+				} else { 
+					beepers.present = false;
+				}
 				drawKarel(j,i);
+				
+				
 			} else if (karel[j][i] && facing.west && wall[j-1][i]==false) {
 				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
 				karel[j][i] = false;
 				j-=1;
+				if (beeper[j][i]) {
+					beepers.present = true;
+				} else { 
+					beepers.present = false;
+				}
 				drawKarel(j,i);
+				
 			} else if (karel[j][i] && facing.north && wall[j][i+1]==false) {
 				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
 				karel[j][i] = false;
 				i+=1;
+				if (beeper[j][i]) {
+					beepers.present = true;
+				} else { 
+					beepers.present = false;
+				}
 				drawKarel(j,i);
+				
 			} else if (karel[j][i] && facing.south && wall[j][i-1]==false) {
 				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
 				karel[j][i] = false;
 				i-=1;
+				if (beeper[j][i]) {
+					beepers.present = true;
+				} else { 
+					beepers.present = false;
+				}
 				drawKarel(j,i);
 			}	
 		}	
@@ -180,14 +214,38 @@ function pickBeeper() {
 	for(j=0; j<15; j++) {
 		for(i=0; i<14; i++) {
 			if (karel[j][i] && beeper[j][i]) {
-				
+			beeper[j][i] = false;
+			countBeeper += 1;
+			beepers.inBag = true;
+			beepers.present = false;
+			drawKarel(j,i);	
+			}
+		}
+	}
+}
+
+function putBeeper() {
+	for(j=0; j<15; j++) {
+		for(i=0; i<14; i++) {
+			// check if karel got at least one beeper and whether there's already one on the actual postition
+			if (karel[j][i] && beeper[j][i]==false && countBeeper > 0) {
+			beeper[j][i] = true;
+			countBeeper -= 1;
+			beepers.present = true;
+			if (countBeeper == 0) {
+				beepers.inBag = false;
+			}
+			drawKarel(j,i);	
 			}
 		}
 	}
 }
 
 
-// basic conditions 
+//
+// basic conditions
+// 
+
 // karel's direction of view
 
 facing = {
@@ -195,6 +253,11 @@ facing = {
 	"south" : false,
 	"west"  : false,
 	"east"  : true
+}
+
+beepers = {
+	"inBag"   : false, 
+	"present" : false
 }
 
 // functions, wich return karel's direction of view
@@ -227,18 +290,58 @@ function notFacingEast() {
 	return !facing.east;
 }
 
+// check if there's a beeper in karel's bag
+
+function beepersInBag() {
+	return beepers.inBag; 
+}
+
+function noBeepersInBag() {
+	return !beepers.inBag; 
+}
+
+// check if there's a beeper on karel's position
+
+function beepersPresent() {
+	return beepers.present;
+}
+
+function noBeepersPresent() {
+	return !beepers.present;
+}
+
+function pausecomp(ms) {
+ms += new Date().getTime();
+while (new Date() < ms){}
+} 
+
+
 
 function drawKarel(posX,posY) {
+
 	var canvas = document.getElementById("ausgabe");
 	var c = canvas.getContext("2d");
 	c.clearRect(0,0,canvas.width,canvas.height);
 	init();
-	karel[posX][posY] = true;
-	beeper[5][5] = true;
-	
+	karel[posX][posY] = true;	
 	// check karel's position and draw karel
 	for(j=0; j<15; j++) {
 		for(i=0; i<14; i++) {
+			
+			// check beeper's position and draw beeper
+			if (beeper[j][i]) {
+				c.fillStyle = "#bbb" //grey
+				c.lineWidth = 2;
+				c.beginPath();
+				c.moveTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2, (14-i)/15*window.innerHeight + 1/40*window.innerHeight);
+				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2 - 1/50*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
+				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2, (14-i)/15*window.innerHeight - 1/40*window.innerHeight);
+				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2 + 1/50*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
+				c.closePath();
+				c.fill();
+				c.stroke();
+			}
+			
 			if (karel[j][i]) {
 				var imgKarel = new Image();
 				if (facing.north) {
@@ -252,20 +355,6 @@ function drawKarel(posX,posY) {
 				}
 				c.drawImage(imgKarel,window.innerWidth/3 + j/15*2/3*window.innerWidth-1/45*2/3*window.innerWidth,
 				(14-i)/15*window.innerHeight-1/45*window.innerHeight, 1/15*window.innerHeight, 1/15*window.innerHeight);	
-			}
-			
-			// check beeper's position and draw beeper
-			if (beeper[j][i]) {
-				c.fillStyle = "#bbb" //grey
-				c.lineWidth = 2;
-				c.beginPath();
-				c.moveTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2, i/15*window.innerHeight + 1/40*window.innerHeight);
-				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2 - 1/50*2/3*window.innerWidth, i/15*window.innerHeight);
-				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2, i/15*window.innerHeight - 1/40*window.innerHeight);
-				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2 + 1/50*2/3*window.innerWidth, i/15*window.innerHeight);
-				c.closePath();
-				c.fill();
-				c.stroke();
 			}
 		}
 	}
@@ -300,6 +389,19 @@ function preloadimages(arr){
 //sample run
 preloadimages(['karelEast.png','karelWest.png','karelSouth.png','karelNorth.png']);
 
+function myFunc() {
+	if(beepers.present) {
+		pickBeeper();
+		move();
+	}
+}
+
+function turnRight() {
+	turnLeft();
+	turnLeft();
+	turnLeft();
+}
+
 </script>
 </head>
 
@@ -312,9 +414,17 @@ preloadimages(['karelEast.png','karelWest.png','karelSouth.png','karelNorth.png'
 init();	
 </script>
 
-<input type="button" name="Go" value="walkToWall" id="Go" onclick="setInterval(function(){move()},200)">
-<input type="button" name="Go" value="move!" id="Go" onclick="move()">
-<input type="button" name="Go" value="turnLeft" id="Go" onclick="turnLeft()">
+<input type="button" name="Go" value="move()" id="Go" onclick="move()">
+<input type="button" name="Go" value="turnLeft()" id="Go" onclick="turnLeft()">
+<input type="button" name="Go" value="pickBeeper()" id="Go" onclick="pickBeeper()">
+<input type="button" name="Go" value="putBeeper()" id="Go" onclick="putBeeper()">
+<input type="button" name="Go" value="beepersInBag()" id="Go" onclick="beepersInBag()"> 
+<input type="button" name="Go" value="eval()" id="Go" onclick="eval('move();move();pickBeeper();move();pickBeeper();move();pickBeeper();')"> 
+<input type="button" name="Go" value="timeout()" id="Go" onclick="setTimeout('move()',1000);setTimeout('move()',1500);setTimeout('pickBeeper()',2000)"> 
+<input type="button" name="Go" value="if()" id="Go" onclick="setInterval('myFunc()',1000)">
+
+
+
 
 
 </body>
