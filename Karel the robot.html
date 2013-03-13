@@ -5,7 +5,7 @@
 <title>Karel the Robot</title>
 <script type="text/javascript">
 var time = 0;
-var wait = 300;
+var wait = 50;
 
 // Mittels der Funktion init() wird Karels Welt erschaffen
 function init() {
@@ -90,12 +90,21 @@ function init() {
 }
 
 
-//
-// Initialisation of the position arrays for karel, beeper and wall 
-// Falls eine Postition im Array "true" ist, ist diese belegt, ansonsnten leer.	
-//
+/*
+* Initialisation of the position arrays for karel, beeper and wall 
+* Falls eine Postition im Array "true" ist, ist diese belegt, ansonsnten leer.	
+*
+*
+* Because there's a significant time differnce between computing and drawing karel's single steps through its world, 
+* it's necessary for this program to get two arrays for the positions of the beeper. 
+* first beeper array:  "beeper[][]"
+* second beeper array: "beeperToDraw[][]" 
+*
+*
+* array for computing beeper positions
+* with this beeper array the program computes all positions karel has to go
+*/
 
-// array for beeper position
 var beeper = new Array(15);
 for(j=0; j<15; j++) 
 	beeper[j] = new Array(14);
@@ -105,17 +114,32 @@ for(j=0; j<15; j++) {
 		beeper[j][i] = false;
 	}
 }
-beeper[2][2] = true;
-beeper[3][2] = true;
-beeper[4][2] = true;
-beeper[5][2] = true;
-beeper[6][2] = true;
-beeper[7][2] = true;
-beeper[13][2] = true;
+//beeper[2][2] = true;
+//beeper[3][2] = true;
+//beeper[4][2] = true;
+//beeper[5][2] = true;
+//beeper[6][2] = true;
+//beeper[7][2] = true;
+//beeper[13][2] = true;
+
+//
+// array for drawing beeper positions
+// with this array the program is able th draw the single steps of karel after copmuting the whole way previously
+// 
+var beeperToDraw = new Array(15);
+for(j=0; j<15; j++) 
+	beeperToDraw[j] = new Array(14);
+
+for(j=0; j<15; j++) {
+	for(i=0; i<14; i++) {
+		beeperToDraw[j][i] = false;
+	}
+}
+
 //
 // variable, wich shows the amount of Beepers Karel got with him
 //
-var countBeeper = 0;
+var countBeeper = 1000;
 
 
 // array for karel's position		
@@ -129,11 +153,10 @@ for(j=0; j<15; j++) {
 		karel[j][i]= false;
 	}
 }
-//karel[1][2] = true;	
 
 //
-// wall arrays
-// array for vertical walls		
+// wall array
+// for vertical walls		
 //
 var wallV = new Array(15);
 for(j=0.5; j<15; j++) 
@@ -153,7 +176,8 @@ for(j=0.5; j<15; j++) {
 }
 wallV[2.5][1]=true;
 //
-// array for horizontal walls		
+// wall array
+// for horizontal walls		
 //
 var wallH = new Array(15);
 for(j=0; j<15; j++) 
@@ -194,8 +218,9 @@ function move() {
 					beepers.present = false;
 				}
 				karel[j][i] = true;	
+				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, false, false, false, true);
+				setTimeout(drawKarel, time, j , i, "east");
 				console.log('move'+time);
 				//drawKarel(j,i);					
 			} else if (karel[j][i] && facing.west && wallV[j-0.5][i]==false) {
@@ -208,8 +233,9 @@ function move() {
 					beepers.present = false;
 				}
 				karel[j][i] = true;	
+				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, false, false, true, false);
+				setTimeout(drawKarel, time, j , i, "west");
 				console.log('move'+time);
 				//drawKarel(j,i);
 				
@@ -223,8 +249,9 @@ function move() {
 					beepers.present = false;
 				}
 				karel[j][i] = true;	
+				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, true, false, false, false);
+				setTimeout(drawKarel, time, j , i, "north");
 				console.log('move'+time);
 				//drawKarel(j,i);					
 				
@@ -238,14 +265,14 @@ function move() {
 					beepers.present = false;
 				}
 				karel[j][i] = true;	
+				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, false, true, false, false);
+				setTimeout(drawKarel, time, j , i, "south");
 				console.log('move'+time);
 				//drawKarel(j,i);
 			}		
 		}	
-	}	
-				
+	}				
 }
 
 function turnLeft() {
@@ -268,31 +295,37 @@ function turnLeft() {
 		facing.east  = false;
 		facing.north = true;
 	}
-	
+//	
 // check karel's position
+// set Timeout to draw karel
+//
 for(j=0; j<15; j++) {
 	for(i=0; i<14; i++) {
 		if (karel[j][i]) {
 			if (facing.north) {
 				//drawKarel(j,i);
+				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, true, false, false, false);
-				console.log('turnLeft'+time);
+				setTimeout(drawKarel, time, j , i, "north");
+				console.log('turnLeft'+ time);
 			} else if (facing.south) {
 				//drawKarel(j,i);
+				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, false, true, false, false);
-				console.log('turnLeft'+time);
+				setTimeout(drawKarel, time, j , i, "south");
+				console.log('turnLeft'+ time);
 			} else if (facing.west) {
 				//drawKarel(j,i);
+				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, false, false, true, false);
-				console.log('turnLeft'+time);
+				setTimeout(drawKarel, time, j , i, "west");
+				console.log('turnLeft'+ time);
 			} 	else {
 				//drawKarel(j,i);
+				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, false, false, false, true);
-				console.log('turnLeft'+time);
+				setTimeout(drawKarel, time, j , i, "east");
+				console.log('turnLeft'+ time);
 			}
 		}
 	}
@@ -304,11 +337,27 @@ function pickBeeper() {
 	for(j=0; j<15; j++) {
 		for(i=0; i<14; i++) {
 			if (karel[j][i] && beeper[j][i]) {
-			beeper[j][i] = false;
-			countBeeper += 1;
-			beepers.inBag = true;
-			beepers.present = false;
-			drawKarel(j,i);	
+				beeper[j][i] = false;
+				countBeeper += 1;
+				beepers.inBag = true;
+				beepers.present = false;
+				// time += wait;
+				setTimeout(setBeeperFalse, time, j ,i);
+				console.log("beepertruetime" + time);
+				
+				if (facing.north) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "north");
+				} else if (facing.south) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "south");
+				} else if (facing.west) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "west");
+				} else {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "east");
+				}
 			}
 		}
 	}
@@ -317,20 +366,44 @@ function pickBeeper() {
 function putBeeper() {
 	for(j=0; j<15; j++) {
 		for(i=0; i<14; i++) {
-			// check if karel got at least one beeper and whether there's already one on the actual postition
+			// check if karel got at least one beeper and if there's already one on the actual postition
 			if (karel[j][i] && beeper[j][i]==false && countBeeper > 0) {
-			beeper[j][i] = true;
-			countBeeper -= 1;
-			beepers.present = true;
-			if (countBeeper == 0) {
-				beepers.inBag = false;
-			}
-			drawKarel(j,i);	
+				beeper[j][i] = true;
+				countBeeper -= 1;
+				beepers.present = true;
+				if (countBeeper == 0) {
+					beepers.inBag = false;
+				}
+				// time += wait;
+				setTimeout(setBeeperTrue, time, j ,i);
+				console.log("beepertruetime" + time);
+				
+				if (facing.north) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "north");
+				} else if (facing.south) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "south");
+				} else if (facing.west) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "west");
+				} else {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "east");	
+					console.log("drawtime" + time);
+				}
 			}
 		}
 	}
 }
 
+function setBeeperTrue(beeperX, beeperY) {
+	beeperToDraw[beeperX][beeperY] = true;
+}
+
+function setBeeperFalse(beeperX, beeperY) {
+	beeperToDraw[beeperX][beeperY] = false;
+}
 
 //
 // basic conditions
@@ -375,7 +448,9 @@ function facingEast() {
 	return facing.east;
 }
 
+//
 // negated functions, wich return karel's non-direction of view
+//
 
 function notFacingNorth() {
 	return !facing.north;
@@ -414,26 +489,110 @@ function _beepersPresent() {
 	time += wait;
 	return beepersPresent(); 
 } 
-// function which checks if there's no beeper on karel's position
+//
+// function that checks if there's no beeper on karel's position
 // returns TRUE if there's no beeper on karel's position
-
+//
 function noBeepersPresent() {
 	return !beepers.present;
 }
  
+//
+// function which checks if there's a wall in front of or besides Karel
+// returns true if there's no wall
+//
+function checkWallAround(j,i) {
+	if (facing.north) {
+	 	if (wallH[j][i+0.5]==false)
+			clear.front = true;
+		else 
+			clear.front = false;
+		if (wallV[j-0.5][i]==false)
+			clear.left = true;
+		else 
+			clear.left = false;
+		if (wallV[j+0.5][i]==false)
+			clear.right = true;
+		else 
+			clear.right = false;
+	} else if (facing.south) {
+		if (wallH[j][i-0.5]==false)
+			clear.front = true;
+		else 
+			clear.front = false;
+		if (wallV[j+0.5][i]==false)
+			clear.left = true;
+		else 
+			clear.left = false;
+		if (wallV[j-0.5][i]==false)
+			clear.right = true;
+		else 
+			clear.right = false;
+	} else if (facing.west) {
+		if (wallV[j-0.5][i]==false)
+			clear.front = true;
+		else 
+			clear.front = false;
+		if (wallH[j][i-0.5]==false)
+			clear.left = true;
+		else 
+			clear.left = false;
+		if (wallH[j][i+0.5]==false)
+			clear.right = true;
+		else 
+			clear.right = false;
+	} else {
+		if (wallV[j+0.5][i]==false)
+			clear.front = true;
+		else 
+			clear.front = false;
+		if (wallH[j][i+0.5]==false)
+			clear.left = true;
+		else 
+			clear.left = false;
+		if (wallH[j][i-0.5]==false)
+			clear.right = true;
+		else 
+			clear.right = false;
+	}
+}
 
+//
+// funtion which 
+// returns true if there's no wall on particular position
+//
+function frontIsClear() {
+	return clear.front;
+}
+function leftIsClear() {
+	return clear.left;
+}
+function rightIsClear() {
+	return clear.right;
+}
+
+
+function frontIsBlocked() {
+	return !clear.front;
+}
+
+function leftIsBlocked() {
+	return !clear.left;
+}
+
+function rightIsBlocked() {
+	return !clear.right;
+}
 var f=0;
 var imgKarel = new Image();
 
 //
 // draw function
-// arguments: "posX, posY" represent the X and Y coordinate
+// arguments: "karelX, karelY" represent the X and Y coordinate
 // arguments: "north, south, west, east" give informations to the draw function about Karel's viewing direction 
 //
 
-function drawKarel(posX,posY,north,south,west,east) {
-	sleep(200);
-	
+function drawKarel(karelX, karelY, direction) {	
 	var canvas = document.getElementById("ausgabe");
 	var c = canvas.getContext("2d");
 	c.clearRect(0,0,canvas.width,canvas.height);
@@ -442,13 +601,13 @@ function drawKarel(posX,posY,north,south,west,east) {
 	// important for the first call up, because there's no position on true yet.
 	// after that -> redundant
 	//
-	karel[posX][posY] = true;	
+	karel[karelX][karelY] = true;	
 	// check karel's position and draw karel
 	for(j=0; j<15; j++) {
 		for(i=0; i<14; i++) {
 			
 			// check beeper's position and draw beeper
-			if (beeper[j][i]) {
+			if (beeperToDraw[j][i]) {
 				c.fillStyle = "#bbb" //grey
 				c.strokeStyle = "#000" //black
 				c.lineWidth = 2;
@@ -465,20 +624,19 @@ function drawKarel(posX,posY,north,south,west,east) {
 	}
 	
 	
-	if (north) {
+	if (direction=="north") {
 	imgKarel.src ="karelNorth.png";
-	} else if (south) {
+	} else if (direction=="south") {
 	imgKarel.src ="karelSouth.png";
-	} else if (west) {
+	} else if (direction=="west") {
 	imgKarel.src ="karelWest.png";
 	} else {
 	imgKarel.src ="karelEast.png";
 	}
-	c.drawImage(imgKarel,window.innerWidth/3 + posX/15*2/3*window.innerWidth-1/45*2/3*window.innerWidth,
-	(14-posY)/15*window.innerHeight-1/30*window.innerHeight, 1/15*window.innerHeight, 1/15*window.innerHeight);	
+	c.drawImage(imgKarel,window.innerWidth/3 + karelX/15*2/3*window.innerWidth-1/45*2/3*window.innerWidth,
+	(14-karelY)/15*window.innerHeight-1/30*window.innerHeight, 1/15*window.innerHeight, 1/15*window.innerHeight);	
 	//canvas.style.display='none';
 	//canvas.style.display='block';
-	console.log('draw');	
 }	
 
 
@@ -590,6 +748,47 @@ function turnRight() {
 	turnLeft();
 }
 
+function turnAround() {
+	if (facingEast()) {
+		turnLeft();
+		move();
+		turnLeft();
+	}
+	else if (facingWest()) {
+		turnRight();
+		move();
+		turnRight();
+	}
+}
+
+function beeperWalk() {
+	putBeeper();
+	move();
+}
+
+function antiBeeperWalk() {
+	pickBeeper();
+	move();
+}
+
+function fillField() {
+	while ((frontIsClear() && rightIsClear()) && (frontIsClear() && rightIsClear())) { 
+	while (frontIsClear()) 
+		beeperWalk();
+		putBeeper();
+		turnAround();
+	}
+}
+
+function clearField() {
+	while ((frontIsClear() && rightIsClear()) && (frontIsClear() && rightIsClear())) { 
+	while (frontIsClear()) 
+		antiBeeperWalk();
+		pickBeeper();
+		turnAround();
+	}
+}
+
 function test3() {
 	while(beepersPresent()){
 		move();
@@ -598,17 +797,28 @@ function test3() {
 	for (var i=0; i < 3; i++) {
 		move();
 	}
-	if (noBeepersPresent()) {
+	while (frontIsClear()) {
 		move();
-		turnLeft();
+	}
+	turnLeft();
+	turnLeft();
+	while (frontIsClear()) {
+		move();
 	}
 }
 
 </script>
+
+<style>
+</style>
 </head>
 
-<body onload = drawKarel(1,2,false,false,false,true)>
+<body onload = 'drawKarel(1,2,"east"); checkWallAround(1,2);'>
+
 <div>
+<input type="button" name="Go" value="test3()" id="Go" onclick="test3()">
+<input type="button" name="Go" value="test3()" id="Go" onclick="test3()">
+<input type="button" name="Go" value="test3()" id="Go" onclick="test3()">
 <canvas id="ausgabe" width="1270" height="640"></canvas>
 </div>
 
@@ -619,8 +829,11 @@ function test3() {
 <input type="button" name="Go" value="putBeeper()" id="Go" onclick="putBeeper()">
 <input type="button" name="Go" value="beepersInBag()" id="Go" onclick="beepersInBag()"> 
 
-<input type="button" name="Go" value="test()" id="Go" onclick="test()">
+<input type="button" name="Go" value="fillField()" id="Go" onclick="fillField()">
+<input type="button" name="Go" value="clearField()" id="Go" onclick="clearField()">
+
 <input type="button" name="Go" value="test3()" id="Go" onclick="test3()">
+<input type="text" name="some_name" value="text" id="some_name">
 
 
 
