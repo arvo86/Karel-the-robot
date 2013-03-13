@@ -3,6 +3,43 @@
 <head>
 <meta charset="UTF-8">
 <title>Karel the Robot</title>
+<style type="text/css" media="screen">
+
+.leftScreen {
+	background-color: #FFFFFF;
+	float:left;
+	width: 20%;
+	height: 650px;
+	border-right:10px ridge;
+	
+}
+
+.rightScreen {
+	width:100;
+	height: 100%;
+	background-color: #FFFFFF;
+	
+}
+
+textarea {
+	resize:none;
+	width: 95%;
+	border-radius:4px;
+	
+}
+.description {
+	font-family: arial;
+	font-size: 0.8em;
+	text-align:center;
+}
+
+#START {
+	position:relative;
+	left:40%;
+}
+
+
+</style>
 <script type="text/javascript">
 var time = 0;
 var wait = 50;
@@ -24,7 +61,7 @@ function init() {
 					c.fillStyle = "#000";
 					c.font = "Arial";
 					c.textBaseline = 'bottom';
-					c.fillText (j,window.innerWidth/3 + j/15*2/3*window.innerWidth,(14-i)/15*window.innerHeight);
+					c.fillText (j,window.innerWidth/15 + j/15*2/3*window.innerWidth,(14-i)/15*window.innerHeight);
 				}
 				//
 				// drawing the Y-axis' numbering
@@ -33,25 +70,25 @@ function init() {
 					c.fillStyle = "#000";
 					c.font = "Arial";
 					c.textBaseline = 'bottom';
-					c.fillText (i,window.innerWidth/3,(14-i)/15*window.innerHeight);
+					c.fillText (i,window.innerWidth/15,(14-i)/15*window.innerHeight);
 				}	
 				//
 				// drawing little crosses for the coordinate system
 				//
-				if((j>0 && j<14) && (i>0 && i< 13)){
+				if ((j>0 && j<14) && (i>0 && i< 13)){
 					c.strokeStyle = "#000";
 					c.lineWidth = 1;
 					c.beginPath();
 					//
 					// horizontal lines of the coordinates' crosses
 					//
-					c.moveTo(window.innerWidth/3 + j/15*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
-					c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth + 5, (14-i)/15*window.innerHeight);
+					c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
+					c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth + 5, (14-i)/15*window.innerHeight);
 					//
 					// vertical lines of the coordinates' crosses
 					//
-					c.moveTo(window.innerWidth/3 + j/15*2/3*window.innerWidth +2, (14-i)/15*window.innerHeight -2);
-					c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth +2, (14-i)/15*window.innerHeight +2);
+					c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth +2, (14-i)/15*window.innerHeight -2);
+					c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth +2, (14-i)/15*window.innerHeight +2);
 					c.stroke();		
 				}
 				// draw vertical walls
@@ -59,8 +96,8 @@ function init() {
 				c.strokeStyle = "#000";
 				c.lineWidth = 1;
 				c.beginPath();
-				c.moveTo(window.innerWidth/3 + j/15*2/3*window.innerWidth + 2 + 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight + 1/30*window.innerHeight);
-				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth + 2 + 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight - 1/30*window.innerHeight);
+				c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth + 2 + 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight + 1/30*window.innerHeight);
+				c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth + 2 + 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight - 1/30*window.innerHeight);
 				c.stroke();
 				}
 				
@@ -69,20 +106,14 @@ function init() {
 				c.strokeStyle = "#000";
 				c.lineWidth = 1;
 				c.beginPath();
-				c.moveTo(window.innerWidth/3 + j/15*2/3*window.innerWidth +2 - 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight - 1/30*window.innerHeight);
-				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth +2 + 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight - 1/30*window.innerHeight);
+				c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth +2 - 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight - 1/30*window.innerHeight);
+				c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth +2 + 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight - 1/30*window.innerHeight);
 				c.stroke();
 				}
 				
 			}
 		}
-		//
-		// just some text
-		//
-		c.fillStyle = "#00f";
-		//c.font = 'bold italic 30px Arial';
-		c.textBaseline = 'bottom';
-		c.fillText('HTML5 ist mächtig!', 100, 100);
+		
 
 	// falls der Browser kein Canvas versteht, erscheint folgende Fehlermeldung
 	} else alert("Canvas required!")
@@ -612,10 +643,10 @@ function drawKarel(karelX, karelY, direction) {
 				c.strokeStyle = "#000" //black
 				c.lineWidth = 2;
 				c.beginPath();
-				c.moveTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2, (14-i)/15*window.innerHeight + 1/40*window.innerHeight);
-				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2 - 1/50*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
-				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2, (14-i)/15*window.innerHeight - 1/40*window.innerHeight);
-				c.lineTo(window.innerWidth/3 + j/15*2/3*window.innerWidth+2 + 1/50*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
+				c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth+2, (14-i)/15*window.innerHeight + 1/40*window.innerHeight);
+				c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth+2 - 1/50*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
+				c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth+2, (14-i)/15*window.innerHeight - 1/40*window.innerHeight);
+				c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth+2 + 1/50*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
 				c.closePath();
 				c.fill();
 				c.stroke();
@@ -633,7 +664,7 @@ function drawKarel(karelX, karelY, direction) {
 	} else {
 	imgKarel.src ="karelEast.png";
 	}
-	c.drawImage(imgKarel,window.innerWidth/3 + karelX/15*2/3*window.innerWidth-1/45*2/3*window.innerWidth,
+	c.drawImage(imgKarel,window.innerWidth/15 + karelX/15*2/3*window.innerWidth-1/45*2/3*window.innerWidth,
 	(14-karelY)/15*window.innerHeight-1/30*window.innerHeight, 1/15*window.innerHeight, 1/15*window.innerHeight);	
 	//canvas.style.display='none';
 	//canvas.style.display='block';
@@ -772,7 +803,7 @@ function antiBeeperWalk() {
 }
 
 function fillField() {
-	while ((frontIsClear() && rightIsClear()) && (frontIsClear() && rightIsClear())) { 
+	while ((frontIsClear() && rightIsClear()) && (frontIsClear() && leftIsClear())) { 
 	while (frontIsClear()) 
 		beeperWalk();
 		putBeeper();
@@ -807,6 +838,11 @@ function test3() {
 	}
 }
 
+function userInput() {
+	var input = document.getElementById("textarea").value;
+	eval(input);
+}
+
 </script>
 
 <style>
@@ -815,27 +851,25 @@ function test3() {
 
 <body onload = 'drawKarel(1,2,"east"); checkWallAround(1,2);'>
 
-<div>
-<input type="button" name="Go" value="test3()" id="Go" onclick="test3()">
-<input type="button" name="Go" value="test3()" id="Go" onclick="test3()">
-<input type="button" name="Go" value="test3()" id="Go" onclick="test3()">
-<canvas id="ausgabe" width="1270" height="640"></canvas>
+<div id="fullScreen" class= "fullScreen">
+	<div id= "leftScreen" class= "leftScreen">
+		<p><input type="button" name="Go" value="move()" id="Go" onclick="move()"></p>
+		<p><input type="button" name="Go" value="turnLeft()" id="Go" onclick="turnLeft()"></p>
+		<p><input type="button" name="Go" value="pickBeeper()" id="Go" onclick="pickBeeper()"></p>
+		<p><input type="button" name="Go" value="putBeeper()" id="Go" onclick="putBeeper()"></p>
+		<p><input type="button" name="Go" value="beepersInBag()" id="Go" onclick="beepersInBag()"></p> 
+		<p><input type="button" name="Go" value="fillField()" id="Go" onclick="fillField()"></p>
+		<p><input type="button" name="Go" value="clearField()" id="Go" onclick="clearField()"></p>
+		<input type="text" name="functionTitle" value="Name der Funktion" id="functionTitle" onfocus="if(this.value=='Name der Funktion') this.value=''">
+		<p class="description"><textarea name="textarea" id="textarea" rows="20" cols="20" onfocus="if(this.value=='Hier kannst du deine eigenen Funktionen hinein schreiben, um Karel zu steuern. Drücke anschließend auf den Start Button') this.value='' ">Hier kannst du deine eigenen Funktionen hinein schreiben, um Karel zu steuern. Drücke anschließend auf den Start Button</textarea></p>
+		<input type="button" name="Go" value="START" id="START" onclick="userInput()">
+		
+	</div>
+	
+	<div id= "rightScreen" class= "rightScreen">
+		<canvas id="ausgabe" width="1000" height="660" ></canvas>
+	</div>
 </div>
-
-
-<input type="button" name="Go" value="move()" id="Go" onclick="move()">
-<input type="button" name="Go" value="turnLeft()" id="Go" onclick="turnLeft()">
-<input type="button" name="Go" value="pickBeeper()" id="Go" onclick="pickBeeper()">
-<input type="button" name="Go" value="putBeeper()" id="Go" onclick="putBeeper()">
-<input type="button" name="Go" value="beepersInBag()" id="Go" onclick="beepersInBag()"> 
-
-<input type="button" name="Go" value="fillField()" id="Go" onclick="fillField()">
-<input type="button" name="Go" value="clearField()" id="Go" onclick="clearField()">
-
-<input type="button" name="Go" value="test3()" id="Go" onclick="test3()">
-<input type="text" name="some_name" value="text" id="some_name">
-
-
 
 
 
