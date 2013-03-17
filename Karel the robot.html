@@ -11,11 +11,11 @@
 	width: 20%;
 	height: 650px;
 	border-right:10px ridge;
-	
 }
 
+
 .rightScreen {
-	width:100;
+	width:100%;
 	height: 100%;
 	background-color: #FFFFFF;
 	
@@ -205,7 +205,12 @@ for(j=0.5; j<15; j++) {
 		}
 	}
 }
-wallV[2.5][1]=true;
+var level = 2;
+switch (level) {
+	case 1:	break;
+	case 2: wallV[2.5][1] = true;
+			break;
+}
 //
 // wall array
 // for horizontal walls		
@@ -226,9 +231,12 @@ for(j=0; j<15; j++) {
 		}
 	}
 }
-wallH[3][1.5]=true;
-wallH[4][1.5]=true;
-
+switch (level) {
+	case 1:	break;
+	case 2: for (i=3; i<14; i++)
+			wallH[i][1.5] = true;
+			break;
+}
 //
 // basic functions karel know
 //
@@ -625,7 +633,10 @@ var imgKarel = new Image();
 
 function drawKarel(karelX, karelY, direction) {	
 	var canvas = document.getElementById("ausgabe");
+	canvas.width = window.innerWidth*0.75;
+	canvas.height = window.innerHeight;
 	var c = canvas.getContext("2d");
+	
 	c.clearRect(0,0,canvas.width,canvas.height);
 	init();
 	//
@@ -842,22 +853,24 @@ function userInput() {
 	var input = document.getElementById("textarea").value;
 	eval(input);
 }
-
 </script>
 
 <style>
 </style>
 </head>
 
-<body onload = 'drawKarel(1,2,"east"); checkWallAround(1,2);'>
+<body onload = 'drawKarel(1,1,"east"); checkWallAround(1,1);'>
 
 <div id="fullScreen" class= "fullScreen">
 	<div id= "leftScreen" class= "leftScreen">
+		<select name="list" id="list" size="1">
+			<option value="level1" selected="selected">Level 1</option>
+			<option value="level2">Level 2:</option>
+			<option value="level3">Level 3</option>	
+		</select>
+		
 		<p><input type="button" name="Go" value="move()" id="Go" onclick="move()"></p>
 		<p><input type="button" name="Go" value="turnLeft()" id="Go" onclick="turnLeft()"></p>
-		<p><input type="button" name="Go" value="pickBeeper()" id="Go" onclick="pickBeeper()"></p>
-		<p><input type="button" name="Go" value="putBeeper()" id="Go" onclick="putBeeper()"></p>
-		<p><input type="button" name="Go" value="beepersInBag()" id="Go" onclick="beepersInBag()"></p> 
 		<p><input type="button" name="Go" value="fillField()" id="Go" onclick="fillField()"></p>
 		<p><input type="button" name="Go" value="clearField()" id="Go" onclick="clearField()"></p>
 		<input type="text" name="functionTitle" value="Name der Funktion" id="functionTitle" onfocus="if(this.value=='Name der Funktion') this.value=''">
@@ -867,7 +880,7 @@ function userInput() {
 	</div>
 	
 	<div id= "rightScreen" class= "rightScreen">
-		<canvas id="ausgabe" width="1000" height="660" ></canvas>
+		<canvas id="ausgabe"></canvas>
 	</div>
 </div>
 
