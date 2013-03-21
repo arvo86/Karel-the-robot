@@ -7,19 +7,21 @@
 <title>Karel the Robot</title>
 <style type="text/css" media="screen">
 
-.leftScreen {
-	background-color: #FFFFFF;
+#leftScreen {
 	float:left;
 	width: 20%;
 	height: 650px;
 	border-right:10px ridge;
+	background-color: #FFFFFF;
 }
 
 
-.rightScreen {
-	width:100%;
+#rightScreen {
+	position: absolute;
+	margin-left: 20%;
 	height: 100%;
-	background-color: #FFFFFF;
+	width:80%;
+	background-color: #FF00FF;
 	
 }
 
@@ -30,7 +32,7 @@ textarea {
 	
 }
 .description {
-	font-family: arial;
+	font-family: Century Gothic;
 	font-size: 0.8em;
 	text-align:center;
 }
@@ -44,6 +46,13 @@ textarea {
 </style>
 
 <script type="text/javascript">
+
+
+if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
+ // some code..
+}
+
+
 // 
 // var liste receives the variable level from text input of home screen
 //
@@ -58,8 +67,8 @@ var wait = 50;
 * Effectively there's one row and one column less in Karel's world,
 * because one of each is reserved for the outer walls
 */  
-var rows = 13;
-var columns = 14;
+var rows =11;
+var columns =11;
 
 
 /*
@@ -77,37 +86,36 @@ var columns = 14;
 * with this beeper array the program computes all positions karel has to go
 */
 
-var beeper = new Array(15);
-for(j=0; j<15; j++) 
-	beeper[j] = new Array(14);
+var beeper = new Array(columns);
+for(j=0; j<columns; j++) 
+	beeper[j] = new Array(rows);
 
-for(j=0; j<15; j++) {
-	for(i=0; i<14; i++) {
+for(j=0; j<columns; j++) {
+	for(i=0; i<rows; i++) {
 		beeper[j][i] = false;
 	}
 }
-//beeper[2][2] = true;
-//beeper[3][2] = true;
-//beeper[4][2] = true;
-//beeper[5][2] = true;
-//beeper[6][2] = true;
-//beeper[7][2] = true;
-//beeper[13][2] = true;
 
 //
 // array for drawing beeper positions
-// with this array the program is able th draw the single steps of karel after copmuting the whole way previously
+// with this array the program is able to draw the single steps of karel after copmuting the whole way previously
 // 
-var beeperToDraw = new Array(15);
-for(j=0; j<15; j++) 
-	beeperToDraw[j] = new Array(14);
+var beeperToDraw = new Array(columns);
+for(j=0; j<columns; j++) 
+	beeperToDraw[j] = new Array(rows);
 
-for(j=0; j<15; j++) {
-	for(i=0; i<14; i++) {
+for(j=0; j<columns; j++) {
+	for(i=0; i<rows; i++) {
 		beeperToDraw[j][i] = false;
 	}
 }
 
+function beeperAtStart(posX, posY) {
+	beeper[posX][posY] = true;
+	beeperToDraw[posX][posY] = true;	
+}
+
+beeperAtStart(2,2);
 //
 // variable, wich shows the amount of Beepers Karel got with him
 //
@@ -116,12 +124,12 @@ var countBeeper = 1000;
 //
 // array for karel's position		
 //
-var karel = new Array(15);
-for(j=0; j<15; j++) 
-	karel[j] = new Array(14);
+var karel = new Array(columns);
+for(j=0; j<columns; j++) 
+	karel[j] = new Array(rows);
 
-for(j=0; j<15; j++) {
-	for(i=0; i<14; i++) {
+for(j=0; j<columns; j++) {
+	for(i=0; i<rows; i++) {
 		karel[j][i]= false;
 	}
 }
@@ -192,8 +200,8 @@ function move() {
 	//
 	//  check karel's position
 	//	
-	for(j=0; j<15; j++) {
-		for(i=0; i<14; i++) {
+	for(j=0; j<columns; j++) {
+		for(i=0; i<rows; i++) {
 			if (karel[j][i] && facing.east && wallV[j+0.5][i]==false) {
 				
 				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
@@ -282,8 +290,8 @@ function turnLeft() {
 	// check karel's position
 	// set Timeout to draw karel
 	//
-	for(j=0; j<15; j++) {
-		for(i=0; i<14; i++) {
+	for(j=0; j<columns; j++) {
+		for(i=0; i<rows; i++) {
 			if (karel[j][i]) {
 				if (facing.north) {
 					//drawKarel(j,i);
@@ -313,8 +321,8 @@ function turnLeft() {
 
 
 function pickBeeper() {
-	for(j=0; j<15; j++) {
-		for(i=0; i<14; i++) {
+	for(j=0; j<columns; j++) {
+		for(i=0; i<rows; i++) {
 			if (karel[j][i] && beeper[j][i]) {
 				beeper[j][i] = false;
 				countBeeper += 1;
@@ -342,8 +350,8 @@ function pickBeeper() {
 }
 
 function putBeeper() {
-	for(j=0; j<15; j++) {
-		for(i=0; i<14; i++) {
+	for(j=0; j<columns; j++) {
+		for(i=0; i<rows; i++) {
 			// check if karel got at least one beeper and if there's already one on the actual postition
 			if (karel[j][i] && beeper[j][i]==false && countBeeper > 0) {
 				beeper[j][i] = true;
@@ -569,8 +577,8 @@ var imgKarel = new Image();
 
 function drawKarel(karelX, karelY, direction) {	
 	var canvas = document.getElementById("ausgabe");
-	canvas.width = window.innerWidth*0.75;
-	canvas.height = window.innerHeight;
+	canvas.width = $("#rightScreen").width()-10;
+	canvas.height = $("#rightScreen").height()-10;
 	//
 	// Check if the browser is able to display the canvas content. 
 	// If not, a short alert message appears that the browser is unable to display canvas.
@@ -588,8 +596,8 @@ function drawKarel(karelX, karelY, direction) {
 		// At last, Karel itself will be drawn.
 		// "j" depicts the x-axis' direction and "i" the y-axis' direction
 		//
-		for(j=0; j<columns; j++) {
-			for(i=0; i<rows; i++) {
+		for (j=0; j<columns; j++) {
+			for (i=0; i<rows; i++) {
 				//
 				// draw the X-axis' numbering
 				//
@@ -597,7 +605,7 @@ function drawKarel(karelX, karelY, direction) {
 					c.fillStyle = "#000";
 					c.font = "Arial";
 					c.textBaseline = 'bottom';
-					c.fillText (j,window.innerWidth/15 + j/15*2/3*window.innerWidth,(14-i)/15*window.innerHeight);
+					c.fillText (j,(j+1)/(columns+2)*canvas.width,(rows-(i-1))/(rows+2)*canvas.height);
 				}
 				//
 				// draw the Y-axis' numbering
@@ -606,7 +614,7 @@ function drawKarel(karelX, karelY, direction) {
 					c.fillStyle = "#000";
 					c.font = "Arial";
 					c.textBaseline = 'bottom';
-					c.fillText (i,window.innerWidth/15,(14-i)/15*window.innerHeight);
+					c.fillText (i,(j+1)/(columns+2)*canvas.width,(rows-(i-1))/(rows+2)*canvas.height);
 				}	
 				//
 				// draw little crosses for the coordinate system
@@ -618,13 +626,13 @@ function drawKarel(karelX, karelY, direction) {
 					//
 					// horizontal lines of the coordinates' crosses
 					//
-					c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
-					c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth + 5, (14-i)/15*window.innerHeight);
+					c.moveTo((j+1)/(columns+2)*canvas.width - 2.5, (rows-(i-1))/(rows+2)*canvas.height);
+					c.lineTo((j+1)/(columns+2)*canvas.width + 2.5, (rows-(i-1))/(rows+2)*canvas.height);
 					//
 					// vertical lines of the coordinates' crosses
 					//
-					c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth +2, (14-i)/15*window.innerHeight -2);
-					c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth +2, (14-i)/15*window.innerHeight +2);
+					c.moveTo((j+1)/(columns+2)*canvas.width, (rows-(i-1))/(rows+2)*canvas.height -2.5);
+					c.lineTo((j+1)/(columns+2)*canvas.width, (rows-(i-1))/(rows+2)*canvas.height +2.5);
 					c.stroke();		
 				}
 				//
@@ -634,8 +642,8 @@ function drawKarel(karelX, karelY, direction) {
 					c.strokeStyle = "#000";
 					c.lineWidth = 1;
 					c.beginPath();
-					c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth + 2 + 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight + 1/30*window.innerHeight);
-					c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth + 2 + 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight - 1/30*window.innerHeight);
+					c.moveTo((j+1.5)/(columns+2)*canvas.width, (rows-(i-0.5))/(rows+2)*canvas.height);
+					c.lineTo((j+1.5)/(columns+2)*canvas.width, (rows-(i-1.5))/(rows+2)*canvas.height);
 					c.stroke();
 				}
 				//
@@ -645,8 +653,8 @@ function drawKarel(karelX, karelY, direction) {
 					c.strokeStyle = "#000";
 					c.lineWidth = 1;
 					c.beginPath();
-					c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth +2 - 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight - 1/30*window.innerHeight);
-					c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth +2 + 1/30*2/3*window.innerWidth, (14-i)/15*window.innerHeight - 1/30*window.innerHeight);
+					c.moveTo((j+0.5)/(columns+2)*canvas.width, (rows-(i-0.5))/(rows+2)*canvas.height);
+					c.lineTo((j+1.5)/(columns+2)*canvas.width, (rows-(i-0.5))/(rows+2)*canvas.height);
 					c.stroke();
 				}
 				//
@@ -657,10 +665,10 @@ function drawKarel(karelX, karelY, direction) {
 					c.strokeStyle = "#000" //black
 					c.lineWidth = 2;
 					c.beginPath();
-					c.moveTo(window.innerWidth/15 + j/15*2/3*window.innerWidth+2, (14-i)/15*window.innerHeight + 1/40*window.innerHeight);
-					c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth+2 - 1/50*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
-					c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth+2, (14-i)/15*window.innerHeight - 1/40*window.innerHeight);
-					c.lineTo(window.innerWidth/15 + j/15*2/3*window.innerWidth+2 + 1/50*2/3*window.innerWidth, (14-i)/15*window.innerHeight);
+					c.moveTo((j+1)/(columns+2)*canvas.width,   (rows-(i-0.75))/(rows+2)*canvas.height);
+					c.lineTo((j+0.75)/(columns+2)*canvas.width, (rows-(i-1))/(rows+2)*canvas.height);
+					c.lineTo((j+1)/(columns+2)*canvas.width,   (rows-(i-1.25))/(rows+2)*canvas.height);
+					c.lineTo((j+1.25)/(columns+2)*canvas.width, (rows-(i-1))/(rows+2)*canvas.height);
 					c.closePath();
 					c.fill();
 					c.stroke();
@@ -672,7 +680,7 @@ function drawKarel(karelX, karelY, direction) {
 	// the short alert message that shows that the browser is unable to display canvas
 	//
 	} else
-		alert("Canvas required!")
+		alert("You're not able to play 'Karel the robot' with your current browser. Please switch browser.")
 	//
 	// important for the first call up, because there's no position on true yet.
 	// after that -> redundant
@@ -688,8 +696,8 @@ function drawKarel(karelX, karelY, direction) {
 	else
 		imgKarel.src = "karelEast.png";
 		
-	c.drawImage(imgKarel,window.innerWidth/15 + karelX/15*2/3*window.innerWidth-1/45*2/3*window.innerWidth,
-	(14-karelY)/15*window.innerHeight-1/30*window.innerHeight, 1/15*window.innerHeight, 1/15*window.innerHeight);	
+	c.drawImage(imgKarel,(karelX+0.75)/(columns+2)*canvas.width,
+	(rows-(karelY-0.5))/(rows+2)*canvas.height, 1/15*window.innerHeight, 1/15*window.innerHeight);	
 }	
 
 //
@@ -895,8 +903,7 @@ $(window).load(function(){
 		<p><input type="button" name="Go" value="clearField()" id="Go" onclick="clearField()"></p>
 		<input type="text" name="functionTitle" value="Name der Funktion" id="functionTitle" onfocus="if(this.value=='Name der Funktion') this.value=''">
 		<p class="description"><textarea name="textarea" id="textarea" rows="20" cols="20" onfocus="if(this.value=='Hier kannst du deine eigenen Funktionen hinein schreiben, um Karel zu steuern. Drücke anschließend auf den Start Button') this.value='' ">Hier kannst du deine eigenen Funktionen hinein schreiben, um Karel zu steuern. Drücke anschließend auf den Start Button</textarea></p>
-		<input type="button" name="Go" value="START" id="START" onclick="userInput()">
-		
+		<input type="button" name="Go" value="START" id="START" onclick="userInput()">	
 	</div>
 	
 	<div id= "rightScreen" class= "rightScreen">
