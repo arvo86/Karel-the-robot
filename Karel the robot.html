@@ -1,16 +1,24 @@
 <!doctype html>
 <html>
 <head>
-<script type="text/javascript" src="storage.js"></script>
+<script src="storage.js"></script>
 <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
 <meta charset="UTF-8">
 <title>Karel the Robot</title>
 <style type="text/css" media="screen">
 
+#upperScreen {
+	width:100%;
+	text-align:left;
+	border-width: 1px;
+	border-radius:7px;
+}
+
 #leftScreen {
+	position:absolute;
 	float:left;
 	width: 20%;
-	height: 650px;
+	height: 85%;
 	border-right:10px ridge;
 	background-color: #FFFFFF;
 }
@@ -19,9 +27,9 @@
 #rightScreen {
 	position: absolute;
 	margin-left: 20%;
-	height: 100%;
+	height: 85%;
 	width:80%;
-	background-color: #FF00FF;
+	background-color: #FFaaFF;
 	
 }
 
@@ -42,7 +50,9 @@ textarea {
 	left:40%;
 }
 
-
+img#logo {
+	width:100%;
+}
 </style>
 
 <script type="text/javascript">
@@ -51,36 +61,56 @@ textarea {
 if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
  // some code..
 }
-
-
-// 
-// var liste receives the variable level from text input of home screen
 //
-var liste = storage.getAll();
-for (var eigenschaft in liste) {
-	var level = parseInt(liste[eigenschaft]);
-}
+// variable, wich shows the amount of Beepers Karel got with him
+//
+var countBeeper = 1000;
+
 var time = 0;
 var wait = 50;
+
 /*
 * The variables "rows" and "columns" describe the amount of rows and columns in Karel's world.
 * Effectively there's one row and one column less in Karel's world,
 * because one of each is reserved for the outer walls
 */  
-var rows =11;
-var columns =11;
+var rows = 11;
+var columns = 11;
 
+/*
+* The variable "partition" defines the distance between the single rows and columns.
+* To ensure an appropriate playing field, the minimun distance from row to row is 1/10 of the convas' window height,
+* respectively the minimum distance from column to column is 1/10 of the canvas' window width.
+* If there're more than 10 rows or 10 columns the distance between those will be relative to the amount of them.
+* e.g. If there're 20 rows, the distance beween those will be 1/20 of the canvas' window height.
+*/
+if ((rows>11) || (columns>11)) {
+	if (rows > columns) {
+		partition = rows;
+	} else {
+		partition = columns;
+	}
+} else {
+	partition = 11;
+}
+
+// 
+// var liste receives all variables from text input of home screen
+//
+var liste = storage.getAll();
+for (i in liste) {
+	var level = parseInt(liste["level"]);
+	var speed = parseInt(liste["speed"]);
+}
 
 /*
 * Initialisation of the position arrays for karel, beeper and wall 
 * Falls eine Postition im Array "true" ist, ist diese belegt, ansonsnten leer.	
 *
-*
 * Because there's a significant time differnce between computing and drawing karel's single steps through its world, 
 * it's necessary for this program to get two arrays for the positions of the beeper. 
 * first beeper array:  "beeper[][]"
 * second beeper array: "beeperToDraw[][]" 
-*
 *
 * array for computing beeper positions
 * with this beeper array the program computes all positions karel has to go
@@ -116,10 +146,7 @@ function beeperAtStart(posX, posY) {
 }
 
 beeperAtStart(2,2);
-//
-// variable, wich shows the amount of Beepers Karel got with him
-//
-var countBeeper = 1000;
+
 
 //
 // array for karel's position		
@@ -605,7 +632,7 @@ function drawKarel(karelX, karelY, direction) {
 					c.fillStyle = "#000";
 					c.font = "Arial";
 					c.textBaseline = 'bottom';
-					c.fillText (j,(j+1)/(columns+2)*canvas.width,(rows-(i-1))/(rows+2)*canvas.height);
+					c.fillText (j,(j+0.5)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height);
 				}
 				//
 				// draw the Y-axis' numbering
@@ -614,7 +641,7 @@ function drawKarel(karelX, karelY, direction) {
 					c.fillStyle = "#000";
 					c.font = "Arial";
 					c.textBaseline = 'bottom';
-					c.fillText (i,(j+1)/(columns+2)*canvas.width,(rows-(i-1))/(rows+2)*canvas.height);
+					c.fillText (i,(j+0.5)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height);
 				}	
 				//
 				// draw little crosses for the coordinate system
@@ -626,13 +653,13 @@ function drawKarel(karelX, karelY, direction) {
 					//
 					// horizontal lines of the coordinates' crosses
 					//
-					c.moveTo((j+1)/(columns+2)*canvas.width - 2.5, (rows-(i-1))/(rows+2)*canvas.height);
-					c.lineTo((j+1)/(columns+2)*canvas.width + 2.5, (rows-(i-1))/(rows+2)*canvas.height);
+					c.moveTo((j+0.5)/(partition)*canvas.width - 2.5, (partition-(i))/(partition)*canvas.height);
+					c.lineTo((j+0.5)/(partition)*canvas.width + 2.5, (partition-(i))/(partition)*canvas.height);
 					//
 					// vertical lines of the coordinates' crosses
 					//
-					c.moveTo((j+1)/(columns+2)*canvas.width, (rows-(i-1))/(rows+2)*canvas.height -2.5);
-					c.lineTo((j+1)/(columns+2)*canvas.width, (rows-(i-1))/(rows+2)*canvas.height +2.5);
+					c.moveTo((j+0.5)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height -2.5);
+					c.lineTo((j+0.5)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height +2.5);
 					c.stroke();		
 				}
 				//
@@ -642,8 +669,8 @@ function drawKarel(karelX, karelY, direction) {
 					c.strokeStyle = "#000";
 					c.lineWidth = 1;
 					c.beginPath();
-					c.moveTo((j+1.5)/(columns+2)*canvas.width, (rows-(i-0.5))/(rows+2)*canvas.height);
-					c.lineTo((j+1.5)/(columns+2)*canvas.width, (rows-(i-1.5))/(rows+2)*canvas.height);
+					c.moveTo((j+1)/(partition)*canvas.width, (partition-(i+0.5))/(partition)*canvas.height);
+					c.lineTo((j+1)/(partition)*canvas.width, (partition-(i-0.5))/(partition)*canvas.height);
 					c.stroke();
 				}
 				//
@@ -653,8 +680,8 @@ function drawKarel(karelX, karelY, direction) {
 					c.strokeStyle = "#000";
 					c.lineWidth = 1;
 					c.beginPath();
-					c.moveTo((j+0.5)/(columns+2)*canvas.width, (rows-(i-0.5))/(rows+2)*canvas.height);
-					c.lineTo((j+1.5)/(columns+2)*canvas.width, (rows-(i-0.5))/(rows+2)*canvas.height);
+					c.moveTo((j+1)/(partition)*canvas.width, (partition-(i+0.5))/(partition)*canvas.height);
+					c.lineTo((j)/(partition)*canvas.width,   (partition-(i+0.5))/(partition)*canvas.height);
 					c.stroke();
 				}
 				//
@@ -665,10 +692,10 @@ function drawKarel(karelX, karelY, direction) {
 					c.strokeStyle = "#000" //black
 					c.lineWidth = 2;
 					c.beginPath();
-					c.moveTo((j+1)/(columns+2)*canvas.width,   (rows-(i-0.75))/(rows+2)*canvas.height);
-					c.lineTo((j+0.75)/(columns+2)*canvas.width, (rows-(i-1))/(rows+2)*canvas.height);
-					c.lineTo((j+1)/(columns+2)*canvas.width,   (rows-(i-1.25))/(rows+2)*canvas.height);
-					c.lineTo((j+1.25)/(columns+2)*canvas.width, (rows-(i-1))/(rows+2)*canvas.height);
+					c.moveTo((j+0.5)/(partition)*canvas.width,  (partition-(i+0.25))/(partition)*canvas.height);
+					c.lineTo((j+0.25)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height);
+					c.lineTo((j+0.5)/(partition)*canvas.width,  (partition-(i-0.25))/(partition)*canvas.height);
+					c.lineTo((j+0.75)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height);
 					c.closePath();
 					c.fill();
 					c.stroke();
@@ -696,8 +723,7 @@ function drawKarel(karelX, karelY, direction) {
 	else
 		imgKarel.src = "karelEast.png";
 		
-	c.drawImage(imgKarel,(karelX+0.75)/(columns+2)*canvas.width,
-	(rows-(karelY-0.5))/(rows+2)*canvas.height, 1/15*window.innerHeight, 1/15*window.innerHeight);	
+	c.drawImage(imgKarel,(karelX+0.25)/(partition)*canvas.width, (partition-(karelY+0.5))/(partition)*canvas.height, 1/partition*canvas.height, 1/partition*canvas.height);	
 }	
 
 //
@@ -890,6 +916,9 @@ $(window).load(function(){
 <body onload="">
 	
 <div id="fullScreen" class= "fullScreen">
+	<div id="upperThird">
+		<img id="logo" src="LogoO_L.png">
+	</div>
 	<div id= "leftScreen" class= "leftScreen">
 		<select name="list" id="list" size="1">
 			<option value="level1" selected="selected">Level 1</option>
