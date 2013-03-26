@@ -29,7 +29,7 @@
 	margin-left: 20%;
 	height: 85%;
 	width:80%;
-	background-color: #FFaaFF;
+	background-color: #FFe1FF;
 	
 }
 
@@ -74,25 +74,9 @@ var wait = 50;
 * Effectively there's one row and one column less in Karel's world,
 * because one of each is reserved for the outer walls
 */  
-var rows = 11;
-var columns = 11;
 
-/*
-* The variable "partition" defines the distance between the single rows and columns.
-* To ensure an appropriate playing field, the minimun distance from row to row is 1/10 of the convas' window height,
-* respectively the minimum distance from column to column is 1/10 of the canvas' window width.
-* If there're more than 10 rows or 10 columns the distance between those will be relative to the amount of them.
-* e.g. If there're 20 rows, the distance beween those will be 1/20 of the canvas' window height.
-*/
-if ((rows>11) || (columns>11)) {
-	if (rows > columns) {
-		partition = rows;
-	} else {
-		partition = columns;
-	}
-} else {
-	partition = 11;
-}
+
+
 
 // 
 // var liste receives all variables from text input of home screen
@@ -101,7 +85,12 @@ var liste = storage.getAll();
 for (i in liste) {
 	var level = parseInt(liste["level"]);
 	var speed = parseInt(liste["speed"]);
+	var rows = parseInt(liste["rows"]);
+	var columns = parseInt(liste["columns"]);
 }
+var level = 5;
+var rows = 21;
+var columns = 21;
 
 /*
 * Initialisation of the position arrays for karel, beeper and wall 
@@ -142,10 +131,8 @@ for(j=0; j<columns; j++) {
 
 function beeperAtStart(posX, posY) {
 	beeper[posX][posY] = true;
-	beeperToDraw[posX][posY] = true;	
+	beeperToDraw[posX][posY] = true;
 }
-
-beeperAtStart(2,2);
 
 
 //
@@ -167,6 +154,132 @@ for(j=0; j<columns; j++) {
 var wallV = new Array(columns);
 for(j=0.5; j<columns; j++) 
 	wallV[j] = new Array(rows)
+for(j=0.5; j<columns; j++) {
+	for(i=0; i<rows; i++)
+		wallV[j][i] = false;
+}
+//
+// wall array
+// for horizontal walls		
+//
+var wallH = new Array(columns);
+for(j=0; j<columns; j++) 
+	wallH[j] = new Array(rows)
+for(j=0; j<columns; j++) {
+	for(i=0.5; i<rows; i++)
+		wallH[j][i] = false;
+}
+
+//
+// switch command to choose between the different levels and thus to set walls, beeper(s) and Karel
+//
+switch (level) {
+	case 1:	
+	// rows and columns
+		rows = 11;
+		columns = 11;
+	// horizontal walls
+		for (i=4; i<8; i++)
+			wallH[i][3.5] = true;
+		for (i=4; i<8; i++)
+			wallH[i][7.5] = true;
+	// vertical walls	
+		for (i=4; i<8; i++)
+			wallV[3.5][i] = true;
+		for (i=4; i<6; i++)
+			wallV[7.5][i] = true;
+		wallV[7.5][7] = true;
+	// Beeper
+		beeperAtStart(8,6);
+	// Karel
+		startX=4;
+		startY=7;
+		startDirection="east"		
+		break;
+	case 2:
+	// rows and columns
+		rows = 3;
+		columns = 12;
+		
+	// Beeper
+		beeperAtStart(10,1);
+		
+	// Karel
+		startX=1;
+		startY=1;
+		startDirection="east"
+		break;
+	case 3:
+	// rows and columns
+		rows = 3;
+		columns = 11;
+	// Beeper
+		for (i=1; i<5; i++)
+			beeperAtStart(i,1);
+		for (i=6; i<11; i++)
+			beeperAtStart(i,1);
+	// Karel
+		startX=1;
+		startY=1;
+		startDirection="east"
+		break;
+	case 4:
+	// rows and columns
+		rows = 10;
+		columns = 10;
+	// horizontal walls
+		for (i=1; i<10; i+=4)
+			wallH[i][5.5] = true;
+		for (i=2; i<10; i+=2)
+			wallH[i][6.5] = true;
+		for (i=3; i<10; i+=4)
+			wallH[i][7.5] = true;
+	// vertical walls
+		wallV[1.5][6] = true;
+		wallV[4.5][6] = true;
+		wallV[5.5][6] = true;
+		wallV[8.5][6] = true;
+		wallV[2.5][7] = true;
+		wallV[3.5][7] = true;
+		wallV[6.5][7] = true;
+		wallV[7.5][7] = true;
+	// Beeper
+		beeperAtStart(1,4);
+		beeperAtStart(1,5);
+		beeperAtStart(5,1);
+		beeperAtStart(5,2);
+		beeperAtStart(5,4);
+	 	beeperAtStart(9,1);
+		beeperAtStart(9,3);
+		beeperAtStart(9,5);
+	// Karel
+		startX=1;
+		startY=1;
+		startDirection="east"
+		break;
+	case 5:
+	// rows and columns
+		rows = 10;
+		columns = 10;
+	// Karel
+		startX=1;
+		startY=1;
+		startDirection="east"
+		break;
+}
+
+for(j=0; j<columns; j++) {
+	for(i=0.5; i<rows; i++) {
+ 		//
+		// if-query sets horizontal outer walls
+		//
+		if ((i==0.5 || i==rows-0.5) && (j>0 && j<columns)){
+			wallH[j][i] = true;
+		} else {
+		//	wallH[j][i] = false;
+		}
+	}
+}
 
 for(j=0.5; j<columns; j++) {
 	for(i=0; i<rows; i++) {
@@ -176,61 +289,38 @@ for(j=0.5; j<columns; j++) {
 		if ((j==0.5 || j==columns-0.5) && (i<rows && i>0)) {
 			wallV[j][i] = true;
 		} else {
-			wallV[j][i] = false;
+			//wallV[j][i] = false;
 		}
 	}
 }
-//
-// switch command to choose between the different levels and thus to set walls
-//
-switch (level) {
-	case 1:	
-		break;
-	case 2: 
-		wallV[2.5][1] = true;
-			break;
-}
+/*
+* The variable "partition" defines the distance between the single rows and columns.
+* To ensure an appropriate playing field, the minimun distance from row to row is 1/10 of the convas' window height,
+* respectively the minimum distance from column to column is 1/10 of the canvas' window width.
+* If there're more than 10 rows or 10 columns the distance between those will be relative to the amount of them.
+* e.g. If there're 20 rows, the distance beween those will be 1/20 of the canvas' window height.
+*/
 
-//
-// wall array
-// for horizontal walls		
-//
-var wallH = new Array(columns);
-for(j=0; j<columns; j++) 
-	wallH[j] = new Array(rows)
-
-for(j=0; j<columns; j++) {
-	for(i=0.5; i<rows; i++) {
- 		//
-		// if query sets horizontal outer walls
-		//
-		if ((i==0.5 || i==rows-0.5) && (j>0 && j<columns)){
-			wallH[j][i] = true;
-		} else {
-			wallH[j][i] = false;
-		}
+if ((rows>11) || (columns>11)) {
+	if (rows > columns) {
+		partition = rows;
+	} else {
+		partition = columns;
 	}
+} else {
+	partition = 11;
 }
-//
-// switch command to choose between the different levels and thus to set walls
-//
-switch (level) {
-	case 1:	break;
-	case 2: for (i=3; i<columns; i++)
-			wallH[i][1.5] = true;
-			break;
-}
+
 //
 // basic functions karel know
 //
 function move() {
 	//
 	//  check karel's position
-	//	
+	//		
 	for(j=0; j<columns; j++) {
 		for(i=0; i<rows; i++) {
 			if (karel[j][i] && facing.east && wallV[j+0.5][i]==false) {
-				
 				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
 				karel[j][i] = false;
 				j+=1;
@@ -723,7 +813,7 @@ function drawKarel(karelX, karelY, direction) {
 	else
 		imgKarel.src = "karelEast.png";
 		
-	c.drawImage(imgKarel,(karelX+0.25)/(partition)*canvas.width, (partition-(karelY+0.5))/(partition)*canvas.height, 1/partition*canvas.height, 1/partition*canvas.height);	
+	c.drawImage(imgKarel,(karelX+0.15)/(partition)*canvas.width, (partition-(karelY+0.5))/(partition)*canvas.height, 1/partition*canvas.height, 1/partition*canvas.height);	
 }	
 
 //
@@ -857,11 +947,11 @@ function antiBeeperWalk() {
 }
 
 function fillField() {
-	while ((frontIsClear() && rightIsClear()) && (frontIsClear() && leftIsClear())) { 
-	while (frontIsClear()) 
-		beeperWalk();
-		putBeeper();
-		turnAround();
+	while ((leftIsClear() && facingEast()) || (rightIsClear() && facingWest())) { 
+		while (frontIsClear()) 
+			beeperWalk();
+			putBeeper();
+			turnAround();
 	}
 }
 
@@ -896,12 +986,10 @@ function userInput() {
 	var input = document.getElementById("textarea").value;
 	eval(input);
 }
-//
-// function that is called by the jQuery expression "$(window).load(...){...}" at the end of the <script> part 
-//
+
 function windowLoad() {
-	drawKarel(1,1,"east");
-	checkWallAround(1,1);
+	drawKarel(startX, startY, startDirection);
+	checkWallAround(startX, startY);
 }
 //
 // NOT "$(document).ready(...)" because at this time, no images are loaded
