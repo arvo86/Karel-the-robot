@@ -88,7 +88,6 @@ for (i in liste) {
 	var rows = parseInt(liste["rows"]);
 	var columns = parseInt(liste["columns"]);
 }
-var level = 5;
 var rows = 21;
 var columns = 21;
 
@@ -174,67 +173,71 @@ for(j=0; j<columns; j++) {
 // switch command to choose between the different levels and thus to set walls, beeper(s) and Karel
 //
 switch (level) {
+	// Level 1: Get the beeper
 	case 1:	
-	// rows and columns
+		// rows and columns
 		rows = 11;
 		columns = 11;
-	// horizontal walls
+		// horizontal walls
 		for (i=4; i<8; i++)
 			wallH[i][3.5] = true;
 		for (i=4; i<8; i++)
 			wallH[i][7.5] = true;
-	// vertical walls	
+			// vertical walls	
 		for (i=4; i<8; i++)
 			wallV[3.5][i] = true;
 		for (i=4; i<6; i++)
 			wallV[7.5][i] = true;
 		wallV[7.5][7] = true;
-	// Beeper
+		// Beeper
 		beeperAtStart(8,6);
-	// Karel
+		// Karel
 		startX=4;
 		startY=7;
-		startDirection="east"		
+		startDirection="east";		
 		break;
-	case 2:
-	// rows and columns
+	// Level 2: Use a Condition to get the beeper
+	case 2: 
+		// rows and columns
 		rows = 3;
 		columns = 12;
 		
-	// Beeper
+		// Beeper
 		beeperAtStart(10,1);
 		
-	// Karel
+		// Karel
 		startX=1;
 		startY=1;
-		startDirection="east"
+		startDirection="east";
 		break;
+	// Level 3: Let there be beepers
 	case 3:
-	// rows and columns
+		// rows and columns
 		rows = 3;
 		columns = 11;
-	// Beeper
+		// Beeper
 		for (i=1; i<5; i++)
 			beeperAtStart(i,1);
 		for (i=6; i<11; i++)
 			beeperAtStart(i,1);
-	// Karel
+			// Karel
 		startX=1;
 		startY=1;
-		startDirection="east"
+		startDirection="east";
 		break;
+	// Level 4: Build columns out of beepers
 	case 4:
-	// rows and columns
+		// rows and columns
 		rows = 10;
 		columns = 10;
-	// horizontal walls
+		// horizontal walls
 		for (i=1; i<10; i+=4)
 			wallH[i][5.5] = true;
 		for (i=2; i<10; i+=2)
 			wallH[i][6.5] = true;
 		for (i=3; i<10; i+=4)
 			wallH[i][7.5] = true;
-	// vertical walls
+			// vertical walls
 		wallV[1.5][6] = true;
 		wallV[4.5][6] = true;
 		wallV[5.5][6] = true;
@@ -243,7 +246,7 @@ switch (level) {
 		wallV[3.5][7] = true;
 		wallV[6.5][7] = true;
 		wallV[7.5][7] = true;
-	// Beeper
+		// Beeper
 		beeperAtStart(1,4);
 		beeperAtStart(1,5);
 		beeperAtStart(5,1);
@@ -252,19 +255,30 @@ switch (level) {
 	 	beeperAtStart(9,1);
 		beeperAtStart(9,3);
 		beeperAtStart(9,5);
-	// Karel
+		// Karel
 		startX=1;
 		startY=1;
-		startDirection="east"
+		startDirection="east";
 		break;
+	// Level 5: Make a chessfield 
 	case 5:
-	// rows and columns
+		// rows and columns
 		rows = 10;
 		columns = 10;
-	// Karel
+		// Karel
 		startX=1;
 		startY=1;
-		startDirection="east"
+		startDirection="east";
+		break;
+	// Level 6: Find the middle
+	case 6:
+		// rows and columns
+		rows = 3;
+		columns = 10;
+		// Karel
+		startX=1;
+		startY=1;
+		startDirection="east";
 		break;
 }
 
