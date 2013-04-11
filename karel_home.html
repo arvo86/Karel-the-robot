@@ -8,156 +8,202 @@
 	
 <style type="text/css" media="screen">
 
-
-#leftThird{
-	width:45%;
-	height: 100%;
-	float:left;
-	margin-top:1%;
-	background-color:darkgreen;
-	
+body {
+	background-image:url(pattern.png);
 }
 
-#rightThird{
-	float:left;
-	width:55%;
-	height:100%;
-	background-color:blue;
-	margin-top:1%;	
+#topThird{
+	width:100%;
+}
+
+#midThird{
+	text-align:center;
+	width:100%;
+	height: 50%;
+	margin-top:5%;
+}
+
+#buttomThird{
+	position:absolute;
+	width:95%;
+	background-color:;
+	margin-top:25%;
+	margin-left:2.5%;
+	z-index:-1;
 }
 
 #screenshot {
-	width:100%;
+	width:50%;
 	-webkit-box-reflect: below 1px -webkit-linear-gradient(top, rgba(0,0,0,0) 90%,rgba(255,255,255,1) 110%);
 }
 
-#levelScreenshot {
-	text-align:center;
-	background: darkgrey;
-	border-style: solid;
-	border-color: lightsilver;
-	border-radius:7px;
-	border-width:1px;
-	
-}
-#titlePreview {
-	font-family:Century Gothic;	
-	color: white;
-	font-size:150%;
-	margin-top:10px;
-}
 #myCarousel {
+	width:90%;
+	margin-left:4%;
 	margin-top:1%;
 	padding-top:1%;
 	margin-bottom:1%;
 	padding-bottom:1%;
-	border-top-style: solid;
-	border-bottom-style: solid;
+	padding-left:1%;
+	padding-right:1%;
+	border-style: solid;
 	border-color: lightgrey;
 	border-width:1px;
 }
-
+.modalImg {
+	width:10%;
+}
+.popover {
+	min-width: 550px;
+}
+#collapseContentLeft {
+	text-align:right;
+	width:5%;
+	float:left;
+	margin-left:10%;
+	margin-right:-10%;
+}
+#collapseContentMiddle {
+	width:90%;
+	float:left;
+}
+#collapseContentRight {
+	width:5%;
+	float:left;
+	margin-right:10%;
+	margin-left:-10%;
+}
+#lvlFirst {
+	border-top-left-radius:7px;
+	border-top-right-radius:7px;
+}
+#lvlLast {
+	border-bottom-left-radius:7px;
+	border-bottom-right-radius:7px;
+}
 </style>	
 
-<script type="text/javascript">
-	function sichern () {
-		storage.set("level", document.getElementById("level").value);
-		storage.set("speed", 20);
-		location.href = "Karel_Version.1.6.html";
-	}	
-
-</script>
 </head>
 <body id="" onload="">
-	</a>	
-	<div id="upperThird">
-		<img id="logo" src="LogoO_L.png">
-	</div>
 
-<div id="myCarousel" class="carousel slide">
- 	<ol class="carousel-indicators">
-    	<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-    	<li data-target="#myCarousel" data-slide-to="1"></li>
-    	<li data-target="#myCarousel" data-slide-to="2"></li>
-	</ol>
-	<!-- Carousel items -->
-	<div class="carousel-inner">
-		<div class="active item"><img src= "take1.png"></div>
-    	<div class="item"><img src= "take2.png"></div>
-    	<div class="item"><img src= "take3.png"></div>
-  	</div>
-  	<!-- Carousel nav -->
-	<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-	<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
- </div>
+<!-- =============== top third ================ -->	
+
+<div id="topThird">
+	<img id="logo" src="LogoO_L.png">
+</div>
+
+<!-- =============== mid third ================ -->	
 	
+<div id="midThird" >
+	<div class="btn-group">
+	<button type="button" href="#whoIsKarel" class="btn btn-default lvl btn-large"  data-toggle="modal">Wer ist Karel?</button>
 	
-	
-	<div id="leftThird">
-		<button type="button" class="btn btn-danger" data-toggle="collapse" data-target="#demo">
-		  simple collapsible
-		</button>
-		<div id="demo" class="collapse"><input type="text" name="some_name" value="" id="some_name" data-parent="true"><p><textarea name="Name" rows="8" cols="40"></textarea></div>
-		
-		<a href="KarelEast.png" rel="lightbox" title="This is Karel" width="500">So, who's Karel?</a>
-		
-		<select name="list" id="list" size="1">
-			<option value="level1" selected="selected">Level 1</option>
-			<option value="level2">Level 2:</option>
-			<option value="level3">Level 3</option>	
-		</select>
+	<!-- ==== Collapse button for level selection ==== -->
+	<button type="button" class="btn btn-default btn-large" data-toggle="collapse" data-target="#levelSelect">Levelauswahl</button>
+	<button type="button" href="#whoIsKarel" class="btn btn-default btn-large lvl"  data-toggle="modal">Anleitung</button>
+	<button type="button" href="#whoIsKarel" class="btn btn-default btn-large lvl"  data-toggle="modal">Links</button>
+	<button type="button" href="#whoIsKarel" class="btn btn-default btn-large disabled lvl"  data-toggle="modal" disabled="disabled">Leveleditor</button>	
 	</div>
-	<div id="rightThird">
-		<div id="levelScreenshot">
-			<span id="titlePreview"><u>Levelansicht</u></span><br><br>
-			<img id="screenshot" src="aaa.png" >
-			<br><br><br>
+	
+	<!-- ================ Collapse content for level selection ================== -->
+	<div id="levelSelect" class="collapse">
+		
+		<div id="collapseContentLeft" class="btn-group alignment" name="btn-group" data-toggle="buttons-radio">
+		  	<br>
+			<button type="button" class="btn btn-default btn-large lvl" value="1" id="lvlFirst">Level 1</button><br>
+		  	<button type="button" class="btn btn-default btn-large lvl" value="2">Level 2</button><br>
+		  	<button type="button" class="btn btn-default btn-large lvl" value="3">Level 3</button><br>
+			<button type="button" class="btn btn-default btn-large lvl" value="4">Level 4</button><br>
+		  	<button type="button" class="btn btn-default btn-large lvl" value="5">Level 5</button><br>
+		  	<button type="button" class="btn btn-default btn-large lvl" value="6" id="lvlLast">Level 6</button><br>
+		</div>
+		<br>
+		<div id= "collapseContentMiddle">
+		<img id="screenshot" src="aaa.png">
+		</div>
+		<div id= "collapseContentRight">
+		<form name="formular" action="" onsubmit="sichern(); return false;">
+			<br>
+			<br>
+			<button type="submit" class="btn btn-default" value="" id="zuKarel" name="zuKarel">Level spielen!</button>
+		</form>
 		</div>
 	</div>
+</div>
 
+	
+<!-- =============== bottom third ================ -->	
+	
+<div id="buttomThird">
+	
+	<!-- ===============Animation: quotes================== -->
 
-
-
-<form name="formular" action="" onsubmit="sichern(); return false;">
-	<input type="submit" name="zuKarel" value="zuKarel" id="zuKarel">
-	<input type="text" name="level" value="level" id="level">
-</form>
-
-
-
-<!-- Button to trigger modal -->
-<a href="#myModal" role="button" class="btn" data-toggle="modal">Wer ist Karel?  </a>
-
-<!-- Modal -->
-<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-    	<h3 id="myModalLabel">Karel the robot</h3>
-	</div>
-	<div class="modal-body">
-		<p>KarelKarelKarelKarelKarel</p>
-		<p>KarelKarelKarelKarelKarel</p>
-		<p>KarelKarelKarelKarelKarel</p>
-		<p>KarelKarelKarelKarelKarel</p>
-		<hr>
-		<p>KarelKarelKarelKarelKarel</p>
-		<p>KarelKarelKarelKarelKarel</p>
-		<p>KarelKarelKarelKarelKarel</p>
-		<hr>
-		<p>KarelKarelKarelKarelKarel</p>
-		<p>KarelKarelKarelKarelKarel</p>
-		<p>KarelKarelKarelKarelKarel</p>
+	<div id="myCarousel" class="carousel slide">
+		<ol class="carousel-indicators">
+	    	<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+	    	<li data-target="#myCarousel" data-slide-to="1"></li>
+	    	<li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
+		<!-- Carousel items -->
+		<div class="carousel-inner">
+			<div class="active item"><img src= "take1.png"></div>
+	    	<div class="item"><img src= "take2.png"></div>
+	    	<div class="item"><img src= "take3.png"></div>
+	  	</div>
+	  	<!-- Carousel nav -->
+		<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+		<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
 	</div>
 	
 </div>
 
 
- 
 
- <div id="some-div">
-	<input type="button" name="some_name" value="www" id="btn" rel= "popover" data-content = "testing...">
+<!-- =============== Content of modal ================ -->
+
+<div id="whoIsKarel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="whoIsKarelLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    	<h3 id="whoIsKarelLabel">Karel the robot</h3>
+	</div>
+	<div class="modal-body">
+		<img class="modalImg" src="karelEast.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img class="modalImg" src="karelNorth.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img class="modalImg" src="karelWest.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img class="modalImg" src="karelSouth.png"><br><hr>
+		<p>"Karel the robot" ist ein Spiel, bei dem es darum geht durch logisches Denken Missionen in den verschieden Leveln zu meistern.</p><br>
+		<p>Karel ist ein einfacher Roboter, der in einer einfachen Welt lebt. Seine Welt ist durch eine Mauer eingegrenzt und die Stellen auf denen er sich hin und her bewegen kann, sind durch kleine Kreuze markiert.
+			<br><br>
+			Karels Lieblingsspielzeuge sind seine Beeper. Mit seinen Beepern l&ouml;st er gerne allerhand R&auml;tsel.</p><br>
+			<p>Hilf Karel bei seinen Missionen und l&ouml;se sie alle</p><br>
+	</div>
 </div>
-<script src="http://code.jquery.com/jquery-1.7.2.js"></script>
+
+<!--
+<div class="btn-group">
+	<button type="button" class="btn btn-primary lvl btn-large" rel="popover" id="nav_btn_1" data-html="true" 
+		data-content='<img class="modalImg" src="karelEast.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img class="modalImg" src="karelNorth.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img class="modalImg" src="karelWest.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img class="modalImg" src="karelSouth.png"><br><hr>
+		<p>"Karel the robot" ist ein Spiel, bei dem es darum geht durch logisches Denken Missionen in den verschieden Leveln zu meistern.</p><br>
+		<p>Karel ist ein einfacher Roboter, der in einer einfachen Welt lebt. Seine Welt ist durch eine Mauer eingegrenzt und die Stellen auf denen er sich hin und her bewegen kann, sind durch kleine Kreuze markiert.
+			<br><br>
+			Karels Lieblingsspielzeuge sind seine Beeper. Mit seinen Beepern l&ouml;st er gerne allerhand R&auml;tsel.</p><br>
+			<p>Hilf Karel bei seinen Missionen und l&ouml;se sie alle</p><br>' 
+		
+		data-placement="top">Wer ist Karel?
+	</button>
+	<div type="button" class="btn btn-primary lvl btn-large" rel="popover" id="nav_btn_2" data-content="lkjaslkasjdlakdsj" data-placement="top"value="">Wer ist Karel?</div>
+	<button type="button" class="btn btn-primary lvl btn-large" rel="popover" id="nav_btn_3" data-html="true" data-content="<a href=http://www.code.org>www.code.org</a>" data-placement="top">Links</button>
+	<button type="button" class="btn btn-primary lvl btn-large" rel="popover" id="nav_btn_4" data-html:"true" data-content='<input type="text" name="some_name" value="" id="some_name">' data-placement="top">Wer ist Karel?</button>
+</div>
+-->
+
+
+<!-- ================= Sources ================= -->
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
 <script src="storage.js"></script>
 <script src="lightbox/js/lightbox.js"></script>
@@ -165,12 +211,109 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" charset="utf-8">
+
+function sichern () {
+	if (level!=undefined) {
+		storage.set("level", level);
+		storage.set("speed", 20);
+		location.href = "Karel_Version.1.6.html";
+	}
+}	
+var level;
+
 $(document).ready(function() {
+	var isVisible = false;
+	var clickAway = false;
+	//
+	// Initalize all functions before first call up
+	//
+	$('#nav_btn_1').popover();
+	$('#nav_btn_2').popover();
+	$('#nav_btn_3').popover();
+	$('#nav_btn_4').popover();
+	
+	
 	$('#myCarousel').carousel({
-		interval: 5000
+		interval: 10000
 	});	
-	$(function() {
-		$('#btn').popover();
+	//
+	// submit level to next page.
+	// change image of level preview
+	//
+	$(".alignment .lvl").bind("click touchstart", function() {
+	    level = $(this).val();
+		if (level==1)
+		$('#screenshot').attr('src','lvl1.png');
+		else if (level==2)
+		$('#screenshot').attr('src','lvl2.png');
+		else if (level==3)
+		$('#screenshot').attr('src','lvl3.png');
+		else if (level==4)
+		$('#screenshot').attr('src','lvl4.png');
+		else if (level==5)
+		$('#screenshot').attr('src','lvl5.png');
+		else if (level==6)
+		$('#screenshot').attr('src','lvl6.png');
+		else
+		$('#screenshot').attr('src','aaa.png');
+	});
+	
+	//
+	// trigger the popovers of the single navigation buttons
+	//	
+	$("#nav_btn_1").bind("click touchstart", function(e) {
+		$('#nav_btn_2').popover('hide');
+		$('#nav_btn_3').popover('hide');
+		$('#nav_btn_4').popover('hide');
+		$('#nav_btn_1').popover();
+		isVisible = true;
+		clickAway = false;
+		e.preventDefault();
+	});
+	$("#nav_btn_2").bind("click touchstart", function(e) {
+		$('#nav_btn_1').popover('hide');
+		$('#nav_btn_3').popover('hide');
+		$('#nav_btn_4').popover('hide');
+		$('#nav_btn_2').popover();
+		isVisible = true;
+		clickAway = false;
+		e.preventDefault();
+	});
+	$("#nav_btn_3").bind("click touchstart", function(e) {
+		$('#nav_btn_1').popover('hide');
+		$('#nav_btn_2').popover('hide');
+		$('#nav_btn_4').popover('hide');
+		$('#nav_btn_3').popover();
+		isVisible = true;
+		clickAway = false;
+		e.preventDefault();
+	});
+	$("#nav_btn_4").bind("click touchstart", function(e) {
+		$('#nav_btn_1').popover('hide');
+		$('#nav_btn_2').popover('hide');
+		$('#nav_btn_3').popover('hide');
+		$('#nav_btn_4').popover();
+		isVisible = true;
+		clickAway = false;
+		e.preventDefault();
+	});
+	
+	//
+	// close popover by clicking anywhere
+	// instead of using .click(function() {}); we're using .bind("click touchstart", function() {});
+	// with that we avoid the problem, that on an iPad/iPhone  $(document).click... doesn't work.
+	//
+	$(document).bind("click touchstart", function() {
+		if(isVisible && clickAway) {
+			$('#nav_btn_1').popover('hide');
+			$('#nav_btn_2').popover('hide');
+			$('#nav_btn_3').popover('hide');
+			$('#nav_btn_4').popover('hide');
+			isVisible = false;
+			clickAway = false;
+		} else {
+			clickAway = true;
+		}
 	});	
 });
 </script>
