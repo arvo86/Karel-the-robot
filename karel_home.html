@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name = "viewport" />
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link href="lightbox/css/lightbox.css" rel="stylesheet" />
 <title>Karel the robot - Startscreen</title>
 	
 <style type="text/css" media="screen">
@@ -11,32 +10,36 @@
 body {
 	background-image:url(pattern.png);
 }
-
-#topThird{
-	width:100%;
+h3 {
+	text-align: center;
 }
 
+/* screen is divided in three parts */
+
+#topThird {
+	width:100%;
+}
 #midThird{
 	text-align:center;
 	width:100%;
 	height: 50%;
 	margin-top:5%;
 }
-
 #buttomThird{
 	position:absolute;
 	width:95%;
 	background-color:;
-	margin-top:25%;
+	margin-top:40%;
 	margin-left:2.5%;
 	z-index:-1;
 }
 
-#screenshot {
+/* Preview image of the level */
+
+#levelPreview {
 	width:50%;
 	-webkit-box-reflect: below 1px -webkit-linear-gradient(top, rgba(0,0,0,0) 90%,rgba(255,255,255,1) 110%);
 }
-
 #myCarousel {
 	width:90%;
 	margin-left:4%;
@@ -53,9 +56,7 @@ body {
 .modalImg {
 	width:10%;
 }
-.popover {
-	min-width: 550px;
-}
+
 #collapseContentLeft {
 	text-align:right;
 	width:5%;
@@ -73,6 +74,9 @@ body {
 	margin-right:10%;
 	margin-left:-10%;
 }
+
+/* first and last button of a group get round corners */ 
+
 #lvlFirst {
 	border-top-left-radius:7px;
 	border-top-right-radius:7px;
@@ -81,7 +85,32 @@ body {
 	border-bottom-left-radius:7px;
 	border-bottom-right-radius:7px;
 }
+
+/* dividing line for modals content*/
+
+.structure {
+	height:1px;
+	background-color:black;
+	text-align: center;
+}
+.structure span {
+	background-color: white;
+	position: relative;
+	top: -0.5em;
+}
 </style>	
+<!-- ================= Sources ================= -->
+
+<script src="http://code.jquery.com/jquery-2.0.0.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script src="storage.js"></script>
+<script src="lightbox/js/lightbox.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="lightbox/css/lightbox.css" rel="stylesheet" />
+<link rel="shortcut icon" href="favicon/favicon.ico" >
+<link rel="icon" type="image/gif" href="favicon/animated_favicon1.gif" >
 
 </head>
 <body id="" onload="">
@@ -101,7 +130,7 @@ body {
 	<!-- ==== Collapse button for level selection ==== -->
 	<button type="button" class="btn btn-default btn-large" data-toggle="collapse" data-target="#levelSelect">Levelauswahl</button>
 	<button type="button" href="#whoIsKarel" class="btn btn-default btn-large lvl"  data-toggle="modal">Anleitung</button>
-	<button type="button" href="#whoIsKarel" class="btn btn-default btn-large lvl"  data-toggle="modal">Links</button>
+	<button type="button" href="#links" class="btn btn-default btn-large lvl"  data-toggle="modal">Links</button>
 	<button type="button" href="#whoIsKarel" class="btn btn-default btn-large disabled lvl"  data-toggle="modal" disabled="disabled">Leveleditor</button>	
 	</div>
 	
@@ -119,13 +148,13 @@ body {
 		</div>
 		<br>
 		<div id= "collapseContentMiddle">
-		<img id="screenshot" src="aaa.png">
+		<img id="levelPreview" src="aaa.png">
 		</div>
 		<div id= "collapseContentRight">
 		<form name="formular" action="" onsubmit="sichern(); return false;">
 			<br>
 			<br>
-			<button type="submit" class="btn btn-default" value="" id="zuKarel" name="zuKarel">Level spielen!</button>
+			<button type="submit" class="btn btn-success btn-large" rel="popover" data-placement="left" data-content="Du musst noch einen Level ausw&auml;hlen!" value="" id="confirmLevel" name="confirmLevel">Level spielen!</button>
 		</form>
 		</div>
 	</div>
@@ -136,7 +165,7 @@ body {
 	
 <div id="buttomThird">
 	
-	<!-- ===============Animation: quotes================== -->
+	<!-- ===============Carousel animation: quotes================== -->
 
 	<div id="myCarousel" class="carousel slide">
 		<ol class="carousel-indicators">
@@ -159,7 +188,7 @@ body {
 
 
 
-<!-- =============== Content of modal ================ -->
+<!-- =============== Content of modal: "whoIsKarel" ================ -->
 
 <div id="whoIsKarel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="whoIsKarelLabel" aria-hidden="true">
 	<div class="modal-header">
@@ -179,36 +208,32 @@ body {
 	</div>
 </div>
 
-<!--
-<div class="btn-group">
-	<button type="button" class="btn btn-primary lvl btn-large" rel="popover" id="nav_btn_1" data-html="true" 
-		data-content='<img class="modalImg" src="karelEast.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-		<img class="modalImg" src="karelNorth.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-		<img class="modalImg" src="karelWest.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
-		<img class="modalImg" src="karelSouth.png"><br><hr>
-		<p>"Karel the robot" ist ein Spiel, bei dem es darum geht durch logisches Denken Missionen in den verschieden Leveln zu meistern.</p><br>
-		<p>Karel ist ein einfacher Roboter, der in einer einfachen Welt lebt. Seine Welt ist durch eine Mauer eingegrenzt und die Stellen auf denen er sich hin und her bewegen kann, sind durch kleine Kreuze markiert.
-			<br><br>
-			Karels Lieblingsspielzeuge sind seine Beeper. Mit seinen Beepern l&ouml;st er gerne allerhand R&auml;tsel.</p><br>
-			<p>Hilf Karel bei seinen Missionen und l&ouml;se sie alle</p><br>' 
+<!-- =============== Content of modal: "links" ================ -->
+
+<div id="links" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="linksLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    	<h3 id="linksLabel">Links</h3>
+	</div>
+	<div class="modal-body">
+		<br>
+		<div class="structure">
+			<span>Read about the original Karel on Wikipedia.</span>
+		</div>
+		<h3><a href= "http://en.wikipedia.org/wiki/Karel_(programming_language)" target="_blank">Karel (Wikipedia)</a></h3><br>
+		<div class="structure">
+			<span>Non-profit foundation dedicated to growing programming education.</span>
+		</div>
+		<h3><a href= "http:www.code.org" target="_blank">Code.org</a></h3>
+		<br>
+		<div class="structure">
+			<span>Richard E. Pattis. The author of Karel the robot</span>
+		</div>
+		<h3><a href= "http://www.ics.uci.edu/~pattis/" target="_blank">Richard E. Pattis</a></h3><br>
 		
-		data-placement="top">Wer ist Karel?
-	</button>
-	<div type="button" class="btn btn-primary lvl btn-large" rel="popover" id="nav_btn_2" data-content="lkjaslkasjdlakdsj" data-placement="top"value="">Wer ist Karel?</div>
-	<button type="button" class="btn btn-primary lvl btn-large" rel="popover" id="nav_btn_3" data-html="true" data-content="<a href=http://www.code.org>www.code.org</a>" data-placement="top">Links</button>
-	<button type="button" class="btn btn-primary lvl btn-large" rel="popover" id="nav_btn_4" data-html:"true" data-content='<input type="text" name="some_name" value="" id="some_name">' data-placement="top">Wer ist Karel?</button>
+		
+	</div>
 </div>
--->
-
-
-<!-- ================= Sources ================= -->
-
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
-<script src="storage.js"></script>
-<script src="lightbox/js/lightbox.js"></script>
-<script src="http://code.jquery.com/jquery.js"></script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
 
 <script type="text/javascript" charset="utf-8">
 
@@ -216,21 +241,19 @@ function sichern () {
 	if (level!=undefined) {
 		storage.set("level", level);
 		storage.set("speed", 20);
-		location.href = "Karel_Version.1.6.html";
+		location.href = "Karel_Version.1.7.html";
 	}
 }	
 var level;
+var isVisible = false;
+var clickAway = false;
 
 $(document).ready(function() {
-	var isVisible = false;
-	var clickAway = false;
+	
 	//
 	// Initalize all functions before first call up
 	//
-	$('#nav_btn_1').popover();
-	$('#nav_btn_2').popover();
-	$('#nav_btn_3').popover();
-	$('#nav_btn_4').popover();
+	$('#confirmLevel').popover();
 	
 	
 	$('#myCarousel').carousel({
@@ -240,62 +263,26 @@ $(document).ready(function() {
 	// submit level to next page.
 	// change image of level preview
 	//
-	$(".alignment .lvl").bind("click touchstart", function() {
-	    level = $(this).val();
-		if (level==1)
-		$('#screenshot').attr('src','lvl1.png');
-		else if (level==2)
-		$('#screenshot').attr('src','lvl2.png');
-		else if (level==3)
-		$('#screenshot').attr('src','lvl3.png');
-		else if (level==4)
-		$('#screenshot').attr('src','lvl4.png');
-		else if (level==5)
-		$('#screenshot').attr('src','lvl5.png');
-		else if (level==6)
-		$('#screenshot').attr('src','lvl6.png');
+	$(".alignment .lvl").bind("click", function() {
+		$('#confirmLevel').popover('destroy');
+	    level = parseInt($(this).val());
+		
+		if (level!=undefined)
+			$('#levelPreview').attr('src','lvl'+level+'.png');
 		else
-		$('#screenshot').attr('src','aaa.png');
+			$('#levelPreview').attr('src','aaa.png');
 	});
-	
 	//
-	// trigger the popovers of the single navigation buttons
-	//	
-	$("#nav_btn_1").bind("click touchstart", function(e) {
-		$('#nav_btn_2').popover('hide');
-		$('#nav_btn_3').popover('hide');
-		$('#nav_btn_4').popover('hide');
-		$('#nav_btn_1').popover();
-		isVisible = true;
-		clickAway = false;
-		e.preventDefault();
-	});
-	$("#nav_btn_2").bind("click touchstart", function(e) {
-		$('#nav_btn_1').popover('hide');
-		$('#nav_btn_3').popover('hide');
-		$('#nav_btn_4').popover('hide');
-		$('#nav_btn_2').popover();
-		isVisible = true;
-		clickAway = false;
-		e.preventDefault();
-	});
-	$("#nav_btn_3").bind("click touchstart", function(e) {
-		$('#nav_btn_1').popover('hide');
-		$('#nav_btn_2').popover('hide');
-		$('#nav_btn_4').popover('hide');
-		$('#nav_btn_3').popover();
-		isVisible = true;
-		clickAway = false;
-		e.preventDefault();
-	});
-	$("#nav_btn_4").bind("click touchstart", function(e) {
-		$('#nav_btn_1').popover('hide');
-		$('#nav_btn_2').popover('hide');
-		$('#nav_btn_3').popover('hide');
-		$('#nav_btn_4').popover();
-		isVisible = true;
-		clickAway = false;
-		e.preventDefault();
+	// show popover (button id="confirmLevel") if there's no level selected
+	//
+	$('#confirmLevel').bind("click", function(e) {
+		if (level==undefined) {
+			$('#confirmLevel').popover();
+			isVisible = true;
+			clickAway = false;
+			e.preventDefault();
+		} else 
+			$('#confirmLevel').popover('destroy');
 	});
 	
 	//
@@ -303,12 +290,9 @@ $(document).ready(function() {
 	// instead of using .click(function() {}); we're using .bind("click touchstart", function() {});
 	// with that we avoid the problem, that on an iPad/iPhone  $(document).click... doesn't work.
 	//
-	$(document).bind("click touchstart", function() {
+	$(document).bind("click", function() {
 		if(isVisible && clickAway) {
-			$('#nav_btn_1').popover('hide');
-			$('#nav_btn_2').popover('hide');
-			$('#nav_btn_3').popover('hide');
-			$('#nav_btn_4').popover('hide');
+			$('#confirmLevel').popover('destroy');
 			isVisible = false;
 			clickAway = false;
 		} else {

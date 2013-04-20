@@ -1,17 +1,29 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
+	
+<meta charset="UTF-8" content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name = "viewport" />
+
+<!-- ================= Sources ================= -->
+
 <script src="storage.js"></script>
-<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
-<meta charset="UTF-8">
+<script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link rel="shortcut icon" href="favicon/favicon.ico" >
+<link rel="icon" type="image/gif" href="favicon/animated_favicon1.gif" >
+
 <title>Karel the Robot</title>
 <style type="text/css" media="screen">
 
-#upperScreen {
+body {
+	background-image:url(pattern.png);
+}
+
+#upperScreen img {
 	width:100%;
-	text-align:left;
-	border-width: 1px;
-	border-radius:7px;
 }
 
 #leftScreen {
@@ -29,8 +41,9 @@
 	margin-left: 20%;
 	height: 85%;
 	width:80%;
-	background-color: #FFe1FF;
-	
+	background-color: ;
+
+
 }
 
 textarea {
@@ -39,44 +52,168 @@ textarea {
 	border-radius:4px;
 	
 }
-.description {
-	font-family: Century Gothic;
-	font-size: 0.8em;
-	text-align:center;
-}
 
 #START {
 	position:relative;
 	left:40%;
 }
 
-img#logo {
-	width:100%;
+.conditions {
+	width: 140px;
 }
+
+
+.btn.conditions.topList {
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:0px;
+}
+.btn.conditions.bottomList {
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border-top-right-radius:0px;
+}
+.structure {
+	height:1px;
+	background-color:black;
+	text-align: center;
+}
+.structure span {
+	background-color: white;
+	position: relative;
+	top: -0.5em;
+}
+
 </style>
+
+</head>
+
+<!-- =========== BODY ============ -->
+
+<body>	
+<div id="fullScreen" class= "fullScreen">
+	<div id="upperScreen">
+		<img id="logo" src="LogoO_L.png">
+	</div>
+	
+	<!-- =========== left screen ============ -->
+	
+	<div id= "leftScreen" class= "leftScreen">
+			
+		<form>
+		    <input type="text" placeholder="function name" value="" id="functionName" name="functionName">
+			<textarea name="textarea" id="textarea" rows="20" cols="20" placeholder="Insert you're own code here" ></textarea>
+			<button type="button" name="start" class="btn btn-success" value="" id="start" onclick="userInput()">Start</button>	
+			<button type="button" name="saveFunc" class="btn btn-primary" value="" id="saveFunc" onclick="saveFunction()">Save</button>	
+			<button type="button" name="deleteFunc" class="btn btn-danger" value="" id="deleteFunc" onclick="deleteFunction()">Delete</button>	
+		</form>
+		
+	</div>
+	
+	<!-- =========== right screen ============ -->
+	
+	<div id= "rightScreen" class= "rightScreen">
+		
+		<!-- =========== select buttons ============ -->
+			
+		<button type="button" class="btn btn-default" value="" id="queries" rel="popover" data-html="true" data-placement="bottom"
+			data-content='
+			<div class="structure">
+				<span>single</span>
+			</div><br>
+			<button type="button" class="btn btn-default conditions" value="if(" id="if">if</button><br><br>
+			<div class="structure">
+				<span>loops</span>
+			</div><br>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default conditions topList" value="for(var i=1; i<3; i++)" id="for">for</button><br>
+				<button type="button" class="btn btn-default conditions bottomList" value="while(" id="while">while</button><br>
+			</div>'>queries
+		</button>
+		
+		<button type="button" class="btn btn-default" value="" id="basics" rel="popover" data-html="true" data-placement="bottom"
+			data-content=''>basics
+		</button>
+		
+		<button type="button" class="btn btn-default" value="" id="conditions" rel="popover" data-html="true" data-placement="bottom"
+			data-content='
+				<div class="structure">
+					<span>walls</span>
+				</div>
+				<div class="btn-group"><br>				
+					<button type="button" class="btn btn-default conditions topList" value="frontIsClear())" id="frontIsClear">frontIsClear</button><br>
+					<button type="button" class="btn btn-default conditions" value="leftIsClear())" id="leftIsClear">leftIsClear</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="rightIsClear())" id="rightIsClear">rightIsClear</button><br><br>
+				</div>
+				<div class="structure">
+					<span>beepers</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn  btn-default conditions topList" value="beepersPresent())" id="beepersPresent">beepersPresent</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="beepersInBag())" id="beepersInBag">beepersInBag</button><br><br>
+				</div>
+				<div class="structure">
+					<span>directions</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" value="facingNorth())" id="facingNorth">facingNorth</button><br>
+					<button type="button" class="btn btn-default conditions" value="facingEast())" id="facingEast">facingEast</button><br>
+					<button type="button" class="btn btn-default conditions" value="facingSouth())" id="facingSouth">facingSouth</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="facingWest())" id="facingWest">facingWest</button>
+				</div>'>conditions
+		</button>
+
+        <button type="button" class="btn btn-default" value="" id="negConditions" rel="popover" data-html="true" data-placement="bottom"
+			data-content='
+				<div class="structure">
+					<span>walls</span>
+				</div>
+				<div class="btn-group"><br>	
+					<button type="button" class="btn btn-default conditions topList" value="frontIsBlocked())" id="frontIsBlocked">frontIsBlocked</button><br>
+					<button type="button" class="btn btn-default conditions" value="leftIsBlocked())" id="leftIsBlocked">leftIsBlocked</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="rightIsBlocked())" id="rightIsBlocked">rightIsBlocked</button><br><br>
+				</div>
+				<div class="structure">
+					<span>beepers</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" value="noBeepersPresent())" id="noBeepersPresent">noBeepersPresent</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="noBeepersInBag())" id="noBeepersInBag">noBeepersInBag</button><br><br>
+				</div>
+				<div class="structure">
+					<span>directions</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" value="notFacingNorth())" id="notFacingNorth">notFacingNorth</button><br>
+					<button type="button" class="btn btn-default conditions" value="notFacingEast())" id="notFacingEast">notFacingEast</button><br>
+					<button type="button" class="btn btn-default conditions" value="notFacingSouth())" id="notFacingSouth">notFacingSouth</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="notFacingWest())" id="notFacingWest">notFacingWest</button>
+				</div>'>negativ conditions
+		</button>
+		<button type="button" class="btn btn-default conditions bottomList" value="" id="newButton" onclick="newButton()">new Button</button>
+				
+		<canvas id="ausgabe"></canvas>
+	</div>
+</div>
+
+
 
 <script type="text/javascript">
 
-
-if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
- // some code..
-}
 //
 // variable, wich shows the amount of Beepers Karel got with him
 //
 var countBeeper = 1000;
 
-var time = 0;
-var wait = 50;
-
 /*
 * The variables "rows" and "columns" describe the amount of rows and columns in Karel's world.
 * Effectively there's one row and one column less in Karel's world,
 * because one of each is reserved for the outer walls
-*/  
-
-
-
+*/
+var time = 0;
+var wait = 50;
+var rows = 21;
+var columns = 21;
 
 // 
 // var liste receives all variables from text input of home screen
@@ -85,11 +222,60 @@ var liste = storage.getAll();
 for (i in liste) {
 	var level = parseInt(liste["level"]);
 	var speed = parseInt(liste["speed"]);
-	var rows = parseInt(liste["rows"]);
-	var columns = parseInt(liste["columns"]);
+	
 }
-var rows = 21;
-var columns = 21;
+
+//
+// variable that contains the content the "basics" popover
+// it has to be in this unorganized structure, otherwise JS will not accept the string
+//
+var functionToButton = '<div class="structure"><span>movement</span></div><br><div class="btn-group"><button type="button" class="btn btn-default conditions topList" value="move();" id="move">move</button><br><button type="button" class="btn btn-default conditions" value="turnLeft();"id="turnLeft">turnLeft</button><br><br></div><div class="structure"><span>action</span></div><br><div class="btn-group"><button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br><button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br></div><br><br><div class="structure"><span>own functions</span></div>';
+
+//
+// generates a new button for action selection.
+// automatically gives the button the name of the self made function.
+//
+function newButton(title, content) {
+	var i = 1;
+	functionToButton += '<br><button type="button" class="btn btn-primary conditions" id="testBtn" value="">title</button>';
+	
+	$(document).bind("click", function(e) {
+			$('#testBtn').text(title);
+			$('#testBtn').val(title + '()');
+	})
+}
+
+
+/*
+* This function allows the user to dynamically create new functions within the game.
+* it uses the name within the textfield given by the user to generate a function,
+* this new function gets the content of the textarea below.
+*/ 
+function saveFunction() {
+	
+	var title = $('#functionName').val();
+	var content = $('#textarea').val();
+	
+	window[title] = new Function(content);
+	
+	$('#functionName').val('');
+	$('#textarea').val('');
+	
+	newButton(title, content);
+}
+
+//
+// dynamically match popover to button "basics", so popover will be updated with own functions
+//
+$('#basics').popover({
+	placement: 'bottom',
+	html: true,
+	content: function() { 
+		return functionToButton;
+	}
+});
+
+var z=1;
 
 /*
 * Initialisation of the position arrays for karel, beeper and wall 
@@ -672,6 +858,13 @@ function checkWallAround(j,i) {
 	}
 }
 
+function checkBeepersPresent(j,i) {
+	if (beeper[j][i])
+		beepers.present = true;
+	else
+		beepers.present = false;
+}
+
 //
 // funtion which returns true if there's no wall on particular position
 //
@@ -704,7 +897,6 @@ var imgKarel = new Image();
 // arguments: "karelX, karelY" represent the X and Y coordinate-
 // arguments: "north, south, west, east" give informations to the draw function about Karel's viewing direction .
 //
-
 
 function drawKarel(karelX, karelY, direction) {	
 	var canvas = document.getElementById("ausgabe");
@@ -997,50 +1189,79 @@ function test3() {
 }
 
 function userInput() {
-	var input = document.getElementById("textarea").value;
-	eval(input);
+	var input = $('#textarea').val();
+    eval(input);
 }
 
 function windowLoad() {
 	drawKarel(startX, startY, startDirection);
 	checkWallAround(startX, startY);
+	checkBeepersPresent(startX, startY);
 }
 //
-// NOT "$(document).ready(...)" because at this time, no images are loaded
+// don't use "$(document).ready(...)" because at this time, no images are loaded
 //
 $(window).load(function(){
 	windowLoad();
 });
-</script>
 
-</head>
+//
+// initalise popovers before first call up
+//
+$('#queries').popover();
+$('#conditions').popover();
+$('#negConditions').popover();
+$('#basics').popover();
 
-<body onload="">
-	
-<div id="fullScreen" class= "fullScreen">
-	<div id="upperThird">
-		<img id="logo" src="LogoO_L.png">
-	</div>
-	<div id= "leftScreen" class= "leftScreen">
-		<select name="list" id="list" size="1">
-			<option value="level1" selected="selected">Level 1</option>
-			<option value="level2">Level 2:</option>
-			<option value="level3">Level 3</option>	
-		</select>
+
+//
+// popover for the selection buttons
+// only one popover can be opened at once
+//
+$(document).bind("click", function(e) {
+	if (e.target.id=="queries") {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#basics').popover('hide');
+		$('#queries').popover();
+	}
+	else if (e.target.id=="conditions") {
+		$('#negConditions').popover('hide');
+		$('#basics').popover('hide');
+		$('#queries').popover('hide');
+		$('#conditions').popover();
+	}
 		
-		<p><input type="button" name="Go" value="move()" id="Go" onclick="move()"></p>
-		<p><input type="button" name="Go" value="turnLeft()" id="Go" onclick="turnLeft()"></p>
-		<p><input type="button" name="Go" value="fillField()" id="Go" onclick="fillField()"></p>
-		<p><input type="button" name="Go" value="clearField()" id="Go" onclick="clearField()"></p>
-		<input type="text" name="functionTitle" value="Name der Funktion" id="functionTitle" onfocus="if(this.value=='Name der Funktion') this.value=''">
-		<p class="description"><textarea name="textarea" id="textarea" rows="20" cols="20" onfocus="if(this.value=='Hier kannst du deine eigenen Funktionen hinein schreiben, um Karel zu steuern. Drücke anschließend auf den Start Button') this.value='' ">Hier kannst du deine eigenen Funktionen hinein schreiben, um Karel zu steuern. Drücke anschließend auf den Start Button</textarea></p>
-		<input type="button" name="Go" value="START" id="START" onclick="userInput()">	
-	</div>
-	
-	<div id= "rightScreen" class= "rightScreen">
-		<canvas id="ausgabe"></canvas>
-	</div>
-</div>
+	else if (e.target.id=="negConditions") {
+		$('#conditions').popover('hide');
+		$('#basics').popover('hide');
+		$('#queries').popover('hide');
+		$('#negConditions').popover();
+	}
+		
+	else if (e.target.id=="basics") {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#queries').popover('hide');
+		$('#basics').popover();
+	}
+});
+//
+// insert the value of the selection buttons by clicking into textarea
+//
+$(document).bind("click", function(e) {
+	if ((e.target.value != undefined) && (e.target.id != "textarea") && (e.target.id != "functionName")) {
+		if ((e.target.id != "queries") && (e.target.id!= "basics") && (e.target.id!= "conditions") && (e.target.id!= "negConditions")) {
+			if((e.target.id != "if") && (e.target.id != "while")) {
+				console.log('ebene4');
+				$('#textarea').val($('#textarea').val() + e.target.value+'\n');
+		}	else
+				$('#textarea').val($('#textarea').val() + e.target.value);
+		}
+	}
+});
+
+</script>
 
 </body>
 </html>
