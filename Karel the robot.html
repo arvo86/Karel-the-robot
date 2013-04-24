@@ -11,6 +11,7 @@
 <script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="http://axemclion.github.com/IndexedDBShim/dist/IndexedDBShim.min.js"></script> 
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link rel="shortcut icon" href="favicon/favicon.ico" >
 <link rel="icon" type="image/gif" href="favicon/animated_favicon1.gif" >
@@ -83,6 +84,13 @@ textarea {
 	position: relative;
 	top: -0.5em;
 }
+/* slider to define speed of Karel */
+#showRange {
+	background-color:darkgrey;
+	color:white;
+	font-size:20px;
+	border-radius: 3px;	
+}
 
 </style>
 
@@ -103,11 +111,14 @@ textarea {
 		<form>
 		    <input type="text" placeholder="function name" value="" id="functionName" name="functionName">
 			<textarea name="textarea" id="textarea" rows="20" cols="20" placeholder="Insert you're own code here" ></textarea>
+			<form>
+				<span>Speed of Karel :&nbsp;</span><span id="showRange" >&nbsp;medium&nbsp;</span>
+				<input type="range" name="rng" value="50" id="rng" min="0" max="125" step="25" onchange="showValue(this.value)" /><br>
+			</form>
 			<button type="button" name="start" class="btn btn-success" value="" id="start" onclick="userInput()">Start</button>	
 			<button type="button" name="saveFunc" class="btn btn-primary" value="" id="saveFunc" onclick="saveFunction()">Save</button>	
-			<button type="button" name="deleteFunc" class="btn btn-danger" value="" id="deleteFunc" onclick="deleteFunction()">Delete</button>	
-		</form>
-		
+			<button type="button" name="clearFunc" class="btn btn-danger" value="" id="clearFunc" onclick="clearTextarea()">Delete</button>	
+		</form>	
 	</div>
 	
 	<!-- =========== right screen ============ -->
@@ -132,7 +143,21 @@ textarea {
 		</button>
 		
 		<button type="button" class="btn btn-default" value="" id="basics" rel="popover" data-html="true" data-placement="bottom"
-			data-content=''>basics
+			data-content='
+			<div class="structure">
+				<span>movement</span>
+			</div><br>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default conditions topList" value="move();" id="move">move</button><br>
+				<button type="button" class="btn btn-default conditions" value="turnLeft();"id="turnLeft">turnLeft</button><br><br>
+			</div>
+			<div class="structure">
+				<span>action</span>
+			</div><br>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br>
+				<button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br>
+			</div>'>basics
 		</button>
 		
 		<button type="button" class="btn btn-default" value="" id="conditions" rel="popover" data-html="true" data-placement="bottom"
@@ -190,7 +215,9 @@ textarea {
 					<button type="button" class="btn btn-default conditions bottomList" value="notFacingWest())" id="notFacingWest">notFacingWest</button>
 				</div>'>negativ conditions
 		</button>
-		<button type="button" class="btn btn-default conditions bottomList" value="" id="newButton" onclick="newButton()">new Button</button>
+		<button type="button" class="btn btn-default" value="" id="ownFunctions" rel="popover" 
+			data-content="">your functions 
+		</button>
 				
 		<canvas id="ausgabe"></canvas>
 	</div>
@@ -199,6 +226,31 @@ textarea {
 
 
 <script type="text/javascript">
+//
+// show value of slider to user
+//
+function showValue(newValue) {
+
+	if (newValue == 0) {
+		$('#showRange').html("&nbsp;slow&nbsp;");
+		wait = 250;
+	} else if (newValue == 25) {
+		$('#showRange').html("&nbsp;still slow&nbsp;");
+		wait = 200;
+	} else if (newValue == 50) {
+		$('#showRange').html("&nbsp;medium&nbsp;");
+		wait = 150;
+	} else if (newValue == 75) {
+		$('#showRange').html("&nbsp;fast&nbsp;");
+		wait = 100;
+	} else if (newValue == 100) {
+		$('#showRange').html("&nbsp;faster&nbsp;");
+		wait = 50;
+	} else if (newValue == 125) {
+		$('#showRange').html("&nbsp;warp 10&nbsp;");
+		wait = 25;
+	}	
+}
 
 //
 // variable, wich shows the amount of Beepers Karel got with him
@@ -211,7 +263,7 @@ var countBeeper = 1000;
 * because one of each is reserved for the outer walls
 */
 var time = 0;
-var wait = 50;
+var wait = 150;
 var rows = 21;
 var columns = 21;
 
@@ -229,19 +281,18 @@ for (i in liste) {
 // variable that contains the content the "basics" popover
 // it has to be in this unorganized structure, otherwise JS will not accept the string
 //
-var functionToButton = '<div class="structure"><span>movement</span></div><br><div class="btn-group"><button type="button" class="btn btn-default conditions topList" value="move();" id="move">move</button><br><button type="button" class="btn btn-default conditions" value="turnLeft();"id="turnLeft">turnLeft</button><br><br></div><div class="structure"><span>action</span></div><br><div class="btn-group"><button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br><button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br></div><br><br><div class="structure"><span>own functions</span></div>';
+var functionToButton = '<div class="structure"><span>delete</span><br></div><br><button type="button" class="btn btn-danger conditions"  data-toggle="button" value="" id="deleteOwnFunction" rel="popover" data-content="!!! Warning !!!" data-placement="top">delete a function</button><br><br><div class="structure"><span>own functions</span><br></div>';
 
 //
 // generates a new button for action selection.
 // automatically gives the button the name of the self made function.
 //
-function newButton(title, content) {
-	var i = 1;
-	functionToButton += '<br><button type="button" class="btn btn-primary conditions" id="testBtn" value="">title</button>';
+function newButton(title) {
+	
+	functionToButton += '<br><button type="button" class="btn btn-primary conditions ownFunctions" id="newBtn" value="">title</button>';
 	
 	$(document).bind("click", function(e) {
-			$('#testBtn').text(title);
-			$('#testBtn').val(title + '()');
+			$('#newBtn').text(title).attr('id', title).val(title + '()');
 	})
 }
 
@@ -261,18 +312,100 @@ function saveFunction() {
 	$('#functionName').val('');
 	$('#textarea').val('');
 	
-	newButton(title, content);
+	newButton(title);
+	
+	// Datenbank anlegen
+	var request = indexedDB.open('html5', 1);
+
+	// Änderungs/Erzeugungs-Event
+	request.onupgradeneeded = function(){
+		console.log('Datenbank angelegt');
+		var db = this.result;
+		if(!db.objectStoreNames.contains('features')){
+			store = db.createObjectStore('features', {
+	      		keyPath: 'key',
+	     		autoIncrement: true
+	    	});
+	  	}
+	};
+
+	// Öffnungs-Event (feuert nach upgradeneeded)
+	request.onsuccess = function(){
+		console.log('Datenbank geöffnet');
+		var db = this.result;
+
+		// Zu speichernder Datensatz
+		var item = { 
+			title: title,
+	 		content: content
+		};
+
+		// Speicher-Transaktion
+		var trans = db.transaction(['features'], 'readwrite');
+		var store = trans.objectStore('features')
+		var request = store.put(item); // `item` in dem Store ablegen
+
+		// Erfolgs-Event
+		request.onsuccess = function(counter){
+		console.log('Eintrag ' + counter.target.result + ' gespeichert');
+/*
+	    	// Auslese-Transaktion
+		    var trans = db.transaction(['features'], 'readonly');
+		    var store = trans.objectStore('features');
+
+		    // Cursor für alle Einträge von 0 bis zum Ende
+		    var range = IDBKeyRange.lowerBound(0);
+		    var cursorRequest = store.openCursor(range);
+
+		    // Wird für jeden gefundenen Datensatz aufgerufen... und einmal extra
+		    cursorRequest.onsuccess = function(e){
+			var result = e.target.result;
+			if(result){
+		    	console.log('Eintrag gefunden:', result.value);
+			
+				// creates new function and new button
+				window[result.value.title] = new Function(result.value.content);
+				newButton(result.value.title);
+		
+			//  console.log(result.value.title);
+			//	console.log(result.value.content);
+
+		        // Eintrag wieder löschen
+		        var trans = db.transaction(['features'], 'readwrite');
+		        var store = trans.objectStore('features');
+		        // var key = result.value.key;	
+				var request = store.delete(counter.target.result);
+		        
+				request.onsuccess = function(){
+		        	console.log('Eintrag ' + counter.target.result + ' gelöscht');
+		        }
+
+		        // Cursor zum nächsten Eintrag bewegen
+		        result.continue();
+
+				}
+			};
+			*/
+		};
+	}
 }
 
 //
-// dynamically match popover to button "basics", so popover will be updated with own functions
+// clears the entire textarea and text field of function name
+// 
+function clearTextarea() {
+	$('#functionName').val('');
+	$('#textarea').val('');
+}
 //
-$('#basics').popover({
+// dynamically match popover to button "your functions", so popover will be updated with own functions
+//
+$('#ownFunctions').popover({
 	placement: 'bottom',
 	html: true,
 	content: function() { 
-		return functionToButton;
-	}
+		return functionToButton; 
+	} 
 });
 
 var z=1;
@@ -892,11 +1025,11 @@ function rightIsBlocked() {
 }
 var imgKarel = new Image();
 
-//
-// draw function
-// arguments: "karelX, karelY" represent the X and Y coordinate-
-// arguments: "north, south, west, east" give informations to the draw function about Karel's viewing direction .
-//
+/*
+* draw function
+* arguments: "karelX, karelY" represent the X and Y coordinate-
+* arguments: "north, south, west, east" give informations to the draw function about Karel's viewing direction .
+*/
 
 function drawKarel(karelX, karelY, direction) {	
 	var canvas = document.getElementById("ausgabe");
@@ -912,13 +1045,13 @@ function drawKarel(karelX, karelY, direction) {
 		// clears the entire drawing area of canvas to draw a new scenery.
 		//
 		c.clearRect(0,0,canvas.width,canvas.height);
-		//
-		// check every single position of the playing field if there's anything to draw.
-		// at first, the draw function draws the playing field including the numbering and the coordinates.
-		// Then the walls will be drawn, and after that the beeper(s).
-		// At last, Karel itself will be drawn.
-		// "j" depicts the x-axis' direction and "i" the y-axis' direction
-		//
+		/*
+		* check every single position of the playing field if there's anything to draw.
+		* at first, the draw function draws the playing field including the numbering and the coordinates.
+		* Then the walls will be drawn, and after that the beeper(s).
+		* At last, Karel itself will be drawn.
+		* "j" depicts the x-axis' direction and "i" the y-axis' direction
+		*/
 		for (j=0; j<columns; j++) {
 			for (i=0; i<rows; i++) {
 				//
@@ -1197,6 +1330,7 @@ function windowLoad() {
 	drawKarel(startX, startY, startDirection);
 	checkWallAround(startX, startY);
 	checkBeepersPresent(startX, startY);
+	loadDatabase();
 }
 //
 // don't use "$(document).ready(...)" because at this time, no images are loaded
@@ -1212,54 +1346,244 @@ $('#queries').popover();
 $('#conditions').popover();
 $('#negConditions').popover();
 $('#basics').popover();
+$('#ownFunctions').popover();
+$('#deleteOwnFunction').popover();
 
 
 //
-// popover for the selection buttons
+// Popover for the selection buttons
 // only one popover can be opened at once
+// also hide all popovers by clicking the start button or saveFunc button
 //
 $(document).bind("click", function(e) {
 	if (e.target.id=="queries") {
 		$('#conditions').popover('hide');
 		$('#negConditions').popover('hide');
 		$('#basics').popover('hide');
+		$('#ownFunctions').popover('hide');
 		$('#queries').popover();
-	}
-	else if (e.target.id=="conditions") {
+		
+	} else if (e.target.id=="conditions") {
 		$('#negConditions').popover('hide');
 		$('#basics').popover('hide');
 		$('#queries').popover('hide');
+		$('#ownFunctions').popover('hide');
 		$('#conditions').popover();
-	}
 		
-	else if (e.target.id=="negConditions") {
+	} else if (e.target.id=="negConditions") {
 		$('#conditions').popover('hide');
 		$('#basics').popover('hide');
 		$('#queries').popover('hide');
+		$('#ownFunctions').popover('hide');
 		$('#negConditions').popover();
-	}
 		
-	else if (e.target.id=="basics") {
+	} else if (e.target.id=="basics") {
 		$('#conditions').popover('hide');
 		$('#negConditions').popover('hide');
 		$('#queries').popover('hide');
+		$('#ownFunctions').popover('hide');
 		$('#basics').popover();
+		
+	} else if (e.target.id=='ownFunctions') {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#queries').popover('hide');
+		$('#basics').popover('hide');
+		$('#ownFunctions').popover();
+	
+	} else if (e.target.id=='start') {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#queries').popover('hide');
+		$('#basics').popover('hide');
+		$('#ownFunctions').popover('hide');
+		
+	} else if (e.target.id=='saveFunc') {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#queries').popover('hide');
+		$('#basics').popover('hide');
+		$('#ownFunctions').popover('hide');
 	}
 });
+
 //
 // insert the value of the selection buttons by clicking into textarea
 //
 $(document).bind("click", function(e) {
+	// avoid to insert value of the following buttons and document objects
 	if ((e.target.value != undefined) && (e.target.id != "textarea") && (e.target.id != "functionName")) {
-		if ((e.target.id != "queries") && (e.target.id!= "basics") && (e.target.id!= "conditions") && (e.target.id!= "negConditions")) {
+		if ((e.target.id != "queries") && (e.target.id!= "basics") && (e.target.id!= "conditions") && (e.target.id!= "negConditions") && (e.target.id != "saveFunc") && (e.target.id != "start") && (e.target.id != "clearFunc") && (e.target.id != "rng") && (e.target.id != "ownFunctions") && (e.target.id != "deleteOwnFunction")) {
 			if((e.target.id != "if") && (e.target.id != "while")) {
-				console.log('ebene4');
 				$('#textarea').val($('#textarea').val() + e.target.value+'\n');
 		}	else
 				$('#textarea').val($('#textarea').val() + e.target.value);
 		}
 	}
 });
+
+//
+// function to enable to delete own functions as long as button "delete a function" is pressed
+//
+$(document).on("click", function(e) {
+	if (e.target.id == 'deleteOwnFunction') {
+		if ($('#deleteOwnFunction').hasClass('btn btn-danger conditions active')){
+			$('#deleteOwnFunction').popover();
+			console.log('ACTIVE');
+		}
+	} else 
+		$('#deleteOwnFunction').popover('hide');
+	
+	//
+	// check if button "delete a function" is pressed
+	// only then it's possible to delete a self made function
+	if ( ($('#deleteOwnFunction').hasClass('btn btn-danger conditions active')) && $(e.target).hasClass('btn btn-primary conditions ownFunctions') ) {
+		console.log(e.target.id)
+		
+		
+		
+		// Datenbank anlegen
+		var request = indexedDB.open('html5', 1);
+
+		// Änderungs/Erzeugungs-Event
+		request.onupgradeneeded = function(){
+			console.log('Datenbank angelegt');
+			var db = this.result;
+			if(!db.objectStoreNames.contains('features')){
+				store = db.createObjectStore('features', {
+		      		keyPath: 'key',
+		     		autoIncrement: true
+		    	});
+		  	}
+		};
+
+		// Öffnungs-Event (feuert nach upgradeneeded)
+		request.onsuccess = function(){
+			console.log('Datenbank geöffnet');
+			var db = this.result;
+/*
+			// Zu speichernder Datensatz
+			var item = { 
+				title: title,
+		 		content: content
+			};
+
+			// Speicher-Transaktion
+			var trans = db.transaction(['features'], 'readwrite');
+			var store = trans.objectStore('features')
+			var request = store.put(item); // `item` in dem Store ablegen
+
+			// Erfolgs-Event
+			request.onsuccess = function(counter){
+			console.log('Eintrag ' + counter.target.result + ' gespeichert');
+*/	
+		    	// Auslese-Transaktion
+			    var trans = db.transaction(['features'], 'readonly');
+			    var store = trans.objectStore('features');
+
+			    // Cursor für alle Einträge von 0 bis zum Ende
+			    var range = IDBKeyRange.lowerBound(0);
+			    var cursorRequest = store.openCursor(range);
+
+			    // Wird für jeden gefundenen Datensatz aufgerufen... und einmal extra
+			    cursorRequest.onsuccess = function(evt){
+				var result = evt.target.result;
+				if(result){
+			    	console.log('Eintrag gefunden:', result.value);
+
+					// creates new function and new button
+					//window[result.value.title] = new Function(result.value.content);
+					//newButton(result.value.title);
+					if (result.value.title == e.target.id) {
+						$(e.target).css({'display':'none'}); // hide button
+						
+						// Eintrag wieder löschen
+				        var trans = db.transaction(['features'], 'readwrite');
+				        var store = trans.objectStore('features');
+				       
+				 		// var key = result.value.key;	
+						var request = store.delete(result.key);
+
+						request.onsuccess = function(){
+				        	console.log('Eintrag' + result.key + 'gelöscht');
+				        } 
+					}
+					console.log('database key is: ' + result.key); // returns the key position in database
+					console.log('das ist: ' , result.value); // ref to entire object
+					console.log('target.id is : ' + e.target.id); // id of pressed button
+				  	console.log('title is : ' + result.value.title); // title of the pressed button's object 
+					console.log('content is : ' + result.value.content); // content of the pressed button's object
+/*
+			        // Eintrag wieder löschen
+			        var trans = db.transaction(['features'], 'readwrite');
+			        var store = trans.objectStore('features');
+			        // var key = result.value.key;	
+					var request = store.delete(counter.target.result);
+
+					request.onsuccess = function(){
+			        	console.log('Eintrag ' + counter.target.result + ' gelöscht');
+			        }
+*/
+			        // Cursor zum nächsten Eintrag bewegen
+			        result.continue();
+
+					}
+				};	
+			//};
+		}	
+	}
+});
+
+
+function loadDatabase() {
+	
+	var title = $('#functionName').val();
+	var content = $('#textarea').val();
+	
+	// Datenbank anlegen
+	var request = indexedDB.open('html5', 1);
+
+	// Änderungs/Erzeugungs-Event
+	request.onupgradeneeded = function(){
+		console.log('Datenbank angelegt');
+		var db = this.result;
+		if(!db.objectStoreNames.contains('features')){
+			store = db.createObjectStore('features', {
+	      		keyPath: 'key',
+	     		autoIncrement: true
+	    	});
+	  	}
+	};
+
+	// Öffnungs-Event (feuert nach upgradeneeded)
+	request.onsuccess = function() {
+		console.log('Datenbank geöffnet');
+		var db = this.result;
+
+	    // Auslese-Transaktion
+	    var trans = db.transaction(['features'], 'readonly');
+	    var store = trans.objectStore('features');
+
+	    // Cursor für alle Einträge von 0 bis zum Ende
+	    var range = IDBKeyRange.lowerBound(0);
+	    var cursorRequest = store.openCursor(range);
+
+	    // Wird für jeden gefundenen Datensatz aufgerufen... und einmal extra
+	    cursorRequest.onsuccess = function(e){
+			var result = e.target.result;
+			if(result){
+		    	console.log('Eintrag gefunden:', result.value);
+
+				// creates new function and new button
+				window[result.value.title] = new Function(result.value.content);
+				newButton(result.value.title);
+
+		        // Cursor zum nächsten Eintrag bewegen
+		        result.continue();
+			}
+		};
+	}
+}
 
 </script>
 
