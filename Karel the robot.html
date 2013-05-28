@@ -33,25 +33,25 @@ body {
 	width: 20%;
 	height: 85%;
 	border-right:10px ridge;
-	background-color: #FFFFFF;
+	background-color: ;
 }
 
 
 #rightScreen {
 	position: absolute;
 	margin-left: 20%;
-	height: 85%;
+	height: 80%;
 	width:80%;
 	background-color: ;
 
 
 }
 
-textarea {
+.textInput {
 	resize:none;
 	width: 95%;
 	border-radius:4px;
-	
+	font-size:0.9em;	
 }
 
 #START {
@@ -63,7 +63,13 @@ textarea {
 	width: 140px;
 }
 
-
+.popInPop {
+	width:32%;
+	border-radius:5px;
+	background-color: #5050ff;
+	color:white;
+	font-weight:bold;
+}
 .btn.conditions.topList {
 	border-top-left-radius:5px;
 	border-top-right-radius:5px;
@@ -91,7 +97,12 @@ textarea {
 	font-size:20px;
 	border-radius: 3px;	
 }
-
+#upperRow{
+	margin-left:4%;
+}
+#for_10 {
+	width:32.5%
+}
 </style>
 
 </head>
@@ -109,15 +120,17 @@ textarea {
 	<div id= "leftScreen" class= "leftScreen">
 			
 		<form>
-		    <input type="text" placeholder="function name" value="" id="functionName" name="functionName">
-			<textarea name="textarea" id="textarea" rows="20" cols="20" placeholder="Insert you're own code here" ></textarea>
+		    <input class='textInput' type="text" placeholder="function name" value="" id="functionName" name="functionName">
+			<textarea class='textInput' name="textarea" id="textarea" rows="20" cols="20" wrap="off" placeholder="Insert your own code here" ></textarea>
 			<form>
 				<span>Speed of Karel :&nbsp;</span><span id="showRange" >&nbsp;medium&nbsp;</span>
 				<input type="range" name="rng" value="50" id="rng" min="0" max="125" step="25" onchange="showValue(this.value)" /><br>
 			</form>
-			<button type="button" name="start" class="btn btn-success" value="" id="start" onclick="userInput()">Start</button>	
-			<button type="button" name="saveFunc" class="btn btn-primary" value="" id="saveFunc" onclick="saveFunction()">Save</button>	
-			<button type="button" name="clearFunc" class="btn btn-danger" value="" id="clearFunc" onclick="clearTextarea()">Delete</button>	
+			<div class="btn-group">
+				<button type="button" name="start" class="btn btn-success btn-large" value="" id="start" onclick="userInput()">Start</button>	
+				<button type="button" name="saveFunc" class="btn btn-warning btn-large" value="" id="saveFunc" onclick="saveFunction()">Save</button>	
+				<button type="button" name="clearFunc" class="btn btn-danger btn-large" value="" id="clearFunc" onclick="clearTextarea()">Clear</button>	
+			</div>
 		</form>	
 	</div>
 	
@@ -126,99 +139,99 @@ textarea {
 	<div id= "rightScreen" class= "rightScreen">
 		
 		<!-- =========== select buttons ============ -->
-			
-		<button type="button" class="btn btn-default" value="" id="queries" rel="popover" data-html="true" data-placement="bottom"
-			data-content='
-			<div class="structure">
-				<span>single</span>
-			</div><br>
-			<button type="button" class="btn btn-default conditions" value="if(" id="if">if</button><br><br>
-			<div class="structure">
-				<span>loops</span>
-			</div><br>
-			<div class="btn-group">
-				<button type="button" class="btn btn-default conditions topList" value="for(var i=1; i<3; i++)" id="for">for</button><br>
-				<button type="button" class="btn btn-default conditions bottomList" value="while(" id="while">while</button><br>
-			</div>'>queries
-		</button>
-		
-		<button type="button" class="btn btn-default" value="" id="basics" rel="popover" data-html="true" data-placement="bottom"
-			data-content='
-			<div class="structure">
-				<span>movement</span>
-			</div><br>
-			<div class="btn-group">
-				<button type="button" class="btn btn-default conditions topList" value="move();" id="move">move</button><br>
-				<button type="button" class="btn btn-default conditions" value="turnLeft();"id="turnLeft">turnLeft</button><br><br>
-			</div>
-			<div class="structure">
-				<span>action</span>
-			</div><br>
-			<div class="btn-group">
-				<button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br>
-				<button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br>
-			</div>'>basics
-		</button>
-		
-		<button type="button" class="btn btn-default" value="" id="conditions" rel="popover" data-html="true" data-placement="bottom"
-			data-content='
+		<div class="btn-group" id="upperRow">	
+			<button type="button" class="btn btn-default btn-large" value="" id="queries" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
 				<div class="structure">
-					<span>walls</span>
-				</div>
-				<div class="btn-group"><br>				
-					<button type="button" class="btn btn-default conditions topList" value="frontIsClear())" id="frontIsClear">frontIsClear</button><br>
-					<button type="button" class="btn btn-default conditions" value="leftIsClear())" id="leftIsClear">leftIsClear</button><br>
-					<button type="button" class="btn btn-default conditions bottomList" value="rightIsClear())" id="rightIsClear">rightIsClear</button><br><br>
-				</div>
+					<span>single</span>
+				</div><br>
+				<button type="button" class="btn btn-default conditions" value="if(" id="if">if</button><br><br>
 				<div class="structure">
-					<span>beepers</span>
+					<span>loops</span>
 				</div><br>
 				<div class="btn-group">
-					<button type="button" class="btn  btn-default conditions topList" value="beepersPresent())" id="beepersPresent">beepersPresent</button><br>
-					<button type="button" class="btn btn-default conditions bottomList" value="beepersInBag())" id="beepersInBag">beepersInBag</button><br><br>
-				</div>
+					<button type="button" class="btn btn-default conditions topList" id="for" rel="popover" data-html="true" data-placement="top" data-content="<div class=structure><span>How often?</span></div><br><button id=for_2 class=btn btn-default type=button>2</button><button id=for_3 class=btn btn-default type=button>3</button><button id=for_4 class=btn btn-default type=button>4</button><button id=for_5 class=btn btn-default type=button>5</button><button id=for_6 class=btn btn-default type=button>6</button><button id=for_7 class=btn btn-default type=button>7</button><button id=for_8 class=btn btn-default type=button>8</button><button id=for_9 class=btn btn-default type=button>9</button><button id=for_10 class=btn btn-default type=button>10</button>">for</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="while(" id="while">while</button><br>
+				</div>'>queries
+			</button>
+		
+			<button type="button" class="btn btn-default btn-large" value="" id="basics" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
 				<div class="structure">
-					<span>directions</span>
+					<span>movement</span>
 				</div><br>
 				<div class="btn-group">
-					<button type="button" class="btn btn-default conditions topList" value="facingNorth())" id="facingNorth">facingNorth</button><br>
-					<button type="button" class="btn btn-default conditions" value="facingEast())" id="facingEast">facingEast</button><br>
-					<button type="button" class="btn btn-default conditions" value="facingSouth())" id="facingSouth">facingSouth</button><br>
-					<button type="button" class="btn btn-default conditions bottomList" value="facingWest())" id="facingWest">facingWest</button>
-				</div>'>conditions
-		</button>
+					<button type="button" class="btn btn-default conditions topList" value="move();" id="move">move</button><br>
+					<button type="button" class="btn btn-default conditions" value="turnLeft();"id="turnLeft">turnLeft</button><br><br>
+				</div>
+				<div class="structure">
+					<span>action</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br>
+				</div>'>basics
+			</button>
+		
+			<button type="button" class="btn btn-default btn-large" value="" id="conditions" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+					<div class="structure">
+						<span>walls</span>
+					</div>
+					<div class="btn-group"><br>				
+						<button type="button" class="btn btn-default conditions topList" value="frontIsClear())" id="frontIsClear">frontIsClear</button><br>
+						<button type="button" class="btn btn-default conditions" value="leftIsClear())" id="leftIsClear">leftIsClear</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="rightIsClear())" id="rightIsClear">rightIsClear</button><br><br>
+					</div>
+					<div class="structure">
+						<span>beepers</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn  btn-default conditions topList" value="beepersPresent())" id="beepersPresent">beepersPresent</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="beepersInBag())" id="beepersInBag">beepersInBag</button><br><br>
+					</div>
+					<div class="structure">
+						<span>directions</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default conditions topList" value="facingNorth())" id="facingNorth">facingNorth</button><br>
+						<button type="button" class="btn btn-default conditions" value="facingEast())" id="facingEast">facingEast</button><br>
+						<button type="button" class="btn btn-default conditions" value="facingSouth())" id="facingSouth">facingSouth</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="facingWest())" id="facingWest">facingWest</button>
+					</div>'>conditions
+			</button>
 
-        <button type="button" class="btn btn-default" value="" id="negConditions" rel="popover" data-html="true" data-placement="bottom"
-			data-content='
-				<div class="structure">
-					<span>walls</span>
-				</div>
-				<div class="btn-group"><br>	
-					<button type="button" class="btn btn-default conditions topList" value="frontIsBlocked())" id="frontIsBlocked">frontIsBlocked</button><br>
-					<button type="button" class="btn btn-default conditions" value="leftIsBlocked())" id="leftIsBlocked">leftIsBlocked</button><br>
-					<button type="button" class="btn btn-default conditions bottomList" value="rightIsBlocked())" id="rightIsBlocked">rightIsBlocked</button><br><br>
-				</div>
-				<div class="structure">
-					<span>beepers</span>
-				</div><br>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default conditions topList" value="noBeepersPresent())" id="noBeepersPresent">noBeepersPresent</button><br>
-					<button type="button" class="btn btn-default conditions bottomList" value="noBeepersInBag())" id="noBeepersInBag">noBeepersInBag</button><br><br>
-				</div>
-				<div class="structure">
-					<span>directions</span>
-				</div><br>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default conditions topList" value="notFacingNorth())" id="notFacingNorth">notFacingNorth</button><br>
-					<button type="button" class="btn btn-default conditions" value="notFacingEast())" id="notFacingEast">notFacingEast</button><br>
-					<button type="button" class="btn btn-default conditions" value="notFacingSouth())" id="notFacingSouth">notFacingSouth</button><br>
-					<button type="button" class="btn btn-default conditions bottomList" value="notFacingWest())" id="notFacingWest">notFacingWest</button>
-				</div>'>negativ conditions
-		</button>
-		<button type="button" class="btn btn-default" value="" id="ownFunctions" rel="popover" 
-			data-content="">your functions 
-		</button>
-				
+	        <button type="button" class="btn btn-default btn-large" value="" id="negConditions" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+					<div class="structure">
+						<span>walls</span>
+					</div>
+					<div class="btn-group"><br>	
+						<button type="button" class="btn btn-default conditions topList" value="frontIsBlocked())" id="frontIsBlocked">frontIsBlocked</button><br>
+						<button type="button" class="btn btn-default conditions" value="leftIsBlocked())" id="leftIsBlocked">leftIsBlocked</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="rightIsBlocked())" id="rightIsBlocked">rightIsBlocked</button><br><br>
+					</div>
+					<div class="structure">
+						<span>beepers</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default conditions topList" value="noBeepersPresent())" id="noBeepersPresent">noBeepersPresent</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="noBeepersInBag())" id="noBeepersInBag">noBeepersInBag</button><br><br>
+					</div>
+					<div class="structure">
+						<span>directions</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default conditions topList" value="notFacingNorth())" id="notFacingNorth">notFacingNorth</button><br>
+						<button type="button" class="btn btn-default conditions" value="notFacingEast())" id="notFacingEast">notFacingEast</button><br>
+						<button type="button" class="btn btn-default conditions" value="notFacingSouth())" id="notFacingSouth">notFacingSouth</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="notFacingWest())" id="notFacingWest">notFacingWest</button>
+					</div>'>negativ conditions
+			</button>
+			<button type="button" class="btn btn-default btn-large" value="" id="ownFunctions" rel="popover" 
+				data-content="">your functions 
+			</button>
+		</div>	
 		<canvas id="ausgabe"></canvas>
 	</div>
 </div>
@@ -281,19 +294,20 @@ for (i in liste) {
 // variable that contains the content the "basics" popover
 // it has to be in this unorganized structure, otherwise JS will not accept the string
 //
-var functionToButton = '<div class="structure"><span>delete</span><br></div><br><button type="button" class="btn btn-danger conditions"  data-toggle="button" value="" id="deleteOwnFunction" rel="popover" data-content="!!! Warning !!!" data-placement="top">delete a function</button><br><br><div class="structure"><span>own functions</span><br></div>';
+var functionToButton = '<div class="structure"><span>delete/edit</span><br></div><br><div class="btn-group"><button type="button" class="btn btn-danger" data-toggle="button" value="" id="deleteOwnFunction" rel="popover" data-content="!!!&nbsp;Warning&nbsp;!!!" data-placement="top">&nbsp;delete&nbsp;</button><button type="button" class="btn btn-warning" data-toggle="button" value="" id="editOwnFunction" rel="popover" data-content="!!!&nbsp;Edit&nbsp;!!!" data-placement="top">&nbsp;&nbsp;edit&nbsp;&nbsp;</button></div><br><br><div class="structure"><span>own functions</span><br></div>';
 
+var forLoop = 'Hello';
 //
 // generates a new button for action selection.
 // automatically gives the button the name of the self made function.
 //
 function newButton(title) {
+	functionToButton += '<br><button type="button" class="btn btn-default conditions ownFunctions" id="'+title+'" value="'+title+'()">'+title+'</button>';
 	
-	functionToButton += '<br><button type="button" class="btn btn-primary conditions ownFunctions" id="newBtn" value="">title</button>';
-	
-	$(document).bind("click", function(e) {
-			$('#newBtn').text(title).attr('id', title).val(title + '()');
-	})
+	// **** NOT NECESSARY ANYMORE *****
+	// $(document).bind("click", function(e) {
+	// 			$('#newBtn').text(title).attr('id', title).val(title + '()');
+	// 	})
 }
 
 
@@ -391,6 +405,7 @@ function saveFunction() {
 }
 
 //
+// function belongs to "Clear" button and is called by clicking on on the same
 // clears the entire textarea and text field of function name
 // 
 function clearTextarea() {
@@ -758,7 +773,7 @@ function turnLeft() {
 					checkWallAround(j,i);	
 					time += wait;
 					setTimeout(drawKarel, time, j , i, "west");
-				} 	else {
+				} else {
 					//drawKarel(j,i);
 					checkWallAround(j,i);	
 					time += wait;
@@ -1030,7 +1045,6 @@ var imgKarel = new Image();
 * arguments: "karelX, karelY" represent the X and Y coordinate-
 * arguments: "north, south, west, east" give informations to the draw function about Karel's viewing direction .
 */
-
 function drawKarel(karelX, karelY, direction) {	
 	var canvas = document.getElementById("ausgabe");
 	canvas.width = $("#rightScreen").width()-10;
@@ -1137,12 +1151,8 @@ function drawKarel(karelX, karelY, direction) {
 	//
 	} else
 		alert("You're not able to play 'Karel the robot' with your current browser. Please switch browser.")
-	//
-	// important for the first call up, because there's no position on true yet.
-	// after that -> redundant
-	//
-	karel[karelX][karelY] = true;	
 
+	
 	if (direction == "north") 
 		imgKarel.src = "karelNorth.png";
 	else if (direction == "south")
@@ -1324,16 +1334,21 @@ function test3() {
 function userInput() {
 	var input = $('#textarea').val();
     eval(input);
+	time = 0;
 }
-
+//
+// windowLoad()
+// only called once at the very beginning of the game to initialise karel's position and its scenery
+//
 function windowLoad() {
 	drawKarel(startX, startY, startDirection);
+	karel[startX][startY] = true;
 	checkWallAround(startX, startY);
 	checkBeepersPresent(startX, startY);
 	loadDatabase();
 }
 //
-// don't use "$(document).ready(...)" because at this time, no images are loaded
+// we don't use "$(document).ready(...)" because at this time, no images are loaded
 //
 $(window).load(function(){
 	windowLoad();
@@ -1347,42 +1362,48 @@ $('#conditions').popover();
 $('#negConditions').popover();
 $('#basics').popover();
 $('#ownFunctions').popover();
-$('#deleteOwnFunction').popover();
+//$('#deleteOwnFunction').popover();
+//$('#editOwnFunction').popover();
 
 
-//
-// Popover for the selection buttons
-// only one popover can be opened at once
-// also hide all popovers by clicking the start button or saveFunc button
-//
+/*
+* Popover for the selection buttons
+* only one popover can be opened at once
+* also hide all popovers by clicking the start button or saveFunc button
+*/
 $(document).bind("click", function(e) {
 	if (e.target.id=="queries") {
 		$('#conditions').popover('hide');
 		$('#negConditions').popover('hide');
 		$('#basics').popover('hide');
-		$('#ownFunctions').popover('hide');
+		$('#for').popover(); // because it's a popover within a popover, it has to be initalised within the same
 		$('#queries').popover();
+		if($('#editOwnFunction').hasClass('btn btn-warning active') == false)
+			$('#ownFunctions').popover('hide');
 		
 	} else if (e.target.id=="conditions") {
 		$('#negConditions').popover('hide');
 		$('#basics').popover('hide');
 		$('#queries').popover('hide');
-		$('#ownFunctions').popover('hide');
 		$('#conditions').popover();
+		if($('#editOwnFunction').hasClass('btn btn-warning active') == false)
+			$('#ownFunctions').popover('hide');
 		
 	} else if (e.target.id=="negConditions") {
 		$('#conditions').popover('hide');
 		$('#basics').popover('hide');
 		$('#queries').popover('hide');
-		$('#ownFunctions').popover('hide');
 		$('#negConditions').popover();
+		if($('#editOwnFunction').hasClass('btn btn-warning active') == false)
+			$('#ownFunctions').popover('hide');
 		
 	} else if (e.target.id=="basics") {
 		$('#conditions').popover('hide');
 		$('#negConditions').popover('hide');
 		$('#queries').popover('hide');
-		$('#ownFunctions').popover('hide');
 		$('#basics').popover();
+		if($('#editOwnFunction').hasClass('btn btn-warning active') == false)
+			$('#ownFunctions').popover('hide');
 		
 	} else if (e.target.id=='ownFunctions') {
 		$('#conditions').popover('hide');
@@ -1390,6 +1411,8 @@ $(document).bind("click", function(e) {
 		$('#queries').popover('hide');
 		$('#basics').popover('hide');
 		$('#ownFunctions').popover();
+		$('#deleteOwnFunction').popover(); // because it's a popover within a popover, it has to be initalised within the same
+		$('#editOwnFunction').popover(); // because it's a popover within a popover, it has to be initalised within the same
 	
 	} else if (e.target.id=='start') {
 		$('#conditions').popover('hide');
@@ -1404,41 +1427,100 @@ $(document).bind("click", function(e) {
 		$('#queries').popover('hide');
 		$('#basics').popover('hide');
 		$('#ownFunctions').popover('hide');
+	
+	} else if (e.target.id=='for') {
+		$('#for').popover();
 	}
 });
-
+// 
+// variable defines the amount of iterations of the "for-loop"
+//
+var forCounter = 0;
 //
 // insert the value of the selection buttons by clicking into textarea
 //
 $(document).bind("click", function(e) {
 	// avoid to insert value of the following buttons and document objects
 	if ((e.target.value != undefined) && (e.target.id != "textarea") && (e.target.id != "functionName")) {
-		if ((e.target.id != "queries") && (e.target.id!= "basics") && (e.target.id!= "conditions") && (e.target.id!= "negConditions") && (e.target.id != "saveFunc") && (e.target.id != "start") && (e.target.id != "clearFunc") && (e.target.id != "rng") && (e.target.id != "ownFunctions") && (e.target.id != "deleteOwnFunction")) {
+		if ((e.target.id != "queries") && (e.target.id!= "basics") && (e.target.id!= "conditions") && (e.target.id!= "negConditions") && (e.target.id != "saveFunc") && (e.target.id != "start") && (e.target.id != "clearFunc") && (e.target.id != "rng") && (e.target.id != "ownFunctions") && (e.target.id != "deleteOwnFunction") && ($('#deleteOwnFunction').hasClass('btn btn-danger active') == false) && (e.target.id != "editOwnFunction") && (e.target.id != "for") && (e.target.id != "for_2") && (e.target.id != "for_3") && (e.target.id != "for_4") && (e.target.id != "for_5") && (e.target.id != "for_6") && (e.target.id != "for_7") && (e.target.id != "for_8") && (e.target.id != "for_9") && (e.target.id != "for_10")) {
 			if((e.target.id != "if") && (e.target.id != "while")) {
-				$('#textarea').val($('#textarea').val() + e.target.value+'\n');
-		}	else
+				
+				// check if it's own function so we have to add a semicolon
+				if (e.target.className == 'btn btn-default conditions ownFunctions') 
+					$('#textarea').val($('#textarea').val() +'   '+ e.target.value + ';' + '\n');
+					
+				// check if it's a basic or own function so we indent this part in the textarea
+				// so the function will be easier to read in the textarea for user
+				else if ((e.target.id == "move") || (e.target.id == "turnLeft") || (e.target.id == "pickBeeper") || (e.target.id == "putBeeper"))
+					$('#textarea').val($('#textarea').val() +'   '+ e.target.value+'\n');
+					
+				// if it's no basic or own function we don't need a indentation
+				else 
+					$('#textarea').val($('#textarea').val() + e.target.value+'\n');
+			} else
 				$('#textarea').val($('#textarea').val() + e.target.value);
 		}
 	}
+	
+	// check how many increments the user want for the "for-loop"
+	//
+	switch (e.target.id) {
+		case 'for_2':
+			forCounter = 2;
+			break;
+		case 'for_3':
+			forCounter = 3;
+			break;
+		case 'for_4':
+			forCounter = 4;
+			break;
+		case 'for_5':
+			forCounter = 5;
+			break;
+		case 'for_6':
+			forCounter = 6;
+			break;
+		case 'for_7':
+			forCounter = 7;
+			break;
+		case 'for_8':
+			forCounter = 8;
+			break;
+		case 'for_9':
+			forCounter = 9;
+			break;
+		case 'for_10':
+			forCounter = 10;
+			break;
+	}
+	if (forCounter!=0) {
+		$('#textarea').val($('#textarea').val() + 'for(var i=0; i<'+forCounter+'; i++)' + '\n');
+		$('#for').popover('hide');
+		forCounter = 0;
+	}
 });
 
-//
-// function to enable to delete own functions as long as button "delete a function" is pressed
-//
-$(document).on("click", function(e) {
-	if (e.target.id == 'deleteOwnFunction') {
-		if ($('#deleteOwnFunction').hasClass('btn btn-danger conditions active')){
-			$('#deleteOwnFunction').popover();
-			console.log('ACTIVE');
-		}
-	} else 
-		$('#deleteOwnFunction').popover('hide');
+/*
+* EDIT OWN FUNCTION
+* =================
+* function to enable editing own functions as long as button "edit" is pressed
+*/
+$(document).bind("click", function(e) {
+	if (e.target.id == 'editOwnFunction') {
+		if($('#editOwnFunction').hasClass('btn btn-warning active')) {
+			$('#deleteOwnFunction').attr('class', 'btn btn-danger').popover('hide'); // close delete button and its popover
+			$('#editOwnFunction').popover();
+			console.log('editable');
+		} else if ($('#editOwnFunction').hasClass('btn btn-warning'))
+				$('#editOwnFunction').popover('hide');
+	}
 	
-	//
-	// check if button "delete a function" is pressed
-	// only then it's possible to delete a self made function
-	if ( ($('#deleteOwnFunction').hasClass('btn btn-danger conditions active')) && $(e.target).hasClass('btn btn-primary conditions ownFunctions') ) {
-		console.log(e.target.id)
+	/*
+	* check if button "edit" is pressed
+	* only then it's possible to edit a self made function
+	*/
+	if ( ($('#editOwnFunction').hasClass('btn btn-warning active')) && $(e.target).hasClass('btn btn-default conditions ownFunctions') ) {
+		console.log(e.target.id);
 		
 		
 		
@@ -1489,13 +1571,19 @@ $(document).on("click", function(e) {
 			    cursorRequest.onsuccess = function(evt){
 				var result = evt.target.result;
 				if(result){
-			    	console.log('Eintrag gefunden:', result.value);
+			    	console.log('Funktion ' + result.value.title + '() gefunden');
 
 					// creates new function and new button
 					//window[result.value.title] = new Function(result.value.content);
 					//newButton(result.value.title);
+					
+					// check if pressed button coincide with a function in database
+					// if so, it can be edited by reference to its title
+					//
 					if (result.value.title == e.target.id) {
-						$(e.target).css({'display':'none'}); // hide button
+						// fill the function's content and title into text field, so it can be editable
+						$('#functionName').val(result.value.title);
+						$('#textarea').val(result.value.content);
 						
 						// Eintrag wieder löschen
 				        var trans = db.transaction(['features'], 'readwrite');
@@ -1503,16 +1591,25 @@ $(document).on("click", function(e) {
 				       
 				 		// var key = result.value.key;	
 						var request = store.delete(result.key);
+						
+						// we have to hide and delete the button seperatly, otherwise it won't disapear in "your functions"
+						// because after deleting something from the database, the DB only refreshes after the page reloads
+						//
+						var removeFromButtons = '<br><button type="button" class="btn btn-default conditions ownFunctions" id="'+result.value.title+'" value="'+result.value.title+'()">'+result.value.title+'</button>';
+						functionToButton = functionToButton.replace(removeFromButtons,'');
+						
+						request.onsuccess = function(result){
+				        	console.log('Funktion ' + e.target.id + '() gelöscht');
 
-						request.onsuccess = function(){
-				        	console.log('Eintrag' + result.key + 'gelöscht');
 				        } 
 					}
-					console.log('database key is: ' + result.key); // returns the key position in database
+
+/*					console.log('database key is: ' + result.key); // returns the key position in database
 					console.log('das ist: ' , result.value); // ref to entire object
 					console.log('target.id is : ' + e.target.id); // id of pressed button
 				  	console.log('title is : ' + result.value.title); // title of the pressed button's object 
 					console.log('content is : ' + result.value.content); // content of the pressed button's object
+*/
 /*
 			        // Eintrag wieder löschen
 			        var trans = db.transaction(['features'], 'readwrite');
@@ -1530,6 +1627,88 @@ $(document).on("click", function(e) {
 					}
 				};	
 			//};
+		} 
+	} 	
+});
+
+/*
+* DELETE OWN FUNCTION
+* ===================
+* function to enable deleting own functions as long as button "delete" is pressed
+*/
+$(document).bind("click", function(e) {
+	if (e.target.id == 'deleteOwnFunction') {
+		if ($('#deleteOwnFunction').hasClass('btn btn-danger active')) {
+			$('#editOwnFunction').attr('class', 'btn btn-warning').popover('hide'); // close edit button and its popover
+			$('#deleteOwnFunction').popover();
+			console.log('deletable');
+		} else if ($('#deleteOwnFunction').hasClass('btn btn-danger'))
+			$('#deleteOwnFunction').popover('hide');
+	} 
+	
+	//
+	// check if button "delete a function" is pressed
+	// only then it's possible to delete a self made function
+	if ( ($('#deleteOwnFunction').hasClass('btn btn-danger active')) && $(e.target).hasClass('btn btn-default conditions ownFunctions') ) {
+				
+		// Datenbank anlegen
+		var request = indexedDB.open('html5', 1);
+
+		// Änderungs/Erzeugungs-Event
+		request.onupgradeneeded = function(){
+			console.log('Datenbank angelegt');
+			var db = this.result;
+			if(!db.objectStoreNames.contains('features')){
+				store = db.createObjectStore('features', {
+		      		keyPath: 'key',
+		     		autoIncrement: true
+		    	});
+		  	}
+		};
+
+		// Öffnungs-Event (feuert nach upgradeneeded)
+		request.onsuccess = function(){
+			console.log('Datenbank geöffnet');
+			var db = this.result;
+
+		    	// Auslese-Transaktion
+		    var trans = db.transaction(['features'], 'readonly');
+		    var store = trans.objectStore('features');
+
+		    // Cursor für alle Einträge von 0 bis zum Ende
+		    var range = IDBKeyRange.lowerBound(0);
+		    var cursorRequest = store.openCursor(range);
+
+		    // Wird für jeden gefundenen Datensatz aufgerufen... und einmal extra
+			cursorRequest.onsuccess = function(evt){
+				var result = evt.target.result;
+				if(result){
+			    	console.log('Funktion ' + result.value.title + '() gefunden');
+			
+					// check if pressed button coincide with a function in database
+					// if so, it can be deleted by reference to its title
+					//
+					if (result.value.title == e.target.id) {
+						// Eintrag wieder löschen
+				        var trans = db.transaction(['features'], 'readwrite');
+				        var store = trans.objectStore('features');
+						var request = store.delete(result.key);
+						
+						// we have to hide and delete the button seperatly, otherwise it won't disapear in "your functions"
+						// because after deleting something from the database, the DB only refreshes after the page reloads
+						//
+						$(e.target).css({'display':'none'}); 
+						var removeFromButtons = '<br><button type="button" class="btn btn-default conditions ownFunctions" id="'+result.value.title+'" value="'+result.value.title+'()">'+result.value.title+'</button>';
+						functionToButton = functionToButton.replace(removeFromButtons,'');
+						
+						request.onsuccess = function() {
+				        	console.log('Funktion ' + e.target.id + '() gelöscht');
+				        } 
+					}
+			        // Cursor zum nächsten Eintrag bewegen
+			        result.continue();
+				}
+			};	
 		}	
 	}
 });
