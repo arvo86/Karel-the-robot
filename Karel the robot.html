@@ -12,6 +12,7 @@
 <script src="http://code.jquery.com/jquery.js"></script>
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="http://axemclion.github.com/IndexedDBShim/dist/IndexedDBShim.min.js"></script> 
+<script src='jquery.autosize.js'></script>
 <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
 <link rel="shortcut icon" href="favicon/favicon.ico" >
 <link rel="icon" type="image/gif" href="favicon/animated_favicon1.gif" >
@@ -103,6 +104,14 @@ body {
 #for_10 {
 	width:32.5%
 }
+
+.animated {
+	-webkit-transition: height 0.2s;
+	-moz-transition: height 0.2s;
+	transition: height 0.2s;
+	resize:none;
+	width: 95%;
+}
 </style>
 
 </head>
@@ -121,7 +130,7 @@ body {
 			
 		<form>
 		    <input class='textInput' type="text" placeholder="function name" value="" id="functionName" name="functionName">
-			<textarea class='textInput' name="textarea" id="textarea" rows="20" cols="20" wrap="off" placeholder="Insert your own code here" ></textarea>
+			<textarea class='animated' name="textarea" id="textarea" rows="" cols="" wrap="off" placeholder="Insert your own code here" ></textarea>
 			<form>
 				<span>Speed of Karel :&nbsp;</span><span id="showRange" >&nbsp;medium&nbsp;</span>
 				<input type="range" name="rng" value="50" id="rng" min="0" max="125" step="25" onchange="showValue(this.value)" /><br>
@@ -239,6 +248,50 @@ body {
 
 
 <script type="text/javascript">
+
+
+/*
+* +++ ANDROID FIX +++
+* fix Android indexedDB problem
+* Keine (aktuelle) Implementierung von Indexed DB vorhanden?
+*/
+var requireShim = typeof window.IDBVersionChangeEvent == 'undefined';
+
+// WebSQL vorhanden?
+var supportsWebSql = typeof window.openDatabase != 'undefined';
+
+if(requireShim && supportsWebSql){
+  window.shimIndexedDB.__useShim(); // Verwendung des Polyfills erwzingen
+}
+
+//
+// basic conditions
+// 
+//
+// karel's direction of view
+//
+facing = {
+	"north" : false,
+	"south" : false,
+	"west"  : false,
+	"east"  : true
+}
+//
+//beeper conditions
+//
+beepers = {
+	"inBag"   : false, 
+	"present" : false
+}
+//
+// wall conditions
+//
+clear = {
+	"front" : false,
+	"left"  : false,
+	"right" : false
+}
+
 //
 // show value of slider to user
 //
@@ -324,7 +377,7 @@ function saveFunction() {
 	window[title] = new Function(content);
 	
 	$('#functionName').val('');
-	$('#textarea').val('');
+	$('#textarea').val('').trigger('autosize.resize');
 	
 	newButton(title);
 	
@@ -410,7 +463,7 @@ function saveFunction() {
 // 
 function clearTextarea() {
 	$('#functionName').val('');
-	$('#textarea').val('');
+	$('#textarea').val('').trigger('autosize.resize');
 }
 //
 // dynamically match popover to button "your functions", so popover will be updated with own functions
@@ -507,6 +560,43 @@ for(j=0; j<columns; j++) {
 // switch command to choose between the different levels and thus to set walls, beeper(s) and Karel
 //
 switch (level) {
+	// random level
+	case 0:
+		rows = Math.round(Math.random() * (15-2)) + 2;
+		columns = Math.round(Math.random() * (15-2)) + 2;
+		
+		// Karel
+		startX=Math.round(Math.random() * (columns-2)) + 1;
+		startY=Math.round(Math.random() * (rows-2)) + 1;
+	
+		var startDir = Math.round(Math.random() * (4-1)) + 1;
+		if (startDir==1) {
+			startDirection="east";
+			facing.east = true;
+			facing.west = false;
+			facing.south = false;
+			facing.north = false;
+		} else if (startDir==2) {
+			startDirection="west";
+			facing.east = false;
+			facing.west = true;
+			facing.south = false;
+			facing.north = false;
+		} else if (startDir==3) {
+			startDirection="south";
+			facing.east = false;
+			facing.west = false;
+			facing.south = true;
+			facing.north = false;	
+		} else {
+			startDirection="north";
+			facing.east = false;
+			facing.west = false;
+			facing.south = false;
+			facing.north = true;
+		}
+		break;
+		
 	// Level 1: Get the beeper
 	case 1:	
 		// rows and columns
@@ -528,8 +618,9 @@ switch (level) {
 		// Karel
 		startX=4;
 		startY=7;
-		startDirection="east";		
+		startDirection="east";	
 		break;
+		
 	// Level 2: Use a Condition to get the beeper
 	case 2: 
 		// rows and columns
@@ -544,6 +635,7 @@ switch (level) {
 		startY=1;
 		startDirection="east";
 		break;
+		
 	// Level 3: Let there be beepers
 	case 3:
 		// rows and columns
@@ -559,6 +651,7 @@ switch (level) {
 		startY=1;
 		startDirection="east";
 		break;
+		
 	// Level 4: Build columns out of beepers
 	case 4:
 		// rows and columns
@@ -594,6 +687,7 @@ switch (level) {
 		startY=1;
 		startDirection="east";
 		break;
+		
 	// Level 5: Make a chessfield 
 	case 5:
 		// rows and columns
@@ -604,6 +698,7 @@ switch (level) {
 		startY=1;
 		startDirection="east";
 		break;
+		
 	// Level 6: Find the middle
 	case 6:
 		// rows and columns
@@ -615,7 +710,9 @@ switch (level) {
 		startDirection="east";
 		break;
 }
-
+//
+// set horizontal outer walls true
+//
 for(j=0; j<columns; j++) {
 	for(i=0.5; i<rows; i++) {
  		//
@@ -669,7 +766,7 @@ function move() {
 	for(j=0; j<columns; j++) {
 		for(i=0; i<rows; i++) {
 			if (karel[j][i] && facing.east && wallV[j+0.5][i]==false) {
-				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
+				// previous position became false, so Karel will not be showed on this spot anymore
 				karel[j][i] = false;
 				j+=1;
 				if (beeper[j][i]) {
@@ -680,10 +777,10 @@ function move() {
 				karel[j][i] = true;	
 				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, "east");
-				//drawKarel(j,i);					
+				setTimeout(draw, time, j , i, "east");
+				//draw(j,i);					
 			} else if (karel[j][i] && facing.west && wallV[j-0.5][i]==false) {
-				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
+				// previous position became false, so Karel will not be showed on this spot anymore
 				karel[j][i] = false;
 				j-=1;
 				if (beeper[j][i]) {
@@ -694,11 +791,11 @@ function move() {
 				karel[j][i] = true;	
 				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, "west");
-				//drawKarel(j,i);
+				setTimeout(draw, time, j , i, "west");
+				//draw(j,i);
 				
 			} else if (karel[j][i] && facing.north && wallH[j][i+0.5]==false) {
-				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
+				// previous position became false, so Karel will not be showed on this spot anymore
 				karel[j][i] = false;
 				i+=1;
 				if (beeper[j][i]) {
@@ -709,11 +806,11 @@ function move() {
 				karel[j][i] = true;	
 				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, "north");
-				//drawKarel(j,i);					
+				setTimeout(draw, time, j , i, "north");
+				//draw(j,i);					
 				
 			} else if (karel[j][i] && facing.south && wallH[j][i-0.5]==false) {
-				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
+				// previous position became false, so Karel will not be showed on this spot anymore
 				karel[j][i] = false;
 				i-=1;
 				if (beeper[j][i]) {
@@ -724,8 +821,8 @@ function move() {
 				karel[j][i] = true;	
 				checkWallAround(j,i);	
 				time += wait;
-				setTimeout(drawKarel, time, j , i, "south");
-				//drawKarel(j,i);
+				setTimeout(draw, time, j , i, "south");
+				//draw(j,i);
 			}		
 		}	
 	}				
@@ -759,25 +856,25 @@ function turnLeft() {
 		for(i=0; i<rows; i++) {
 			if (karel[j][i]) {
 				if (facing.north) {
-					//drawKarel(j,i);
+					//draw(j,i);
 					checkWallAround(j,i);	
 					time += wait;
-					setTimeout(drawKarel, time, j , i, "north");
+					setTimeout(draw, time, j , i, "north");
 				} else if (facing.south) {
-					//drawKarel(j,i);
+					//draw(j,i);
 					checkWallAround(j,i);	
 					time += wait;
-					setTimeout(drawKarel, time, j , i, "south");
+					setTimeout(draw, time, j , i, "south");
 				} else if (facing.west) {
-					//drawKarel(j,i);
+					//draw(j,i);
 					checkWallAround(j,i);	
 					time += wait;
-					setTimeout(drawKarel, time, j , i, "west");
+					setTimeout(draw, time, j , i, "west");
 				} else {
-					//drawKarel(j,i);
+					//draw(j,i);
 					checkWallAround(j,i);	
 					time += wait;
-					setTimeout(drawKarel, time, j , i, "east");
+					setTimeout(draw, time, j , i, "east");
 				}
 			}
 		}
@@ -798,16 +895,16 @@ function pickBeeper() {
 				
 				if (facing.north) {
 					time += wait;
-					setTimeout(drawKarel, time, j, i, "north");
+					setTimeout(draw, time, j, i, "north");
 				} else if (facing.south) {
 					time += wait;
-					setTimeout(drawKarel, time, j, i, "south");
+					setTimeout(draw, time, j, i, "south");
 				} else if (facing.west) {
 					time += wait;
-					setTimeout(drawKarel, time, j, i, "west");
+					setTimeout(draw, time, j, i, "west");
 				} else {
 					time += wait;
-					setTimeout(drawKarel, time, j, i, "east");
+					setTimeout(draw, time, j, i, "east");
 				}
 			}
 		}
@@ -830,16 +927,16 @@ function putBeeper() {
 				
 				if (facing.north) {
 					time += wait;
-					setTimeout(drawKarel, time, j, i, "north");
+					setTimeout(draw, time, j, i, "north");
 				} else if (facing.south) {
 					time += wait;
-					setTimeout(drawKarel, time, j, i, "south");
+					setTimeout(draw, time, j, i, "south");
 				} else if (facing.west) {
 					time += wait;
-					setTimeout(drawKarel, time, j, i, "west");
+					setTimeout(draw, time, j, i, "west");
 				} else {
 					time += wait;
-					setTimeout(drawKarel, time, j, i, "east");	
+					setTimeout(draw, time, j, i, "east");	
 				}
 			}
 		}
@@ -854,33 +951,7 @@ function setBeeperFalse (beeperX, beeperY) {
 	beeperToDraw[beeperX][beeperY] = false;
 }
 
-//
-// basic conditions
-// 
-//
-// karel's direction of view
-//
-facing = {
-	"north" : false,
-	"south" : false,
-	"west"  : false,
-	"east"  : true
-}
-//
-//beeper conditions
-//
-beepers = {
-	"inBag"   : false, 
-	"present" : false
-}
-//
-// wall conditions
-//
-clear = {
-	"front" : false,
-	"left"  : false,
-	"right" : false
-}
+
 
 // functions, wich return karel's direction of view
 
@@ -1045,7 +1116,7 @@ var imgKarel = new Image();
 * arguments: "karelX, karelY" represent the X and Y coordinate-
 * arguments: "north, south, west, east" give informations to the draw function about Karel's viewing direction .
 */
-function drawKarel(karelX, karelY, direction) {	
+function draw(karelX, karelY, direction) {	
 	var canvas = document.getElementById("ausgabe");
 	canvas.width = $("#rightScreen").width()-10;
 	canvas.height = $("#rightScreen").height()-10;
@@ -1341,7 +1412,7 @@ function userInput() {
 // only called once at the very beginning of the game to initialise karel's position and its scenery
 //
 function windowLoad() {
-	drawKarel(startX, startY, startDirection);
+	draw(startX, startY, startDirection);
 	karel[startX][startY] = true;
 	checkWallAround(startX, startY);
 	checkBeepersPresent(startX, startY);
@@ -1365,6 +1436,12 @@ $('#ownFunctions').popover();
 //$('#deleteOwnFunction').popover();
 //$('#editOwnFunction').popover();
 
+// 
+// animates the textarea
+//
+$(function(){
+	$('.animated').autosize();
+});
 
 /*
 * Popover for the selection buttons
@@ -1447,18 +1524,18 @@ $(document).bind("click", function(e) {
 				
 				// check if it's own function so we have to add a semicolon
 				if (e.target.className == 'btn btn-default conditions ownFunctions') 
-					$('#textarea').val($('#textarea').val() +'   '+ e.target.value + ';' + '\n');
+					$('#textarea').val($('#textarea').val() +'   '+ e.target.value + ';' + '\n').trigger('autosize.resize');
 					
 				// check if it's a basic or own function so we indent this part in the textarea
 				// so the function will be easier to read in the textarea for user
 				else if ((e.target.id == "move") || (e.target.id == "turnLeft") || (e.target.id == "pickBeeper") || (e.target.id == "putBeeper"))
-					$('#textarea').val($('#textarea').val() +'   '+ e.target.value+'\n');
+					$('#textarea').val($('#textarea').val() +'   '+ e.target.value+'\n').trigger('autosize.resize');
 					
-				// if it's no basic or own function we don't need a indentation
+				// if it's no basic or own function we don't need an indentification
 				else 
-					$('#textarea').val($('#textarea').val() + e.target.value+'\n');
+					$('#textarea').val($('#textarea').val() + e.target.value+'\n').trigger('autosize.resize');
 			} else
-				$('#textarea').val($('#textarea').val() + e.target.value);
+				$('#textarea').val($('#textarea').val() + e.target.value).trigger('autosize.resize');
 		}
 	}
 	
@@ -1583,7 +1660,7 @@ $(document).bind("click", function(e) {
 					if (result.value.title == e.target.id) {
 						// fill the function's content and title into text field, so it can be editable
 						$('#functionName').val(result.value.title);
-						$('#textarea').val(result.value.content);
+						$('#textarea').val(result.value.content).trigger('autosize.resize');
 						
 						// Eintrag wieder löschen
 				        var trans = db.transaction(['features'], 'readwrite');
@@ -1763,6 +1840,20 @@ function loadDatabase() {
 		};
 	}
 }
+
+</script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-41646797-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 
 </script>
 

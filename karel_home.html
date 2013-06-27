@@ -139,12 +139,13 @@ h3 {
 		
 		<div id="collapseContentLeft" class="btn-group alignment" name="btn-group" data-toggle="buttons-radio">
 		  	<br>
-			<button type="button" class="btn btn-default btn-large lvl" value="1" id="lvlFirst">Level 1</button><br>
-		  	<button type="button" class="btn btn-default btn-large lvl" value="2">Level 2</button><br>
-		  	<button type="button" class="btn btn-default btn-large lvl" value="3">Level 3</button><br>
-			<button type="button" class="btn btn-default btn-large lvl" value="4">Level 4</button><br>
-		  	<button type="button" class="btn btn-default btn-large lvl" value="5">Level 5</button><br>
-		  	<button type="button" class="btn btn-default btn-large lvl" value="6" id="lvlLast">Level 6</button><br>
+			<button type="button" class="btn btn-default btn-large lvl" value="1" id="lvlFirst">&ensp;Level 1&ensp;</button><br>
+		  	<button type="button" class="btn btn-default btn-large lvl" value="2">&ensp;Level 2&ensp;</button><br>
+		  	<button type="button" class="btn btn-default btn-large lvl" value="3">&ensp;Level 3&ensp;</button><br>
+			<button type="button" class="btn btn-default btn-large lvl" value="4">&ensp;Level 4&ensp;</button><br>
+		  	<button type="button" class="btn btn-default btn-large lvl" value="5">&ensp;Level 5&ensp;</button><br>
+		  	<button type="button" class="btn btn-default btn-large lvl" value="6">&ensp;Level 6&ensp;</button><br>
+		  	<button type="button" class="btn btn-default btn-large lvl" value="0" id="lvlLast" >Random</button><br>
 		</div>
 		<br>
 		<div id= "collapseContentMiddle">
@@ -263,9 +264,9 @@ $(document).ready(function() {
 	// submit level to next page.
 	// change image of level preview
 	//
-	$(".alignment .lvl").bind("click", function() {
+	$(".alignment .lvl").bind("click", function(e) {
 		$('#confirmLevel').popover('destroy');
-	    level = parseInt($(this).val());
+		level = parseInt($(this).val());
 		
 		if (level!=undefined)
 			$('#levelPreview').attr('src','lvl'+level+'.png');
@@ -301,5 +302,20 @@ $(document).ready(function() {
 	});	
 });
 </script>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-41646797-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
 </body>
 </html>
