@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name = "viewport" />
+<title>Karel the robot - Startscreen</title>
+	
+
+<!-- ================= Sources ================= -->
+
+<script src="http://code.jquery.com/jquery-2.0.0.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script src="../JS/storage.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../JS/bootstrap.min.js"></script>
+<script src="../JS/levelSelect.js"></script>
+
+<link href="../CSS/bootstrap.min.css" rel="stylesheet" media="screen">
+<link rel="shortcut icon" href="../images/favicon.ico" >
+<link rel="icon" type="image/gif" href="../images/animated_favicon1.gif" >
+<link href="../CSS/main.css" rel="stylesheet" media="screen">
+
+
+</head>
+<body>
+
+<!-- =============== top third ================ -->	
+
+<div id="topThird">
+	<img id="logo" src="../images/LogoO_L.png">
+</div>
+
+<!-- =============== mid third ================ -->	
+	
+<div id="midThird" >
+	<div class="btn-group">
+	<button type="button" href="#whoIsKarel" class="btn btn-large"  data-toggle="modal">Who is Karel?</button>
+	
+	<!-- ==== Collapse button for level selection ==== -->
+	<button type="button" class="btn btn-large" data-toggle="collapse" data-target="#levelSelect">Level selection</button>
+	
+	<button type="button" href="#whoIsKarel" class="btn btn-large"  data-toggle="modal">Instruction</button>
+	<button type="button" href="#links" class="btn btn-large"  data-toggle="modal">Links</button>
+	<button type="button" href="#whoIsKarel" class="btn btn-large disabled"  data-toggle="modal" disabled="disabled">Level editor</button>	
+	</div>
+	
+	<!-- ================ Collapse content for level selection ================== -->
+	<div id="levelSelect" class="collapse">
+		
+		<div id="collapseContentLeft" class="btn-group alignment" name="btn-group" data-toggle="buttons-radio">
+		  	<br>
+			<button type="button" class="btn btn-large lvl" value="1" id="lvlFirst">&ensp;Level 1&ensp;</button><br>
+		  	<button type="button" class="btn btn-large lvl" value="2">&ensp;Level 2&ensp;</button><br>
+		  	<button type="button" class="btn btn-large lvl" value="3">&ensp;Level 3&ensp;</button><br>
+			<button type="button" class="btn btn-large lvl" value="4">&ensp;Level 4&ensp;</button><br>
+		  	<button type="button" class="btn btn-large lvl" value="5">&ensp;Level 5&ensp;</button><br>
+		  	<button type="button" class="btn btn-large lvl" value="6">&ensp;Level 6&ensp;</button><br>
+		  	<button type="button" class="btn btn-large lvl" value="0" id="lvlLast">Random</button><br>
+		</div>
+		<br>
+		<div id= "collapseContentMiddle">
+		<img id="levelPreview" src="../images/aaa.png">
+		</div>
+		<div id= "collapseContentRight">
+		<form name="formular" action="" onsubmit="sichern(); return false;">
+			<br>
+			<br>
+			<button type="submit" class="btn btn-success btn-large" rel="popover" data-placement="left" data-content="Please choose a level first!" value="" id="confirmLevel" name="confirmLevel">Level spielen!</button>
+		</form>
+		</div>
+	</div>
+</div>
+
+	
+<!-- =============== bottom third ================ -->	
+	
+<div id="buttomThird">
+	
+	<!-- ===============Carousel animation: quotes================== -->
+
+	<div id="myCarousel" class="carousel slide">
+		<ol class="carousel-indicators">
+	    	<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+	    	<li data-target="#myCarousel" data-slide-to="1"></li>
+	    	<li data-target="#myCarousel" data-slide-to="2"></li>
+		</ol>
+		<!-- Carousel items -->
+		<div class="carousel-inner">
+			<div class="active item"><img src= "../images/take1.png"></div>
+	    	<div class="item"><img src= "../images/take2.png"></div>
+	    	<div class="item"><img src= "../images/take3.png"></div>
+	  	</div>
+	  	<!-- Carousel nav -->
+		<a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+		<a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+	</div>
+	
+</div>
+
+
+
+<!-- =============== Content of modal: "whoIsKarel" ================ -->
+
+<div id="whoIsKarel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="whoIsKarelLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    	<h3 id="whoIsKarelLabel">Karel the robot</h3>
+	</div>
+	<div class="modal-body">
+		<img class="modalImg" src="../images/karelEast.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img class="modalImg" src="../images/karelNorth.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img class="modalImg" src="../images/karelWest.png">&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img class="modalImg" src="../images/karelSouth.png"><br><hr>
+		<p>Karel is a small simple robot. He lives in a very simple world too.</p><br>
+		<p>His world is bounded by walls and he's only able to walk on his waymarks top down and from left to right or reverse. These waymarks are characterized by little crosses.
+			<br><br>
+			Karel's favorite toys are his beepers. Using these beepers he likes to solve any kind of riddles.</p><br>
+			<p>Help Karel so he'll solve each level.</p><br>
+	</div>
+</div>
+
+<!-- =============== Content of modal: "links" ================ -->
+
+<div id="links" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="linksLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    	<h3 id="linksLabel">Links</h3>
+	</div>
+	<div class="modal-body">
+		<br>
+		<div class="structure">
+			<span>Read about the original Karel on Wikipedia.</span>
+		</div>
+		<h3><a href= "http://en.wikipedia.org/wiki/Karel_(programming_language)" target="_blank">Karel (Wikipedia)</a></h3><br>
+		<div class="structure">
+			<span>Non-profit foundation dedicated to growing programming education.</span>
+		</div>
+		<h3><a href= "http:www.code.org" target="_blank">Code.org</a></h3>
+		<br>
+		<div class="structure">
+			<span>Richard E. Pattis. The author of Karel the robot</span>
+		</div>
+		<h3><a href= "http://www.ics.uci.edu/~pattis/" target="_blank">Richard E. Pattis</a></h3><br>
+		
+		
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-41646797-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

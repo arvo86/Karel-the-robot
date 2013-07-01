@@ -1,255 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	
-<meta charset="UTF-8" content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name = "viewport" />
-
-<!-- ================= Sources ================= -->
-
-<script src="storage.js"></script>
-<script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
-<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
-<script src="http://code.jquery.com/jquery.js"></script>
-<script src="bootstrap/js/bootstrap.min.js"></script>
-<script src="http://axemclion.github.com/IndexedDBShim/dist/IndexedDBShim.min.js"></script> 
-<script src='jquery.autosize.js'></script>
-<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
-<link rel="shortcut icon" href="favicon/favicon.ico" >
-<link rel="icon" type="image/gif" href="favicon/animated_favicon1.gif" >
-
-<title>Karel the Robot</title>
-<style type="text/css" media="screen">
-
-body {
-	background-image:url(pattern.png);
-}
-
-#upperScreen img {
-	width:100%;
-}
-
-#leftScreen {
-	position:absolute;
-	float:left;
-	width: 20%;
-	height: 85%;
-	border-right:10px ridge;
-	background-color: ;
-}
-
-
-#rightScreen {
-	position: absolute;
-	margin-left: 20%;
-	height: 80%;
-	width:80%;
-	background-color: ;
-
-
-}
-
-.textInput {
-	resize:none;
-	width: 95%;
-	border-radius:4px;
-	font-size:0.9em;	
-}
-
-#START {
-	position:relative;
-	left:40%;
-}
-
-.conditions {
-	width: 140px;
-}
-
-.popInPop {
-	width:32%;
-	border-radius:5px;
-	background-color: #5050ff;
-	color:white;
-	font-weight:bold;
-}
-.btn.conditions.topList {
-	border-top-left-radius:5px;
-	border-top-right-radius:5px;
-	border-bottom-left-radius:0px;
-}
-.btn.conditions.bottomList {
-	border-bottom-left-radius:5px;
-	border-bottom-right-radius:5px;
-	border-top-right-radius:0px;
-}
-.structure {
-	height:1px;
-	background-color:black;
-	text-align: center;
-}
-.structure span {
-	background-color: white;
-	position: relative;
-	top: -0.5em;
-}
-/* slider to define speed of Karel */
-#showRange {
-	background-color:darkgrey;
-	color:white;
-	font-size:20px;
-	border-radius: 3px;	
-}
-#upperRow{
-	margin-left:4%;
-}
-#for_10 {
-	width:32.5%
-}
-
-.animated {
-	-webkit-transition: height 0.2s;
-	-moz-transition: height 0.2s;
-	transition: height 0.2s;
-	resize:none;
-	width: 95%;
-}
-</style>
-
-</head>
-
-<!-- =========== BODY ============ -->
-
-<body>	
-<div id="fullScreen" class= "fullScreen">
-	<div id="upperScreen">
-		<img id="logo" src="LogoO_L.png">
-	</div>
-	
-	<!-- =========== left screen ============ -->
-	
-	<div id= "leftScreen" class= "leftScreen">
-			
-		<form>
-		    <input class='textInput' type="text" placeholder="function name" value="" id="functionName" name="functionName">
-			<textarea class='animated' name="textarea" id="textarea" rows="" cols="" wrap="off" placeholder="Insert your own code here" ></textarea>
-			<form>
-				<span>Speed of Karel :&nbsp;</span><span id="showRange" >&nbsp;medium&nbsp;</span>
-				<input type="range" name="rng" value="50" id="rng" min="0" max="125" step="25" onchange="showValue(this.value)" /><br>
-			</form>
-			<div class="btn-group">
-				<button type="button" name="start" class="btn btn-success btn-large" value="" id="start" onclick="userInput()">Start</button>	
-				<button type="button" name="saveFunc" class="btn btn-warning btn-large" value="" id="saveFunc" onclick="saveFunction()">Save</button>	
-				<button type="button" name="clearFunc" class="btn btn-danger btn-large" value="" id="clearFunc" onclick="clearTextarea()">Clear</button>	
-			</div>
-		</form>	
-	</div>
-	
-	<!-- =========== right screen ============ -->
-	
-	<div id= "rightScreen" class= "rightScreen">
-		
-		<!-- =========== select buttons ============ -->
-		<div class="btn-group" id="upperRow">	
-			<button type="button" class="btn btn-default btn-large" value="" id="queries" rel="popover" data-html="true" data-placement="bottom"
-				data-content='
-				<div class="structure">
-					<span>single</span>
-				</div><br>
-				<button type="button" class="btn btn-default conditions" value="if(" id="if">if</button><br><br>
-				<div class="structure">
-					<span>loops</span>
-				</div><br>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default conditions topList" id="for" rel="popover" data-html="true" data-placement="top" data-content="<div class=structure><span>How often?</span></div><br><button id=for_2 class=btn btn-default type=button>2</button><button id=for_3 class=btn btn-default type=button>3</button><button id=for_4 class=btn btn-default type=button>4</button><button id=for_5 class=btn btn-default type=button>5</button><button id=for_6 class=btn btn-default type=button>6</button><button id=for_7 class=btn btn-default type=button>7</button><button id=for_8 class=btn btn-default type=button>8</button><button id=for_9 class=btn btn-default type=button>9</button><button id=for_10 class=btn btn-default type=button>10</button>">for</button><br>
-					<button type="button" class="btn btn-default conditions bottomList" value="while(" id="while">while</button><br>
-				</div>'>queries
-			</button>
-		
-			<button type="button" class="btn btn-default btn-large" value="" id="basics" rel="popover" data-html="true" data-placement="bottom"
-				data-content='
-				<div class="structure">
-					<span>movement</span>
-				</div><br>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default conditions topList" value="move();" id="move">move</button><br>
-					<button type="button" class="btn btn-default conditions" value="turnLeft();"id="turnLeft">turnLeft</button><br><br>
-				</div>
-				<div class="structure">
-					<span>action</span>
-				</div><br>
-				<div class="btn-group">
-					<button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br>
-					<button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br>
-				</div>'>basics
-			</button>
-		
-			<button type="button" class="btn btn-default btn-large" value="" id="conditions" rel="popover" data-html="true" data-placement="bottom"
-				data-content='
-					<div class="structure">
-						<span>walls</span>
-					</div>
-					<div class="btn-group"><br>				
-						<button type="button" class="btn btn-default conditions topList" value="frontIsClear())" id="frontIsClear">frontIsClear</button><br>
-						<button type="button" class="btn btn-default conditions" value="leftIsClear())" id="leftIsClear">leftIsClear</button><br>
-						<button type="button" class="btn btn-default conditions bottomList" value="rightIsClear())" id="rightIsClear">rightIsClear</button><br><br>
-					</div>
-					<div class="structure">
-						<span>beepers</span>
-					</div><br>
-					<div class="btn-group">
-						<button type="button" class="btn  btn-default conditions topList" value="beepersPresent())" id="beepersPresent">beepersPresent</button><br>
-						<button type="button" class="btn btn-default conditions bottomList" value="beepersInBag())" id="beepersInBag">beepersInBag</button><br><br>
-					</div>
-					<div class="structure">
-						<span>directions</span>
-					</div><br>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default conditions topList" value="facingNorth())" id="facingNorth">facingNorth</button><br>
-						<button type="button" class="btn btn-default conditions" value="facingEast())" id="facingEast">facingEast</button><br>
-						<button type="button" class="btn btn-default conditions" value="facingSouth())" id="facingSouth">facingSouth</button><br>
-						<button type="button" class="btn btn-default conditions bottomList" value="facingWest())" id="facingWest">facingWest</button>
-					</div>'>conditions
-			</button>
-
-	        <button type="button" class="btn btn-default btn-large" value="" id="negConditions" rel="popover" data-html="true" data-placement="bottom"
-				data-content='
-					<div class="structure">
-						<span>walls</span>
-					</div>
-					<div class="btn-group"><br>	
-						<button type="button" class="btn btn-default conditions topList" value="frontIsBlocked())" id="frontIsBlocked">frontIsBlocked</button><br>
-						<button type="button" class="btn btn-default conditions" value="leftIsBlocked())" id="leftIsBlocked">leftIsBlocked</button><br>
-						<button type="button" class="btn btn-default conditions bottomList" value="rightIsBlocked())" id="rightIsBlocked">rightIsBlocked</button><br><br>
-					</div>
-					<div class="structure">
-						<span>beepers</span>
-					</div><br>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default conditions topList" value="noBeepersPresent())" id="noBeepersPresent">noBeepersPresent</button><br>
-						<button type="button" class="btn btn-default conditions bottomList" value="noBeepersInBag())" id="noBeepersInBag">noBeepersInBag</button><br><br>
-					</div>
-					<div class="structure">
-						<span>directions</span>
-					</div><br>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default conditions topList" value="notFacingNorth())" id="notFacingNorth">notFacingNorth</button><br>
-						<button type="button" class="btn btn-default conditions" value="notFacingEast())" id="notFacingEast">notFacingEast</button><br>
-						<button type="button" class="btn btn-default conditions" value="notFacingSouth())" id="notFacingSouth">notFacingSouth</button><br>
-						<button type="button" class="btn btn-default conditions bottomList" value="notFacingWest())" id="notFacingWest">notFacingWest</button>
-					</div>'>negativ conditions
-			</button>
-			<button type="button" class="btn btn-default btn-large" value="" id="ownFunctions" rel="popover" 
-				data-content="">your functions 
-			</button>
-		</div>	
-		<canvas id="ausgabe"></canvas>
-	</div>
-</div>
-
-
-
-<script type="text/javascript">
-
-
 /*
 * +++ ANDROID FIX +++
 * fix Android indexedDB problem
@@ -347,7 +95,7 @@ for (i in liste) {
 // variable that contains the content the "basics" popover
 // it has to be in this unorganized structure, otherwise JS will not accept the string
 //
-var functionToButton = '<div class="structure"><span>delete/edit</span><br></div><br><div class="btn-group"><button type="button" class="btn btn-danger" data-toggle="button" value="" id="deleteOwnFunction" rel="popover" data-content="!!!&nbsp;Warning&nbsp;!!!" data-placement="top">&nbsp;delete&nbsp;</button><button type="button" class="btn btn-warning" data-toggle="button" value="" id="editOwnFunction" rel="popover" data-content="!!!&nbsp;Edit&nbsp;!!!" data-placement="top">&nbsp;&nbsp;edit&nbsp;&nbsp;</button></div><br><br><div class="structure"><span>own functions</span><br></div>';
+var functionToButton = '<div class="structure"><span>delete/edit</span><br></div><br><div class="btn-group"><button type="button" class="btn btn-danger" data-toggle="button" value="" id="deleteOwnFunction" rel="popover" data-content="!!!&nbsp;Warning&nbsp;!!!" data-placement="top"><i class="icon-trash icon-white"></i> delete</button><button type="button" class="btn btn-warning" data-toggle="button" value="" id="editOwnFunction" rel="popover" data-content="!!!&nbsp;Edit&nbsp;!!!" data-placement="top"><i class="icon-pencil icon-white"></i> edit</button></div><br><br><div class="structure"><span>own functions</span><br></div>';
 
 var forLoop = 'Hello';
 //
@@ -1225,13 +973,13 @@ function draw(karelX, karelY, direction) {
 
 	
 	if (direction == "north") 
-		imgKarel.src = "karelNorth.png";
+		imgKarel.src = "../images/karelNorth.png";
 	else if (direction == "south")
-		imgKarel.src = "karelSouth.png";
+		imgKarel.src = "../images/karelSouth.png";
 	else if (direction == "west") 
-		imgKarel.src = "karelWest.png";
+		imgKarel.src = "../images/karelWest.png";
 	else
-		imgKarel.src = "karelEast.png";
+		imgKarel.src = "../images/karelEast.png";
 		
 	c.drawImage(imgKarel,(karelX+0.15)/(partition)*canvas.width, (partition-(karelY+0.5))/(partition)*canvas.height, 1/partition*canvas.height, 1/partition*canvas.height);	
 }	
@@ -1263,7 +1011,7 @@ function preloadimages(arr){
     }
 }
 // sample run
-preloadimages(['karelEast.png','karelWest.png','karelSouth.png','karelNorth.png']);
+preloadimages(['../images/karelEast.png','../images/karelWest.png','../images/karelSouth.png','../images/karelNorth.png','../images/glyphicons-halflings-white.png']);
 
 
 
@@ -1840,22 +1588,3 @@ function loadDatabase() {
 		};
 	}
 }
-
-</script>
-
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-41646797-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-
-</body>
-</html>

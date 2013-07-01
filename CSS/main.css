@@ -1,0 +1,197 @@
+body {
+	background-image:url(../images/pattern.png);
+}
+
+#upperScreen img {
+	width:100%;
+}
+
+#leftScreen {
+	position:absolute;
+	float:left;
+	width: 22%;
+	height: 85%;
+	border-right:10px ridge;
+	background-color: ;
+}
+
+
+#rightScreen {
+	position: absolute;
+	margin-left: 22%;
+	height: 80%;
+	width:78%;
+	background-color: ;
+
+}
+
+.textInput {
+	resize:none;
+	width: 95%;
+	border-radius:4px;
+	font-size:0.9em;	
+}
+
+#START {
+	position:relative;
+	left:40%;
+}
+
+.conditions {
+	width: 140px;
+}
+
+.popInPop {
+	width:32%;
+	border-radius:5px;
+	background-color: #5050ff;
+	color:white;
+	font-weight:bold;
+}
+.btn.conditions.topList {
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:0px;
+}
+.btn.conditions.bottomList {
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border-top-right-radius:0px;
+}
+.structure {
+	height:1px;
+	background-color:black;
+	text-align: center;
+}
+.structure span {
+	background-color: white;
+	position: relative;
+	top: -0.5em;
+}
+/* slider to define speed of Karel */
+#showRange {
+	background-color:darkgrey;
+	color:white;
+	font-size:20px;
+	border-radius: 3px;	
+}
+#upperRow{
+	margin-left:4%;
+}
+#for_10 {
+	width:32.5%
+}
+
+.animated {
+	-webkit-transition: height 0.2s;
+	-moz-transition: height 0.2s;
+	transition: height 0.2s;
+	resize:none;
+	width: 95%;
+}
+slider {
+	width:10px;
+}
+
+#startSaveClear {
+	position:absolute;
+	left:50%;
+	margin-left: -112px;
+	
+}
+/*
+========Level Selection Screen==========
+*/
+
+h3 {
+	text-align: center;
+}
+
+/* screen is divided in three parts */
+
+#topThird {
+	width:100%;
+}
+#midThird{
+	text-align:center;
+	width:100%;
+	height: 50%;
+	margin-top:5%;
+}
+#buttomThird{
+	position:absolute;
+	width:95%;
+	background-color:;
+	margin-top:40%;
+	margin-left:2.5%;
+	z-index:-1;
+}
+#rng {
+	width: 100%;
+}
+
+/* Preview image of the level */
+
+#levelPreview {
+	width:50%;
+	-webkit-box-reflect: below 1px -webkit-linear-gradient(top, rgba(0,0,0,0) 90%,rgba(255,255,255,1) 110%);
+}
+#myCarousel {
+	width:90%;
+	margin-left:4%;
+	margin-top:1%;
+	padding-top:1%;
+	margin-bottom:1%;
+	padding-bottom:1%;
+	padding-left:1%;
+	padding-right:1%;
+	border-style: solid;
+	border-color: lightgrey;
+	border-width:1px;
+}
+.modalImg {
+	width:10%;
+}
+
+#collapseContentLeft {
+	text-align:right;
+	width:5%;
+	float:left;
+	margin-left:10%;
+	margin-right:-10%;
+}
+#collapseContentMiddle {
+	width:90%;
+	float:left;
+}
+#collapseContentRight {
+	width:5%;
+	float:left;
+	margin-right:10%;
+	margin-left:-10%;
+}
+
+/* first and last button of a group get round corners */ 
+
+#lvlFirst {
+	border-top-left-radius:7px;
+	border-top-right-radius:7px;
+}
+#lvlLast {
+	border-bottom-left-radius:7px;
+	border-bottom-right-radius:7px;
+}
+
+
+/* dividing line for modals content*/
+
+.structure {
+	height:1px;
+	background-color:black;
+	text-align: center;
+}
+.structure span {
+	background-color: white;
+	position: relative;
+	top: -0.5em;
+}

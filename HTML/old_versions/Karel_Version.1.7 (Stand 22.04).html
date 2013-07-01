@@ -1,0 +1,1463 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+<meta charset="UTF-8" content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name = "viewport" />
+
+<!-- ================= Sources ================= -->
+
+<script src="storage.js"></script>
+<script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="bootstrap/js/bootstrap.min.js"></script>
+<script src="http://axemclion.github.com/IndexedDBShim/dist/IndexedDBShim.min.js"></script> 
+<script src="slider/js/bootstrap-slider.js"></script>
+<link href="slider/css/slider.css" rel="stylesheet" media="screen">
+<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link rel="shortcut icon" href="favicon/favicon.ico" >
+<link rel="icon" type="image/gif" href="favicon/animated_favicon1.gif" >
+
+<title>Karel the Robot</title>
+<style type="text/css" media="screen">
+
+body {
+	background-image:url(pattern.png);
+}
+
+#upperScreen img {
+	width:100%;
+}
+
+#leftScreen {
+	position:absolute;
+	float:left;
+	width: 20%;
+	height: 85%;
+	border-right:10px ridge;
+	background-color: #FFFFFF;
+}
+
+
+#rightScreen {
+	position: absolute;
+	margin-left: 20%;
+	height: 85%;
+	width:80%;
+	background-color: ;
+
+
+}
+
+textarea {
+	resize:none;
+	width: 95%;
+	border-radius:4px;
+	
+}
+
+#START {
+	position:relative;
+	left:40%;
+}
+
+.conditions {
+	width: 140px;
+}
+
+
+.btn.conditions.topList {
+	border-top-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-left-radius:0px;
+}
+.btn.conditions.bottomList {
+	border-bottom-left-radius:5px;
+	border-bottom-right-radius:5px;
+	border-top-right-radius:0px;
+}
+.structure {
+	height:1px;
+	background-color:black;
+	text-align: center;
+}
+.structure span {
+	background-color: white;
+	position: relative;
+	top: -0.5em;
+}
+/* slider to define speed of Karel */
+#showRange {
+	background-color:darkgrey;
+	color:white;
+	font-size:20px;
+	border-radius: 3px;	
+}
+
+</style>
+
+</head>
+
+<!-- =========== BODY ============ -->
+
+<body>	
+<div id="fullScreen" class= "fullScreen">
+	<div id="upperScreen">
+		<img id="logo" src="LogoO_L.png">
+	</div>
+	
+	<!-- =========== left screen ============ -->
+	
+	<div id= "leftScreen" class= "leftScreen">
+			
+		<form>
+		    <input type="text" placeholder="function name" value="" id="functionName" name="functionName">
+			<textarea name="textarea" id="textarea" rows="20" cols="20" placeholder="Insert you're own code here" ></textarea>
+			<form>
+				<span>Speed of Karel :&nbsp;</span><span id="showRange" >&nbsp;medium&nbsp;</span>
+				<input type="range" name="rng" value="50" id="rng" min="0" max="125" step="25" onchange="showValue(this.value)" /><br>
+			</form>
+			<button type="button" name="start" class="btn btn-success" value="" id="start" onclick="userInput()">Start</button>	
+			<button type="button" name="saveFunc" class="btn btn-primary" value="" id="saveFunc" onclick="saveFunction()">Save</button>	
+			<button type="button" name="deleteFunc" class="btn btn-danger" value="" id="deleteFunc" onclick="deleteFunction()">Delete</button>	
+		</form>	
+	</div>
+	
+	<!-- =========== right screen ============ -->
+	
+	<div id= "rightScreen" class= "rightScreen">
+		
+		<!-- =========== select buttons ============ -->
+			
+		<button type="button" class="btn btn-default" value="" id="queries" rel="popover" data-html="true" data-placement="bottom"
+			data-content='
+			<div class="structure">
+				<span>single</span>
+			</div><br>
+			<button type="button" class="btn btn-default conditions" value="if(" id="if">if</button><br><br>
+			<div class="structure">
+				<span>loops</span>
+			</div><br>
+			<div class="btn-group">
+				<button type="button" class="btn btn-default conditions topList" value="for(var i=1; i<3; i++)" id="for">for</button><br>
+				<button type="button" class="btn btn-default conditions bottomList" value="while(" id="while">while</button><br>
+			</div>'>queries
+		</button>
+		
+		<button type="button" class="btn btn-default" value="" id="basics" rel="popover" data-html="true" data-placement="bottom"
+			data-content=''>basics
+		</button>
+		
+		<button type="button" class="btn btn-default" value="" id="conditions" rel="popover" data-html="true" data-placement="bottom"
+			data-content='
+				<div class="structure">
+					<span>walls</span>
+				</div>
+				<div class="btn-group"><br>				
+					<button type="button" class="btn btn-default conditions topList" value="frontIsClear())" id="frontIsClear">frontIsClear</button><br>
+					<button type="button" class="btn btn-default conditions" value="leftIsClear())" id="leftIsClear">leftIsClear</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="rightIsClear())" id="rightIsClear">rightIsClear</button><br><br>
+				</div>
+				<div class="structure">
+					<span>beepers</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn  btn-default conditions topList" value="beepersPresent())" id="beepersPresent">beepersPresent</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="beepersInBag())" id="beepersInBag">beepersInBag</button><br><br>
+				</div>
+				<div class="structure">
+					<span>directions</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" value="facingNorth())" id="facingNorth">facingNorth</button><br>
+					<button type="button" class="btn btn-default conditions" value="facingEast())" id="facingEast">facingEast</button><br>
+					<button type="button" class="btn btn-default conditions" value="facingSouth())" id="facingSouth">facingSouth</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="facingWest())" id="facingWest">facingWest</button>
+				</div>'>conditions
+		</button>
+
+        <button type="button" class="btn btn-default" value="" id="negConditions" rel="popover" data-html="true" data-placement="bottom"
+			data-content='
+				<div class="structure">
+					<span>walls</span>
+				</div>
+				<div class="btn-group"><br>	
+					<button type="button" class="btn btn-default conditions topList" value="frontIsBlocked())" id="frontIsBlocked">frontIsBlocked</button><br>
+					<button type="button" class="btn btn-default conditions" value="leftIsBlocked())" id="leftIsBlocked">leftIsBlocked</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="rightIsBlocked())" id="rightIsBlocked">rightIsBlocked</button><br><br>
+				</div>
+				<div class="structure">
+					<span>beepers</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" value="noBeepersPresent())" id="noBeepersPresent">noBeepersPresent</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="noBeepersInBag())" id="noBeepersInBag">noBeepersInBag</button><br><br>
+				</div>
+				<div class="structure">
+					<span>directions</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" value="notFacingNorth())" id="notFacingNorth">notFacingNorth</button><br>
+					<button type="button" class="btn btn-default conditions" value="notFacingEast())" id="notFacingEast">notFacingEast</button><br>
+					<button type="button" class="btn btn-default conditions" value="notFacingSouth())" id="notFacingSouth">notFacingSouth</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="notFacingWest())" id="notFacingWest">notFacingWest</button>
+				</div>'>negativ conditions
+		</button>
+		<button type="button" class="btn btn-default" value="" id="ownFunctions" rel="popover" data-html="true" data-placement="bottom"
+			data-content=''>your functions
+		</button>	
+		<canvas id="ausgabe"></canvas>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+//
+// show value of slider to user
+//
+function showValue(newValue) {
+
+	if (newValue == 0) {
+		$('#showRange').html("&nbsp;slow&nbsp;");
+		wait = 250;
+	} else if (newValue == 25) {
+		$('#showRange').html("&nbsp;still slow&nbsp;");
+		wait = 200;
+	} else if (newValue == 50) {
+		$('#showRange').html("&nbsp;medium&nbsp;");
+		wait = 150;
+	} else if (newValue == 75) {
+		$('#showRange').html("&nbsp;fast&nbsp;");
+		wait = 100;
+	} else if (newValue == 100) {
+		$('#showRange').html("&nbsp;faster&nbsp;");
+		wait = 50;
+	} else if (newValue == 125) {
+		$('#showRange').html("&nbsp;warp 10&nbsp;");
+		wait = 25;
+	}	
+}
+
+//
+// variable, wich shows the amount of Beepers Karel got with him
+//
+var countBeeper = 1000;
+
+/*
+* The variables "rows" and "columns" describe the amount of rows and columns in Karel's world.
+* Effectively there's one row and one column less in Karel's world,
+* because one of each is reserved for the outer walls
+*/
+var time = 0;
+var wait = 150;
+var rows = 21;
+var columns = 21;
+
+// 
+// var liste receives all variables from text input of home screen
+//
+var liste = storage.getAll();
+for (i in liste) {
+	var level = parseInt(liste["level"]);
+	var speed = parseInt(liste["speed"]);
+	
+}
+
+//
+// variable that contains the content the "basics" popover
+// it has to be in this unorganized structure, otherwise JS will not accept the string
+//
+var functionToButton = '<div class="structure"><span>movement</span></div><br><div class="btn-group"><button type="button" class="btn btn-default conditions topList" value="move();" id="move">move</button><br><button type="button" class="btn btn-default conditions" value="turnLeft();"id="turnLeft">turnLeft</button><br><br></div><div class="structure"><span>action</span></div><br><div class="btn-group"><button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br><button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br></div><br><br><div class="structure"><span>own functions</span></div>';
+
+//
+// generates a new button for action selection.
+// automatically gives the button the name of the self made function.
+//
+function newButton(title) {
+	var i = 1;
+	functionToButton += '<br><button type="button" class="btn btn-primary conditions" id="newBtn" value="">title</button>';
+	
+	$(document).bind("click", function(e) {
+			$('#newBtn').text(title).attr('id', title).val(title + '()');
+	})
+}
+
+
+/*
+* This function allows the user to dynamically create new functions within the game.
+* it uses the name within the textfield given by the user to generate a function,
+* this new function gets the content of the textarea below.
+*/ 
+function saveFunction() {
+	
+	var title = $('#functionName').val();
+	var content = $('#textarea').val();
+	
+	window[title] = new Function(content);
+	
+	$('#functionName').val('');
+	$('#textarea').val('');
+	
+	newButton(title);
+	
+	// Datenbank anlegen
+	var request = indexedDB.open('html5', 1);
+
+	// Änderungs/Erzeugungs-Event
+	request.onupgradeneeded = function(){
+		console.log('Datenbank angelegt');
+		var db = this.result;
+		if(!db.objectStoreNames.contains('features')){
+			store = db.createObjectStore('features', {
+	      		keyPath: 'key',
+	     		autoIncrement: true
+	    	});
+	  	}
+	};
+
+	// Öffnungs-Event (feuert nach upgradeneeded)
+	request.onsuccess = function(){
+		console.log('Datenbank geöffnet');
+		var db = this.result;
+
+		// Zu speichernder Datensatz
+		var item = { 
+			title: title,
+	 		content: content
+		};
+
+		// Speicher-Transaktion
+		var trans = db.transaction(['features'], 'readwrite');
+		var store = trans.objectStore('features')
+		var request = store.put(item); // `item` in dem Store ablegen
+
+		// Erfolgs-Event
+		request.onsuccess = function(counter){
+		console.log('Eintrag ' + counter.target.result + ' gespeichert');
+/*
+	    	// Auslese-Transaktion
+		    var trans = db.transaction(['features'], 'readonly');
+		    var store = trans.objectStore('features');
+
+		    // Cursor für alle Einträge von 0 bis zum Ende
+		    var range = IDBKeyRange.lowerBound(0);
+		    var cursorRequest = store.openCursor(range);
+
+		    // Wird für jeden gefundenen Datensatz aufgerufen... und einmal extra
+		    cursorRequest.onsuccess = function(e){
+			var result = e.target.result;
+			if(result){
+		    	console.log('Eintrag gefunden:', result.value);
+			
+				// creates new function and new button
+				window[result.value.title] = new Function(result.value.content);
+				newButton(result.value.title);
+		
+			//  console.log(result.value.title);
+			//	console.log(result.value.content);
+
+		        // Eintrag wieder löschen
+		        var trans = db.transaction(['features'], 'readwrite');
+		        var store = trans.objectStore('features');
+		        // var key = result.value.key;	
+				var request = store.delete(counter.target.result);
+		        
+				request.onsuccess = function(){
+		        	console.log('Eintrag ' + counter.target.result + ' gelöscht');
+		        }
+
+		        // Cursor zum nächsten Eintrag bewegen
+		        result.continue();
+
+				}
+			};
+			*/
+		};
+	}
+}
+
+function deleteFunction() {
+	$('#functionName').val('');
+	$('#textarea').val('');
+}
+//
+// dynamically match popover to button "basics", so popover will be updated with own functions
+//
+$('#basics').popover({
+	placement: 'bottom',
+	html: true,
+	content: function() { 
+		return functionToButton;
+	}
+});
+
+var z=1;
+
+/*
+* Initialisation of the position arrays for karel, beeper and wall 
+* Falls eine Postition im Array "true" ist, ist diese belegt, ansonsnten leer.	
+*
+* Because there's a significant time differnce between computing and drawing karel's single steps through its world, 
+* it's necessary for this program to get two arrays for the positions of the beeper. 
+* first beeper array:  "beeper[][]"
+* second beeper array: "beeperToDraw[][]" 
+*
+* array for computing beeper positions
+* with this beeper array the program computes all positions karel has to go
+*/
+
+var beeper = new Array(columns);
+for(j=0; j<columns; j++) 
+	beeper[j] = new Array(rows);
+
+for(j=0; j<columns; j++) {
+	for(i=0; i<rows; i++) {
+		beeper[j][i] = false;
+	}
+}
+
+//
+// array for drawing beeper positions
+// with this array the program is able to draw the single steps of karel after copmuting the whole way previously
+// 
+var beeperToDraw = new Array(columns);
+for(j=0; j<columns; j++) 
+	beeperToDraw[j] = new Array(rows);
+
+for(j=0; j<columns; j++) {
+	for(i=0; i<rows; i++) {
+		beeperToDraw[j][i] = false;
+	}
+}
+
+function beeperAtStart(posX, posY) {
+	beeper[posX][posY] = true;
+	beeperToDraw[posX][posY] = true;
+}
+
+
+//
+// array for karel's position		
+//
+var karel = new Array(columns);
+for(j=0; j<columns; j++) 
+	karel[j] = new Array(rows);
+
+for(j=0; j<columns; j++) {
+	for(i=0; i<rows; i++) {
+		karel[j][i]= false;
+	}
+}
+//
+// wall array
+// for vertical walls		
+//
+var wallV = new Array(columns);
+for(j=0.5; j<columns; j++) 
+	wallV[j] = new Array(rows)
+for(j=0.5; j<columns; j++) {
+	for(i=0; i<rows; i++)
+		wallV[j][i] = false;
+}
+//
+// wall array
+// for horizontal walls		
+//
+var wallH = new Array(columns);
+for(j=0; j<columns; j++) 
+	wallH[j] = new Array(rows)
+for(j=0; j<columns; j++) {
+	for(i=0.5; i<rows; i++)
+		wallH[j][i] = false;
+}
+
+//
+// switch command to choose between the different levels and thus to set walls, beeper(s) and Karel
+//
+switch (level) {
+	// Level 1: Get the beeper
+	case 1:	
+		// rows and columns
+		rows = 11;
+		columns = 11;
+		// horizontal walls
+		for (i=4; i<8; i++)
+			wallH[i][3.5] = true;
+		for (i=4; i<8; i++)
+			wallH[i][7.5] = true;
+			// vertical walls	
+		for (i=4; i<8; i++)
+			wallV[3.5][i] = true;
+		for (i=4; i<6; i++)
+			wallV[7.5][i] = true;
+		wallV[7.5][7] = true;
+		// Beeper
+		beeperAtStart(8,6);
+		// Karel
+		startX=4;
+		startY=7;
+		startDirection="east";		
+		break;
+	// Level 2: Use a Condition to get the beeper
+	case 2: 
+		// rows and columns
+		rows = 3;
+		columns = 12;
+		
+		// Beeper
+		beeperAtStart(10,1);
+		
+		// Karel
+		startX=1;
+		startY=1;
+		startDirection="east";
+		break;
+	// Level 3: Let there be beepers
+	case 3:
+		// rows and columns
+		rows = 3;
+		columns = 11;
+		// Beeper
+		for (i=1; i<5; i++)
+			beeperAtStart(i,1);
+		for (i=6; i<11; i++)
+			beeperAtStart(i,1);
+			// Karel
+		startX=1;
+		startY=1;
+		startDirection="east";
+		break;
+	// Level 4: Build columns out of beepers
+	case 4:
+		// rows and columns
+		rows = 10;
+		columns = 10;
+		// horizontal walls
+		for (i=1; i<10; i+=4)
+			wallH[i][5.5] = true;
+		for (i=2; i<10; i+=2)
+			wallH[i][6.5] = true;
+		for (i=3; i<10; i+=4)
+			wallH[i][7.5] = true;
+			// vertical walls
+		wallV[1.5][6] = true;
+		wallV[4.5][6] = true;
+		wallV[5.5][6] = true;
+		wallV[8.5][6] = true;
+		wallV[2.5][7] = true;
+		wallV[3.5][7] = true;
+		wallV[6.5][7] = true;
+		wallV[7.5][7] = true;
+		// Beeper
+		beeperAtStart(1,4);
+		beeperAtStart(1,5);
+		beeperAtStart(5,1);
+		beeperAtStart(5,2);
+		beeperAtStart(5,4);
+	 	beeperAtStart(9,1);
+		beeperAtStart(9,3);
+		beeperAtStart(9,5);
+		// Karel
+		startX=1;
+		startY=1;
+		startDirection="east";
+		break;
+	// Level 5: Make a chessfield 
+	case 5:
+		// rows and columns
+		rows = 10;
+		columns = 10;
+		// Karel
+		startX=1;
+		startY=1;
+		startDirection="east";
+		break;
+	// Level 6: Find the middle
+	case 6:
+		// rows and columns
+		rows = 3;
+		columns = 10;
+		// Karel
+		startX=1;
+		startY=1;
+		startDirection="east";
+		break;
+}
+
+for(j=0; j<columns; j++) {
+	for(i=0.5; i<rows; i++) {
+ 		//
+		// if-query sets horizontal outer walls
+		//
+		if ((i==0.5 || i==rows-0.5) && (j>0 && j<columns)){
+			wallH[j][i] = true;
+		} else {
+		//	wallH[j][i] = false;
+		}
+	}
+}
+
+for(j=0.5; j<columns; j++) {
+	for(i=0; i<rows; i++) {
+		//
+		// if query sets vertical outer walls
+		//
+		if ((j==0.5 || j==columns-0.5) && (i<rows && i>0)) {
+			wallV[j][i] = true;
+		} else {
+			//wallV[j][i] = false;
+		}
+	}
+}
+/*
+* The variable "partition" defines the distance between the single rows and columns.
+* To ensure an appropriate playing field, the minimun distance from row to row is 1/10 of the convas' window height,
+* respectively the minimum distance from column to column is 1/10 of the canvas' window width.
+* If there're more than 10 rows or 10 columns the distance between those will be relative to the amount of them.
+* e.g. If there're 20 rows, the distance beween those will be 1/20 of the canvas' window height.
+*/
+
+if ((rows>11) || (columns>11)) {
+	if (rows > columns) {
+		partition = rows;
+	} else {
+		partition = columns;
+	}
+} else {
+	partition = 11;
+}
+
+//
+// basic functions karel know
+//
+function move() {
+	//
+	//  check karel's position
+	//		
+	for(j=0; j<columns; j++) {
+		for(i=0; i<rows; i++) {
+			if (karel[j][i] && facing.east && wallV[j+0.5][i]==false) {
+				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
+				karel[j][i] = false;
+				j+=1;
+				if (beeper[j][i]) {
+					beepers.present = true;
+				} else { 
+					beepers.present = false;
+				}
+				karel[j][i] = true;	
+				checkWallAround(j,i);	
+				time += wait;
+				setTimeout(drawKarel, time, j , i, "east");
+				//drawKarel(j,i);					
+			} else if (karel[j][i] && facing.west && wallV[j-0.5][i]==false) {
+				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
+				karel[j][i] = false;
+				j-=1;
+				if (beeper[j][i]) {
+					beepers.present = true;
+				} else { 
+					beepers.present = false;
+				}
+				karel[j][i] = true;	
+				checkWallAround(j,i);	
+				time += wait;
+				setTimeout(drawKarel, time, j , i, "west");
+				//drawKarel(j,i);
+				
+			} else if (karel[j][i] && facing.north && wallH[j][i+0.5]==false) {
+				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
+				karel[j][i] = false;
+				i+=1;
+				if (beeper[j][i]) {
+					beepers.present = true;
+				} else { 
+					beepers.present = false;
+				}
+				karel[j][i] = true;	
+				checkWallAround(j,i);	
+				time += wait;
+				setTimeout(drawKarel, time, j , i, "north");
+				//drawKarel(j,i);					
+				
+			} else if (karel[j][i] && facing.south && wallH[j][i-0.5]==false) {
+				// vorherige Position wird auf false gesetzt, damit an dieser Stelle kein Karel mehr erscheint
+				karel[j][i] = false;
+				i-=1;
+				if (beeper[j][i]) {
+					beepers.present = true;
+				} else { 
+					beepers.present = false;
+				}
+				karel[j][i] = true;	
+				checkWallAround(j,i);	
+				time += wait;
+				setTimeout(drawKarel, time, j , i, "south");
+				//drawKarel(j,i);
+			}		
+		}	
+	}				
+}
+
+function turnLeft() {
+	if (facing.north) {
+		//setTimeout('facing.north  = false',time);
+		//setTimeout('facing.west = true', time);
+		facing.north = false;
+		facing.west  = true;
+	} else if (facing.south) {
+		facing.south = false;
+		facing.east  = true;
+	} else if (facing.west) {
+		//setTimeout('facing.west  = false',time);
+		//setTimeout('facing.south = true', time);
+		facing.west  = false;
+		facing.south = true;
+	} else {
+		//setTimeout('facing.east  = false',time);
+		//setTimeout('facing.north = true', time);
+		facing.east  = false;
+		facing.north = true;
+	}
+	//	
+	// check karel's position
+	// set Timeout to draw karel
+	//
+	for(j=0; j<columns; j++) {
+		for(i=0; i<rows; i++) {
+			if (karel[j][i]) {
+				if (facing.north) {
+					//drawKarel(j,i);
+					checkWallAround(j,i);	
+					time += wait;
+					setTimeout(drawKarel, time, j , i, "north");
+				} else if (facing.south) {
+					//drawKarel(j,i);
+					checkWallAround(j,i);	
+					time += wait;
+					setTimeout(drawKarel, time, j , i, "south");
+				} else if (facing.west) {
+					//drawKarel(j,i);
+					checkWallAround(j,i);	
+					time += wait;
+					setTimeout(drawKarel, time, j , i, "west");
+				} 	else {
+					//drawKarel(j,i);
+					checkWallAround(j,i);	
+					time += wait;
+					setTimeout(drawKarel, time, j , i, "east");
+				}
+			}
+		}
+	}
+}
+
+
+function pickBeeper() {
+	for(j=0; j<columns; j++) {
+		for(i=0; i<rows; i++) {
+			if (karel[j][i] && beeper[j][i]) {
+				beeper[j][i] = false;
+				countBeeper += 1;
+				beepers.inBag = true;
+				beepers.present = false;
+				// time += wait;
+				setTimeout(setBeeperFalse, time, j ,i);
+				
+				if (facing.north) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "north");
+				} else if (facing.south) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "south");
+				} else if (facing.west) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "west");
+				} else {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "east");
+				}
+			}
+		}
+	}
+}
+
+function putBeeper() {
+	for(j=0; j<columns; j++) {
+		for(i=0; i<rows; i++) {
+			// check if karel got at least one beeper and if there's already one on the actual postition
+			if (karel[j][i] && beeper[j][i]==false && countBeeper > 0) {
+				beeper[j][i] = true;
+				countBeeper -= 1;
+				beepers.present = true;
+				if (countBeeper == 0) {
+					beepers.inBag = false;
+				}
+				// time += wait;
+				setTimeout(setBeeperTrue, time, j ,i);
+				
+				if (facing.north) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "north");
+				} else if (facing.south) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "south");
+				} else if (facing.west) {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "west");
+				} else {
+					time += wait;
+					setTimeout(drawKarel, time, j, i, "east");	
+				}
+			}
+		}
+	}
+}
+
+function setBeeperTrue (beeperX, beeperY) {
+	beeperToDraw[beeperX][beeperY] = true;
+}
+
+function setBeeperFalse (beeperX, beeperY) {
+	beeperToDraw[beeperX][beeperY] = false;
+}
+
+//
+// basic conditions
+// 
+//
+// karel's direction of view
+//
+facing = {
+	"north" : false,
+	"south" : false,
+	"west"  : false,
+	"east"  : true
+}
+//
+//beeper conditions
+//
+beepers = {
+	"inBag"   : false, 
+	"present" : false
+}
+//
+// wall conditions
+//
+clear = {
+	"front" : false,
+	"left"  : false,
+	"right" : false
+}
+
+// functions, wich return karel's direction of view
+
+function facingNorth() {
+	return facing.north;
+}
+function facingSouth() {
+	return facing.south;
+}
+function facingWest() {
+	return facing.west;
+}
+function facingEast() {
+	return facing.east;
+}
+
+//
+// negated functions, wich return karel's non-direction of view
+//
+
+function notFacingNorth() {
+	return !facing.north;
+}
+function notFacingSouth() {
+	return !facing.south;
+}
+function notFacingWest() {
+	return !facing.west;
+}
+function notFacingEast() {
+	return !facing.east;
+}
+
+// function which checks if there's a beeper in karel's bag
+// returns TRUE if there's at least one beeper in bag
+
+function beepersInBag() {
+	return beepers.inBag;
+}
+
+// negated function which checks if there's no beeper in karel's bag
+// returns TRUE if there's no beeper in bag
+
+function noBeepersInBag() {
+	return !beepers.inBag; 
+}
+
+// function which checks if there's a beeper on karel's position
+// returns TRUE if there's a beeper on karel's position
+
+function beepersPresent() {
+	return beepers.present;
+}
+function _beepersPresent() {
+	time += wait;
+	return beepersPresent(); 
+} 
+//
+// function that checks if there's no beeper on karel's position
+// returns TRUE if there's no beeper on karel's position
+//
+function noBeepersPresent() {
+	return !beepers.present;
+}
+ 
+//
+// function which checks if there's a wall in front of or besides Karel
+// returns true if there's no wall
+//
+function checkWallAround(j,i) {
+	if (facing.north) {
+	 	if (wallH[j][i+0.5]==false)
+			clear.front = true;
+		else 
+			clear.front = false;
+		if (wallV[j-0.5][i]==false)
+			clear.left = true;
+		else 
+			clear.left = false;
+		if (wallV[j+0.5][i]==false)
+			clear.right = true;
+		else 
+			clear.right = false;
+	} else if (facing.south) {
+		if (wallH[j][i-0.5]==false)
+			clear.front = true;
+		else 
+			clear.front = false;
+		if (wallV[j+0.5][i]==false)
+			clear.left = true;
+		else 
+			clear.left = false;
+		if (wallV[j-0.5][i]==false)
+			clear.right = true;
+		else 
+			clear.right = false;
+	} else if (facing.west) {
+		if (wallV[j-0.5][i]==false)
+			clear.front = true;
+		else 
+			clear.front = false;
+		if (wallH[j][i-0.5]==false)
+			clear.left = true;
+		else 
+			clear.left = false;
+		if (wallH[j][i+0.5]==false)
+			clear.right = true;
+		else 
+			clear.right = false;
+	} else {
+		if (wallV[j+0.5][i]==false)
+			clear.front = true;
+		else 
+			clear.front = false;
+		if (wallH[j][i+0.5]==false)
+			clear.left = true;
+		else 
+			clear.left = false;
+		if (wallH[j][i-0.5]==false)
+			clear.right = true;
+		else 
+			clear.right = false;
+	}
+}
+
+function checkBeepersPresent(j,i) {
+	if (beeper[j][i])
+		beepers.present = true;
+	else
+		beepers.present = false;
+}
+
+//
+// funtion which returns true if there's no wall on particular position
+//
+function frontIsClear() {
+	return clear.front;
+}
+function leftIsClear() {
+	return clear.left;
+}
+function rightIsClear() {
+	return clear.right;
+}
+
+
+function frontIsBlocked() {
+	return !clear.front;
+}
+
+function leftIsBlocked() {
+	return !clear.left;
+}
+
+function rightIsBlocked() {
+	return !clear.right;
+}
+var imgKarel = new Image();
+
+/*
+* draw function
+* arguments: "karelX, karelY" represent the X and Y coordinate-
+* arguments: "north, south, west, east" give informations to the draw function about Karel's viewing direction .
+*/
+
+function drawKarel(karelX, karelY, direction) {	
+	var canvas = document.getElementById("ausgabe");
+	canvas.width = $("#rightScreen").width()-10;
+	canvas.height = $("#rightScreen").height()-10;
+	//
+	// Check if the browser is able to display the canvas content. 
+	// If not, a short alert message appears that the browser is unable to display canvas.
+	//
+	if (canvas.getContext) {
+		var c = canvas.getContext("2d");
+		//
+		// clears the entire drawing area of canvas to draw a new scenery.
+		//
+		c.clearRect(0,0,canvas.width,canvas.height);
+		/*
+		* check every single position of the playing field if there's anything to draw.
+		* at first, the draw function draws the playing field including the numbering and the coordinates.
+		* Then the walls will be drawn, and after that the beeper(s).
+		* At last, Karel itself will be drawn.
+		* "j" depicts the x-axis' direction and "i" the y-axis' direction
+		*/
+		for (j=0; j<columns; j++) {
+			for (i=0; i<rows; i++) {
+				//
+				// draw the X-axis' numbering
+				//
+				if (i==0 && j<columns) {
+					c.fillStyle = "#000";
+					c.font = "Arial";
+					c.textBaseline = 'bottom';
+					c.fillText (j,(j+0.5)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height);
+				}
+				//
+				// draw the Y-axis' numbering
+				//
+				if (j==0 && i<rows) {
+					c.fillStyle = "#000";
+					c.font = "Arial";
+					c.textBaseline = 'bottom';
+					c.fillText (i,(j+0.5)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height);
+				}	
+				//
+				// draw little crosses for the coordinate system
+				//
+				if ((j>0 && j<columns) && (i>0 && i< rows)){
+					c.strokeStyle = "#000";
+					c.lineWidth = 1;
+					c.beginPath();
+					//
+					// horizontal lines of the coordinates' crosses
+					//
+					c.moveTo((j+0.5)/(partition)*canvas.width - 2.5, (partition-(i))/(partition)*canvas.height);
+					c.lineTo((j+0.5)/(partition)*canvas.width + 2.5, (partition-(i))/(partition)*canvas.height);
+					//
+					// vertical lines of the coordinates' crosses
+					//
+					c.moveTo((j+0.5)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height -2.5);
+					c.lineTo((j+0.5)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height +2.5);
+					c.stroke();		
+				}
+				//
+				// draw vertical walls
+				//
+				if (wallV[j+0.5][i]) {
+					c.strokeStyle = "#000";
+					c.lineWidth = 1;
+					c.beginPath();
+					c.moveTo((j+1)/(partition)*canvas.width, (partition-(i+0.5))/(partition)*canvas.height);
+					c.lineTo((j+1)/(partition)*canvas.width, (partition-(i-0.5))/(partition)*canvas.height);
+					c.stroke();
+				}
+				//
+				// draw horizontal walls
+				//
+				if (wallH[j][i+0.5]) {
+					c.strokeStyle = "#000";
+					c.lineWidth = 1;
+					c.beginPath();
+					c.moveTo((j+1)/(partition)*canvas.width, (partition-(i+0.5))/(partition)*canvas.height);
+					c.lineTo((j)/(partition)*canvas.width,   (partition-(i+0.5))/(partition)*canvas.height);
+					c.stroke();
+				}
+				//
+				// check position of beeper(s) and draw beeper
+				//
+				if (beeperToDraw[j][i]) {
+					c.fillStyle = "#bbb" //grey
+					c.strokeStyle = "#000" //black
+					c.lineWidth = 2;
+					c.beginPath();
+					c.moveTo((j+0.5)/(partition)*canvas.width,  (partition-(i+0.25))/(partition)*canvas.height);
+					c.lineTo((j+0.25)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height);
+					c.lineTo((j+0.5)/(partition)*canvas.width,  (partition-(i-0.25))/(partition)*canvas.height);
+					c.lineTo((j+0.75)/(partition)*canvas.width, (partition-(i))/(partition)*canvas.height);
+					c.closePath();
+					c.fill();
+					c.stroke();
+				}
+			}
+		}
+
+	//
+	// the short alert message that shows that the browser is unable to display canvas
+	//
+	} else
+		alert("You're not able to play 'Karel the robot' with your current browser. Please switch browser.")
+	//
+	// important for the first call up, because there's no position on true yet.
+	// after that -> redundant
+	//
+	karel[karelX][karelY] = true;	
+
+	if (direction == "north") 
+		imgKarel.src = "karelNorth.png";
+	else if (direction == "south")
+		imgKarel.src = "karelSouth.png";
+	else if (direction == "west") 
+		imgKarel.src = "karelWest.png";
+	else
+		imgKarel.src = "karelEast.png";
+		
+	c.drawImage(imgKarel,(karelX+0.15)/(partition)*canvas.width, (partition-(karelY+0.5))/(partition)*canvas.height, 1/partition*canvas.height, 1/partition*canvas.height);	
+}	
+
+//
+// All images will be loaded in the memory before the first call up 
+// Source: http://www.javascriptkit.com/javatutors/preloadimagesplus.shtml
+//
+function preloadimages(arr){
+    var newimages=[], loadedimages=0
+    var arr=(typeof arr!="object")? [arr] : arr
+
+    function imageloadpost(){
+    	loadedimages++
+		// shows how many pictures are loaded
+      	if (loadedimages==arr.length){
+	 	// alert(arr.length);
+	  	}
+    }
+ 	for (var i=0; i<arr.length; i++){
+        newimages[i]=new Image()
+        newimages[i].src=arr[i]
+        newimages[i].onload=function(){
+            imageloadpost()
+        }
+        newimages[i].onerror=function(){
+        imageloadpost()
+        }
+    }
+}
+// sample run
+preloadimages(['karelEast.png','karelWest.png','karelSouth.png','karelNorth.png']);
+
+
+
+var a = 0;
+var calls = new Array('move()', 'move()', 'turnLeft()', 'move()', 'putBeeper()');
+
+function myRecrusiveFunction () {
+	eval(calls[a]);
+	if (a < calls.length) {
+		setTimeout("myRecrusiveFunction()", time);
+		a++;
+	} else {
+		a = 0;
+	}
+}
+
+
+function sleep(milliSeconds){
+	var startTime = new Date().getTime(); // get the current time
+	while (new Date().getTime() < startTime + milliSeconds); // hog cpu
+}
+
+function _move() {
+	time += wait;
+	setTimeout('move()',time);
+}
+
+function _turnLeft() {
+	time += wait;
+	setTimeout('turnLeft()',time);
+}
+
+function trippleMove() {
+	move();
+	move();
+	move();
+	time = 0;
+}
+function _test2() {
+	time += wait;
+	setTimeout('test2()',time);
+}
+function _test() {
+	time += wait;
+	setTimeout('test()',time);
+}
+
+function test2() {
+	if (beepers.present) {
+	_move();
+	test2(); 
+	}	
+	_turnLeft();
+	_turnLeft();
+	
+}
+z=-1;
+function test() {
+	z++;
+if (z==0) {
+	move();
+} if(z==1) {
+	move();
+} if(z==3) {
+	turnLeft();
+} if (z==2) {
+	if(beepersPresent()) {
+	_move();
+	z--;
+	_test();}
+} setTimeout('test()',300);
+}
+
+function turnRight() {
+	turnLeft();
+	turnLeft();
+	turnLeft();
+}
+
+function turnAround() {
+	if (facingEast()) {
+		turnLeft();
+		move();
+		turnLeft();
+	}
+	else if (facingWest()) {
+		turnRight();
+		move();
+		turnRight();
+	}
+}
+
+function beeperWalk() {
+	putBeeper();
+	move();
+}
+
+function antiBeeperWalk() {
+	pickBeeper();
+	move();
+}
+
+function fillField() {
+	while ((leftIsClear() && facingEast()) || (rightIsClear() && facingWest())) { 
+		while (frontIsClear()) 
+			beeperWalk();
+			putBeeper();
+			turnAround();
+	}
+}
+
+function clearField() {
+	while ((frontIsClear() && rightIsClear()) && (frontIsClear() && rightIsClear())) { 
+	while (frontIsClear()) 
+		antiBeeperWalk();
+		pickBeeper();
+		turnAround();
+	}
+}
+
+function test3() {
+	while(beepersPresent()){
+		move();
+	}
+	turnLeft();
+	for (var i=0; i < 3; i++) {
+		move();
+	}
+	while (frontIsClear()) {
+		move();
+	}
+	turnLeft();
+	turnLeft();
+	while (frontIsClear()) {
+		move();
+	}
+}
+
+function userInput() {
+	var input = $('#textarea').val();
+    eval(input);
+}
+
+function windowLoad() {
+	drawKarel(startX, startY, startDirection);
+	checkWallAround(startX, startY);
+	checkBeepersPresent(startX, startY);
+	loadDatabase();
+}
+//
+// don't use "$(document).ready(...)" because at this time, no images are loaded
+//
+$(window).load(function(){
+	windowLoad();
+});
+
+//
+// initalise popovers before first call up
+//
+$('#queries').popover();
+$('#conditions').popover();
+$('#negConditions').popover();
+$('#basics').popover();
+$('#ownFunctions').popover();
+
+
+//
+// Popover for the selection buttons
+// only one popover can be opened at once
+// also hide all popovers by clicking the start button or saveFunc button
+//
+$(document).bind("click", function(e) {
+	if (e.target.id=="queries") {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#basics').popover('hide');
+		$('#ownFunctions').popover('hide');
+		$('#queries').popover();
+		
+	} else if (e.target.id=="conditions") {
+		$('#negConditions').popover('hide');
+		$('#basics').popover('hide');
+		$('#queries').popover('hide');
+		$('#ownFunctions').popover('hide');
+		$('#conditions').popover();
+		
+	} else if (e.target.id=="negConditions") {
+		$('#conditions').popover('hide');
+		$('#basics').popover('hide');
+		$('#queries').popover('hide');
+		$('#ownFunctions').popover('hide');
+		$('#negConditions').popover();
+		
+	} else if (e.target.id=="basics") {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#queries').popover('hide');
+		$('#ownFunctions').popover('hide');
+		$('#basics').popover();
+		
+	} else if (e.target.id=='ownFunctions') {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#queries').popover('hide');
+		$('#basics').popover('hide');
+		$('#ownFunctions').popover();
+	
+	} else if (e.target.id=='start') {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#queries').popover('hide');
+		$('#basics').popover('hide');
+		$('#ownFunctions').popover('hide');
+		
+	} else if (e.target.id=='saveFunc') {
+		$('#conditions').popover('hide');
+		$('#negConditions').popover('hide');
+		$('#queries').popover('hide');
+		$('#basics').popover('hide');
+		$('#ownFunctions').popover('hide');
+
+	} 
+});
+
+//
+// insert the value of the selection buttons by clicking into textarea
+//
+$(document).bind("click", function(e) {
+	// avoid to insert value of the following buttons and document objects
+	if ((e.target.value != undefined) && (e.target.id != "textarea") && (e.target.id != "functionName")) {
+		if ((e.target.id != "queries") && (e.target.id!= "basics") && (e.target.id!= "conditions") && (e.target.id!= "negConditions") && (e.target.id != "saveFunc") && (e.target.id != "start") && (e.target.id != "deleteFunc") && (e.target.id != "rng") && (e.target.id != "ownFunctions")) {
+			if((e.target.id != "if") && (e.target.id != "while")) {
+				console.log('ebene4');
+				$('#textarea').val($('#textarea').val() + e.target.value+'\n');
+		}	else
+				$('#textarea').val($('#textarea').val() + e.target.value);
+		}
+	}
+});
+
+function loadDatabase() {
+	
+	var title = $('#functionName').val();
+	var content = $('#textarea').val();
+	
+	// Datenbank anlegen
+	var request = indexedDB.open('html5', 1);
+
+	// Änderungs/Erzeugungs-Event
+	request.onupgradeneeded = function(){
+		console.log('Datenbank angelegt');
+		var db = this.result;
+		if(!db.objectStoreNames.contains('features')){
+			store = db.createObjectStore('features', {
+	      		keyPath: 'key',
+	     		autoIncrement: true
+	    	});
+	  	}
+	};
+
+	// Öffnungs-Event (feuert nach upgradeneeded)
+	request.onsuccess = function() {
+		console.log('Datenbank geöffnet');
+		var db = this.result;
+
+	    // Auslese-Transaktion
+	    var trans = db.transaction(['features'], 'readonly');
+	    var store = trans.objectStore('features');
+
+	    // Cursor für alle Einträge von 0 bis zum Ende
+	    var range = IDBKeyRange.lowerBound(0);
+	    var cursorRequest = store.openCursor(range);
+
+	    // Wird für jeden gefundenen Datensatz aufgerufen... und einmal extra
+	    cursorRequest.onsuccess = function(e){
+			var result = e.target.result;
+			if(result){
+		    	console.log('Eintrag gefunden:', result.value);
+
+				// creates new function and new button
+				window[result.value.title] = new Function(result.value.content);
+				newButton(result.value.title);
+
+		        // Cursor zum nächsten Eintrag bewegen
+		        result.continue();
+			}
+		};
+	}
+}
+
+</script>
+
+</body>
+</html>
