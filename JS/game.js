@@ -88,6 +88,7 @@ var liste = storage.getAll();
 for (i in liste) {
 	var level = parseInt(liste["level"]);
 	var speed = parseInt(liste["speed"]);
+	var skill = liste["skill"];
 	
 }
 
@@ -95,7 +96,7 @@ for (i in liste) {
 // variable that contains the content the "basics" popover
 // it has to be in this unorganized structure, otherwise JS will not accept the string
 //
-var functionToButton = '<div class="structure"><span>delete/edit</span><br></div><br><div class="btn-group"><button type="button" class="btn btn-danger" data-toggle="button" value="" id="deleteOwnFunction" rel="popover" data-content="!!!&nbsp;Warning&nbsp;!!!" data-placement="top"><i class="icon-trash icon-white"></i> delete</button><button type="button" class="btn btn-warning" data-toggle="button" value="" id="editOwnFunction" rel="popover" data-content="!!!&nbsp;Edit&nbsp;!!!" data-placement="top"><i class="icon-pencil icon-white"></i> edit</button></div><br><br><div class="structure"><span>own functions</span><br></div>';
+var functionToButton = '<div class="structure"><span>braces</span></div><br><div class="btn-group"><button type="button" class="btn btn-default braces" value="{" id="braceleft_R">{</button><button type="button" class="btn btn-default braces" value="}" id="braceright_R">}</button></div><br><br><div class="structure"><span>delete/edit</span><br></div><br><div class="btn-group"><button type="button" class="btn btn-danger" data-toggle="button" value="" id="deleteOwnFunction" rel="popover" data-content="!!!&nbsp;Warning&nbsp;!!!" data-placement="top"><i class="icon-trash icon-white"></i> delete</button><button type="button" class="btn btn-warning" data-toggle="button" value="" id="editOwnFunction" rel="popover" data-content="!!!&nbsp;Edit&nbsp;!!!" data-placement="top"><i class="icon-pencil icon-white"></i> edit</button></div><br><br><div class="structure"><span>own functions</span><br></div>';
 
 var forLoop = 'Hello';
 //
@@ -1152,7 +1153,13 @@ function test3() {
 
 function userInput() {
 	var input = $('#textarea').val();
-    eval(input);
+	// avoid infinte loops
+	var prob1 = "while(frontIsClear())\n   putBeeper();";
+	var prob2 = "while(frontIsClear())\n   pickBeeper();";
+	if((input.indexOf(prob1)=='-1')&&(input.indexOf(prob2)=='-1'))
+		eval(input);
+	else	
+  		alert('Karel is in an infinite loop.');
 	time = 0;
 }
 //
@@ -1261,29 +1268,77 @@ $(document).bind("click", function(e) {
 // variable defines the amount of iterations of the "for-loop"
 //
 var forCounter = 0;
+// lastBracePos defines the legth of the string when operator is set.
+// lastBracePos -1 ergo is the position of the last right brace. 
+var lastBracePos = -1;
 //
 // insert the value of the selection buttons by clicking into textarea
 //
 $(document).bind("click", function(e) {
+	// ==== DOCUMENT OBJECTS ==== 
 	// avoid to insert value of the following buttons and document objects
 	if ((e.target.value != undefined) && (e.target.id != "textarea") && (e.target.id != "functionName")) {
+		
+		// ==== CATEGORIZATION BUTTONS ====
+		// avoid to insert empty value of the categorization buttons
 		if ((e.target.id != "queries") && (e.target.id!= "basics") && (e.target.id!= "conditions") && (e.target.id!= "negConditions") && (e.target.id != "saveFunc") && (e.target.id != "start") && (e.target.id != "clearFunc") && (e.target.id != "rng") && (e.target.id != "ownFunctions") && (e.target.id != "deleteOwnFunction") && ($('#deleteOwnFunction').hasClass('btn btn-danger active') == false) && (e.target.id != "editOwnFunction") && (e.target.id != "for") && (e.target.id != "for_2") && (e.target.id != "for_3") && (e.target.id != "for_4") && (e.target.id != "for_5") && (e.target.id != "for_6") && (e.target.id != "for_7") && (e.target.id != "for_8") && (e.target.id != "for_9") && (e.target.id != "for_10")) {
-			if((e.target.id != "if") && (e.target.id != "while")) {
 				
-				// check if it's own function so we have to add a semicolon
-				if (e.target.className == 'btn btn-default conditions ownFunctions') 
-					$('#textarea').val($('#textarea').val() +'   '+ e.target.value + ';' + '\n').trigger('autosize.resize');
-					
-				// check if it's a basic or own function so we indent this part in the textarea
-				// so the function will be easier to read in the textarea for user
-				else if ((e.target.id == "move") || (e.target.id == "turnLeft") || (e.target.id == "pickBeeper") || (e.target.id == "putBeeper"))
-					$('#textarea').val($('#textarea').val() +'   '+ e.target.value+'\n').trigger('autosize.resize');
-					
-				// if it's no basic or own function we don't need an indentification
-				else 
-					$('#textarea').val($('#textarea').val() + e.target.value+'\n').trigger('autosize.resize');
-			} else
+			// ==== OWN FUNCTIONS ==== 
+			// check if it's own function so we have to add a semicolon
+			if (e.target.className == 'btn btn-default conditions ownFunctions') {
+				
+				// check if there's already code within the textarea. If not, there's no line break necessary.
+				if ($('#textarea').val() == '')
+					$('#textarea').val('   '+ e.target.value).trigger('autosize.resize');
+				else
+					$('#textarea').val($('#textarea').val() + '\n' +'   '+ e.target.value + ';').trigger('autosize.resize');
+			
+			// ==== BASIC FUNCTIONS ====
+			// check if it's a basic function so we indent this part in the textarea
+			// so the function will be easier to read in the textarea for user
+			} else if ((e.target.id == "move") || (e.target.id == "turnLeft") || (e.target.id == "pickBeeper") || (e.target.id == "putBeeper")) {
+				
+				// check if there's already code within the textarea. If not, there's no line break necessary.
+				if ($('#textarea').val() == '')
+					$('#textarea').val('   '+ e.target.value).trigger('autosize.resize');
+				else
+					$('#textarea').val($('#textarea').val()+ '\n' +'   '+ e.target.value).trigger('autosize.resize');
+			
+			// ==== QUERIES ====
+			// check if it's a query
+			// in that case we don't need a semicolon.		
+			}else if((e.target.id == 'if') || (e.target.id == 'while') || (e.target.id == 'else')) {
+						// check if there's already code within the textarea. If not, there's no line break necessary.
+						if ($('#textarea').val() == '')
+							$('#textarea').val(e.target.value).trigger('autosize.resize');
+						else
+							$('#textarea').val($('#textarea').val() + '\n' + e.target.value).trigger('autosize.resize');
+
+			// ===== OPERATORS ====
+			// check if there's already a query with its condition in the code
+			// if not, there's no need of '&&' or '||'
+			} else if ((e.target.id == 'bitAnd') || (e.target.id == 'bitOr')) {
+				if (lastBracePos != -1) {
+					// cut off the last right brace and insert operator
+					$('#textarea').val($('#textarea').val().substring(0,lastBracePos-1));
+					$('#textarea').val($('#textarea').val() + ' ' + e.target.value + ' ').trigger('autosize.resize');
+				}
+		
+			// ===== BRACES ====
+			// left brace doesn't need line break, just space.
+			// right brace needs one.
+			} else if ((e.target.id == 'braceleft_L') || (e.target.id == 'braceleft_R')) {
+				$('#textarea').val($('#textarea').val() + ' ' + e.target.value).trigger('autosize.resize');
+			} else if ((e.target.id == 'braceright_L') || (e.target.id == 'braceright_R')) {
+				$('#textarea').val($('#textarea').val() + '\n' + e.target.value).trigger('autosize.resize');
+			
+			// ======= REST = CONDITIONS ========
+			// the rest don't get a line break
+			} else {
 				$('#textarea').val($('#textarea').val() + e.target.value).trigger('autosize.resize');
+				lastBracePos = $('#textarea').val().length;
+				console.log(lastBracePos);
+			}
 		}
 	}
 	
@@ -1319,7 +1374,12 @@ $(document).bind("click", function(e) {
 			break;
 	}
 	if (forCounter!=0) {
-		$('#textarea').val($('#textarea').val() + 'for(var i=0; i<'+forCounter+'; i++)' + '\n');
+		// check if there's already code within the textarea. If not, there's no line break necessary.
+		if ($('#textarea').val() == '')
+			$('#textarea').val('for(var i=0; i<' + forCounter + '; i++)').trigger('autosize.resize');
+		else
+			$('#textarea').val($('#textarea').val() + '\n' + 'for(var i=0; i<' + forCounter + '; i++)').trigger('autosize.resize');
+			
 		$('#for').popover('hide');
 		forCounter = 0;
 	}

@@ -58,20 +58,37 @@
 			<button type="button" class="btn btn-large" value="" id="queries" rel="popover" data-html="true" data-placement="bottom"
 				data-content='
 				<div class="structure">
-					<span>single</span>
+					<span>branches</span>
 				</div><br>
-				<button type="button" class="btn btn-default conditions" value="if(" id="if">if</button><br><br>
+				<div class="btn-group">
+				<button type="button" class="btn btn-default conditions topList" value="if(" id="if">if</button><br>
+				<button type="button" class="btn btn-default conditions bottomList" value="else" id="else">else</button><br><br>
+				</div>
 				<div class="structure">
 					<span>loops</span>
 				</div><br>
 				<div class="btn-group">
 					<button type="button" class="btn btn-default conditions topList" id="for" rel="popover" data-html="true" data-placement="top" data-content="<div class=structure><span>How often?</span></div><br><button id=for_2 class=btn btn-default type=button>2</button><button id=for_3 class=btn btn-default type=button>3</button><button id=for_4 class=btn btn-default type=button>4</button><button id=for_5 class=btn btn-default type=button>5</button><button id=for_6 class=btn btn-default type=button>6</button><button id=for_7 class=btn btn-default type=button>7</button><button id=for_8 class=btn btn-default type=button>8</button><button id=for_9 class=btn btn-default type=button>9</button><button id=for_10 class=btn btn-default type=button>10</button>">for</button><br>
-					<button type="button" class="btn btn-default conditions bottomList" value="while(" id="while">while</button><br>
-				</div>'>queries
+					<button type="button" class="btn btn-default conditions bottomList" value="while(" id="while">while</button><br><br>
+				</div>
+				<div class="structure">
+					<span>operators</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default braces" value="&&" id="bitAnd">&&</button>
+					<button type="button" class="btn btn-default braces" value="||" id="bitOr">| |</button>
+				</div>'>Queries
 			</button>
 		
 			<button type="button" class="btn btn-large" value="" id="basics" rel="popover" data-html="true" data-placement="bottom"
 				data-content='
+				<div class="structure">
+					<span>braces</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default braces" value="{" id="braceleft_L">{</button>
+					<button type="button" class="btn btn-default braces" value="}" id="braceright_L">}</button>
+				</div><br><br>
 				<div class="structure">
 					<span>movement</span>
 				</div><br>
@@ -85,11 +102,18 @@
 				<div class="btn-group">
 					<button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br>
 					<button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br>
-				</div>'>basics
+				</div>'>Basics
 			</button>
 		
 			<button type="button" class="btn btn-large" value="" id="conditions" rel="popover" data-html="true" data-placement="bottom"
 				data-content='
+					<div class="structure">
+						<span>round brackets</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default braces" value="(" id="roundBracketleft_L">(</button>
+						<button type="button" class="btn btn-default braces" value=")" id="roundBracketright_L">)</button>
+					</div><br><br>
 					<div class="structure">
 						<span>walls</span>
 					</div>
@@ -113,11 +137,18 @@
 						<button type="button" class="btn btn-default conditions" value="facingEast())" id="facingEast">facingEast</button><br>
 						<button type="button" class="btn btn-default conditions" value="facingSouth())" id="facingSouth">facingSouth</button><br>
 						<button type="button" class="btn btn-default conditions bottomList" value="facingWest())" id="facingWest">facingWest</button>
-					</div>'>conditions
+					</div>'>Conditions
 			</button>
 
 	        <button type="button" class="btn btn-large" value="" id="negConditions" rel="popover" data-html="true" data-placement="bottom"
 				data-content='
+					<div class="structure">
+						<span>round brackets</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default braces" value="(" id="roundBracketleft_L">(</button>
+						<button type="button" class="btn btn-default braces" value=")" id="roundBracketright_L">)</button>
+					</div><br><br>
 					<div class="structure">
 						<span>walls</span>
 					</div>
@@ -141,10 +172,10 @@
 						<button type="button" class="btn btn-default conditions" value="notFacingEast())" id="notFacingEast">notFacingEast</button><br>
 						<button type="button" class="btn btn-default conditions" value="notFacingSouth())" id="notFacingSouth">notFacingSouth</button><br>
 						<button type="button" class="btn btn-default conditions bottomList" value="notFacingWest())" id="notFacingWest">notFacingWest</button>
-					</div>'>negativ conditions
+					</div>'>Negativ conditions
 			</button>
 			<button type="button" class="btn btn-large" value="" id="ownFunctions" rel="popover" 
-				data-content="">your functions 
+				data-content="">Own functions 
 			</button>
 		</div>	
 		<canvas id="ausgabe"></canvas>

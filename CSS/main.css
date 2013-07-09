@@ -36,10 +36,14 @@ body {
 	position:relative;
 	left:40%;
 }
-
+/* defines the width of all sub-buttons of queries,basics,conditions,negativ conditions, your functions*/
 .conditions {
 	width: 140px;
 }
+.braces{
+	width:70px;
+}
+
 
 .popInPop {
 	width:32%;
@@ -58,6 +62,9 @@ body {
 	border-bottom-right-radius:5px;
 	border-top-right-radius:0px;
 }
+
+
+/* dividing line for modals content*/
 .structure {
 	height:1px;
 	background-color:black;
@@ -68,6 +75,8 @@ body {
 	position: relative;
 	top: -0.5em;
 }
+
+
 /* slider to define speed of Karel */
 #showRange {
 	background-color:darkgrey;
@@ -76,7 +85,7 @@ body {
 	border-radius: 3px;	
 }
 #upperRow{
-	margin-left:4%;
+	left:9%;
 }
 #for_10 {
 	width:32.5%
@@ -102,7 +111,13 @@ slider {
 /*
 ========Level Selection Screen==========
 */
-
+.modalButton {
+	width:200px;
+	float:left
+}
+#writingCode {
+	width:180px;
+}
 h3 {
 	text-align: center;
 }
@@ -180,18 +195,4 @@ h3 {
 #lvlLast {
 	border-bottom-left-radius:7px;
 	border-bottom-right-radius:7px;
-}
-
-
-/* dividing line for modals content*/
-
-.structure {
-	height:1px;
-	background-color:black;
-	text-align: center;
-}
-.structure span {
-	background-color: white;
-	position: relative;
-	top: -0.5em;
 }

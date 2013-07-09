@@ -58,19 +58,22 @@ function sichern () {
 	if (level!=undefined) {
 		storage.set("level", level);
 		storage.set("speed", 20);
+		storage.set("skill", skill);
 		// usually smartphone size
 	 	if ((window.innerWidth < 1024) && (window.innerWidth > 800))
-			location.href = "../HTML/Karel_Version.1.8_mini.html";
+			location.href = "../HTML/karel_game_mini.html";
 		else if (window.innerWidth <= 800)
-			location.href = "../HTML/Karel_Version.1.8_micro.html";
+			location.href = "../HTML/karel_game_micro.html";
 		// usually desktop, laptop or tablet size
 		else
-			location.href = "../HTML/Karel_Version.1.8.html";
+			location.href = "../HTML/karel_game.html";
 	}
 }	
 var level;
+var skill = "_1";
 var isVisible = false;
 var clickAway = false;
+
 
 $(document).ready(function() {
 	
@@ -79,23 +82,30 @@ $(document).ready(function() {
 	//
 	$('#confirmLevel').popover();
 	
-	
 	$('#myCarousel').carousel({
 		interval: 10000
 	});	
 	//
-	// submit level to next page.
+	// save level to submit it to next page.
 	// change image of level preview
 	//
-	$(".alignment .lvl").bind("click", function(e) {
+	$('.alignment .lvl').bind("click", function(e) {
 		$('#confirmLevel').popover('destroy');
 		level = parseInt($(this).val());
-		
-		if (level!=undefined)
-			$('#levelPreview').attr('src','../images/lvl'+level+'.png');
-		else
-			$('#levelPreview').attr('src','../images/aaa.png');
+		$('#levelPreview').attr('src','../images/lvl'+level+skill+'.png');
 	});
+	
+	//
+	// save skill to submit it to next page.
+	// change image of level preview
+	//
+	$('.skill').bind("click", function(e) {
+	//	$('#confirmLevel').popover('destroy');		
+		skill = $(this).val();
+		if (level != undefined)
+			$('#levelPreview').attr('src','../images/lvl'+level+skill+'.png');
+	});
+	
 	//
 	// show popover (button id="confirmLevel") if there's no level selected
 	//
