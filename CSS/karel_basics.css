@@ -1,3 +1,24 @@
+/*
+* loop alert
+*/
+.popover.middle {
+  background-color:red;
+  
+  text-align:center;
+  line-height: 2;
+  min-width: 50%;
+  min-height: 50%;
+  margin-left: 30%;
+  margin-top: 30%;
+}
+.bigText {
+  font-size: 2.5em;
+  font-weight:bold;
+}
+#smallText {
+  font-size: 1em;
+  font-weight:bold;
+}
 
 /* 
 * customized popovers - basics
@@ -63,97 +84,83 @@
 /* 
 * customized popovers - conditions
 */
-.popover.roundBracketleft_L {
-  margin-left: 350px;
-  margin-top:50px;
-}
-.popover.roundBracketright_L {
-  margin-left: 350px;
-  margin-top:50px;
-}
+
 .popover.frontIsClear {
   margin-left: 350px;
-  margin-top:120px;
+  margin-top:50px;
 }
 .popover.leftIsClear {
   margin-left: 350px;
-  margin-top:150px;
+  margin-top:80px;
 }
 .popover.rightIsClear {
   margin-left: 350px;
-  margin-top:180px;
+  margin-top:110px;
 }
 .popover.beepersPresent {
   margin-left: 350px;
-  margin-top:250px;
+  margin-top:180px;
 }
 .popover.beepersInBag {
   margin-left: 350px;
-  margin-top:280px;
+  margin-top:210px;
 }
 .popover.facingNorth {
   margin-left: 350px;
-  margin-top:350px;
+  margin-top:280px;
 }
 .popover.facingEast {
   margin-left: 350px;
-  margin-top:380px;
+  margin-top:310px;
 }
 .popover.facingSouth {
   margin-left: 350px;
-  margin-top:410px;
+  margin-top:340px;
 }
 .popover.facingWest {
   margin-left: 350px;
-  margin-top:440px;
+  margin-top:370px;
 }
 
 /* 
 * customized popovers - negativ conditions
 */
-.popover.roundBracketleft_R {
-  margin-left: 35px;
-  margin-top:50px;
-}
-.popover.roundBracketright_R {
-  margin-left: 35px;
-  margin-top:50px;
-}
+
 .popover.frontIsBlocked {
   margin-left: 35px;
-  margin-top:120px;
+  margin-top:50px;
 }
 .popover.leftIsBlocked {
   margin-left: 35px;
-  margin-top:150px;
+  margin-top:80px;
 }
 .popover.rightIsBlocked {
   margin-left: 35px;
-  margin-top:180px;
+  margin-top:110px;
 }
 .popover.noBeepersPresent {
   margin-left: 35px;
-  margin-top:250px;
+  margin-top:180px;
 }
 .popover.noBeepersInBag {
   margin-left: 35px;
-  margin-top:280px;
+  margin-top:210px;
 }
 .popover.notFacingNorth {
   margin-left: 35px;
-  margin-top:350px;
+  margin-top:280px;
 }
 .popover.notFacingEast {
   margin-left: 35px;
-  margin-top:380px;
+  margin-top:310px;
 }
 .popover.notFacingSouth {
   margin-left: 35px;
-  margin-top:410px;
+  margin-top:340px;
 }
 .popover.notFacingWest {
   margin-left: 35px;
-  margin-top:440px;
+  margin-top:370px;
 }
 
 /* 
@@ -227,8 +234,6 @@
 .popover.facingEast .arrow,
 .popover.facingSouth .arrow,
 .popover.facingWest .arrow,
-.popover.roundBracketleft_L .arrow,
-.popover.roundBracketright_L .arrow,
 .popover.bitAnd .arrow,
 .popover.bitOr .arrow {
   top: 45px;
@@ -258,8 +263,6 @@
 .popover.facingEast .arrow:after,
 .popover.facingSouth .arrow:after,
 .popover.facingWest .arrow:after,
-.popover.roundBracketleft_L .arrow:after,
-.popover.roundBracketright_L .arrow:after,
 .popover.bitAnd .arrow:after,
 .popover.bitOr .arrow:after {
   bottom: -10px;
@@ -282,9 +285,7 @@
 .popover.deleteOwnFunction .arrow,
 .popover.editOwnFunction .arrow,
 .popover.braceleft_R .arrow,
-.popover.braceright_R .arrow,
-.popover.roundBracketleft_R .arrow,
-.popover.roundBracketright_R .arrow {
+.popover.braceright_R .arrow {
   top: 45px;
   right: -11px;
   margin-top: -11px;
@@ -305,9 +306,7 @@
 .popover.deleteOwnFunction .arrow:after,
 .popover.editOwnFunction .arrow:after,
 .popover.braceleft_R .arrow:after,
-.popover.braceright_R .arrow:after,
-.popover.roundBracketleft_R .arrow:after,
-.popover.roundBracketright_R .arrow:after {
+.popover.braceright_R .arrow:after {
   right: 1px;
   bottom: -10px;
   border-left-color: #ffffff;

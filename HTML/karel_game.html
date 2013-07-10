@@ -16,6 +16,7 @@
 
 <link href="../CSS/main.css" rel="stylesheet" media="screen">
 <link href="../CSS/bootstrap.css" rel="stylesheet" media="screen">
+<link href="../CSS/karel_basics.css" rel="stylesheet" media="screen">
 <link rel="shortcut icon" href="../images/favicon.ico" >
 <link rel="icon" type="image/gif" href="../images/animated_favicon1.gif" >
 
@@ -52,6 +53,7 @@
 	<!-- =========== right screen ============ -->
 	
 	<div id= "rightScreen" class= "rightScreen">
+		<span id="loopAlert"></span>
 		
 		<!-- =========== select buttons ============ -->
 		<div class="btn-group" id="upperRow">	
@@ -108,13 +110,6 @@
 			<button type="button" class="btn btn-large" value="" id="conditions" rel="popover" data-html="true" data-placement="bottom"
 				data-content='
 					<div class="structure">
-						<span>round brackets</span>
-					</div><br>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default braces" value="(" id="roundBracketleft_L">(</button>
-						<button type="button" class="btn btn-default braces" value=")" id="roundBracketright_L">)</button>
-					</div><br><br>
-					<div class="structure">
 						<span>walls</span>
 					</div>
 					<div class="btn-group"><br>				
@@ -142,13 +137,6 @@
 
 	        <button type="button" class="btn btn-large" value="" id="negConditions" rel="popover" data-html="true" data-placement="bottom"
 				data-content='
-					<div class="structure">
-						<span>round brackets</span>
-					</div><br>
-					<div class="btn-group">
-						<button type="button" class="btn btn-default braces" value="(" id="roundBracketleft_L">(</button>
-						<button type="button" class="btn btn-default braces" value=")" id="roundBracketright_L">)</button>
-					</div><br><br>
 					<div class="structure">
 						<span>walls</span>
 					</div>

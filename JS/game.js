@@ -127,6 +127,7 @@ function saveFunction() {
 	
 	$('#functionName').val('');
 	$('#textarea').val('').trigger('autosize.resize');
+	cursorPos == null;
 	
 	newButton(title);
 	
@@ -213,6 +214,7 @@ function saveFunction() {
 function clearTextarea() {
 	$('#functionName').val('');
 	$('#textarea').val('').trigger('autosize.resize');
+	cursorPos = null;
 }
 //
 // dynamically match popover to button "your functions", so popover will be updated with own functions
@@ -1150,16 +1152,115 @@ function test3() {
 		move();
 	}
 }
+// ==== LOOP ALERT ====
+// popover for loop alert
+$('#loopAlert').popover({
+	html: true,
+	content: "<br><hr><span class='bigText'>Infinite loop!!!</span><hr><span id='smallText'>Karel wouldn't stop putting beepers down.</span>",
+	placement: 'middle'
+});
+
+/*
+* ===== INFINITE LOOPS ======
+* to avoid a system freeze we have to cancel infinte loops
+* for that reason the program avoids to perform "wrong" code, that would lead to infinite loops
+*/
+
+// ===== INF. LOOPS - PUTBEEPER =====
+var put0 = "while(frontIsClear())\n   putBeeper();";
+var put1 = "while(leftIsClear())\n   putBeeper();";
+var put2 = "while(rightIsClear())\n   putBeeper();";
+var put3 = "while(beepersPresent())\n   putBeeper();";
+var put4 = "while(beepersInBag())\n   putBeeper();";
+var put5 = "while(facingNorth())\n   putBeeper();";
+var put6 = "while(facingSouth())\n   putBeeper();";
+var put7 = "while(facingWest())\n   putBeeper();";
+var put8 = "while(facingEast())\n   putBeeper();";
+
+var negPut0 = "while(frontIsBlocked())\n   putBeeper();";
+var negPut1 = "while(leftIsBlocked())\n   putBeeper();";
+var negPut2 = "while(rightIsBlocked())\n   putBeeper();";
+var negPut3 = "while(noBeepersPresent())\n   putBeeper();";
+var negPut4 = "while(noBeepersInBag())\n   putBeeper();";
+var negPut5 = "while(notFacingNorth())\n   putBeeper();";
+var negPut6 = "while(notFacingSouth())\n   putBeeper();";
+var negPut7 = "while(notFacingWest())\n   putBeeper();";
+var negPut8 = "while(notFacingEast())\n   putBeeper();";
+
+// ===== INF. LOOPS - PICKBEEPER =====
+var pick0 = "while(frontIsClear())\n   pickBeeper();";
+var pick1 = "while(leftIsClear())\n   pickBeeper();";
+var pick2 = "while(rightIsClear())\n   pickBeeper();";
+var pick3 = "while(beepersPresent())\n   pickBeeper();";
+var pick4 = "while(beepersInBag())\n   pickBeeper();";
+var pick5 = "while(facingNorth())\n   pickBeeper();";
+var pick6 = "while(facingSouth())\n   pickBeeper();";
+var pick7 = "while(facingWest())\n   pickBeeper();";
+var pick8 = "while(facingEast())\n   pickBeeper();";
+
+var negPick0 = "while(frontIsBlocked())\n   pickBeeper();";
+var negPick1 = "while(leftIsBlocked())\n   pickBeeper();";
+var negPick2 = "while(rightIsBlocked())\n   pickBeeper();";
+var negPick3 = "while(noBeepersPresent())\n   pickBeeper();";
+var negPick4 = "while(noBeepersInBag())\n   pickBeeper();";
+var negPick5 = "while(notFacingNorth())\n   pickBeeper();";
+var negPick6 = "while(notFacingSouth())\n   pickBeeper();";
+var negPick7 = "while(notFacingWest())\n   pickBeeper();";
+var negPick8 = "while(notFacingEast())\n   pickBeeper();";
+
+// ===== INF. LOOPS - MOVE =====
+var move0 = "while(beepersInBag())\n   move();";
+var move1 = "while(facingNorth())\n   move();";
+var move2 = "while(facingSouth())\n   move();";
+var move3 = "while(facingWest())\n   move();";
+var move4 = "while(facingEast())\n   move();";
+
+var negMove0 = "while(noBeepersInBag())\n   move();";
+var negMove1 = "while(notFacingNorth())\n   move();";
+var negMove2 = "while(notFacingSouth())\n   move();";
+var negMove3 = "while(notFacingWest())\n   move();";
+var negMove4 = "while(notFacingEast())\n   move();";
+
+// ===== INF. LOOPS - TURNLEFT =====
+var turnLeft0 = "while(beepersPresent())\n   turnLeft();";
+var turnLeft1 = "while(beepersInBag())\n   turnLeft();";
+
+var negTurnLeft0 = "while(noBeepersPresent())\n   turnLeft();";
+var negTurnLeft1 = "while(noBeepersInBag())\n   turnLeft();";
+
+
+
+
+function loopAlert() {
+	$('#loopAlert').popover('toggle');
+}
 
 function userInput() {
 	var input = $('#textarea').val();
-	// avoid infinte loops
-	var prob1 = "while(frontIsClear())\n   putBeeper();";
-	var prob2 = "while(frontIsClear())\n   pickBeeper();";
-	if((input.indexOf(prob1)=='-1')&&(input.indexOf(prob2)=='-1'))
+	
+	if ((input.indexOf(put0)!='-1') || (input.indexOf(put1)!='-1') || (input.indexOf(put2)!='-1') || (input.indexOf(put3)!='-1') || (input.indexOf(put4)!='-1') || (input.indexOf(put5)!='-1') || (input.indexOf(put6)!='-1') || (input.indexOf(put7)!='-1') || (input.indexOf(put8)!='-1') || (input.indexOf(negPut0)!='-1') || (input.indexOf(negPut1)!='-1') || (input.indexOf(negPut2)!='-1') || (input.indexOf(negPut3)!='-1') || (input.indexOf(negPut4)!='-1') || (input.indexOf(negPut5)!='-1') || (input.indexOf(negPut6)!='-1') || (input.indexOf(negPut7)!='-1') || (input.indexOf(negPut8)!='-1')) {
+		$('#loopAlert').popover('toggle');
+		$('#smallText').text("Karel wouldn't stop trying to put down beepers.");
+		setTimeout (loopAlert, 3000);
+	
+	} else if ((input.indexOf(pick0)!='-1') || (input.indexOf(pick1)!='-1') || (input.indexOf(pick2)!='-1') || (input.indexOf(pick3)!='-1') || (input.indexOf(pick4)!='-1') || (input.indexOf(pick5)!='-1') || (input.indexOf(pick6)!='-1') || (input.indexOf(pick7)!='-1') || (input.indexOf(pick8)!='-1') || (input.indexOf(negPick0)!='-1') || (input.indexOf(negPick1)!='-1') || (input.indexOf(negPick2)!='-1') || (input.indexOf(negPick3)!='-1') || (input.indexOf(negPick4)!='-1') || (input.indexOf(negPick5)!='-1') || (input.indexOf(negPick6)!='-1') || (input.indexOf(negPick7)!='-1') || (input.indexOf(negPick8)!='-1')) {	
+		$('#loopAlert').popover('toggle');
+		$('#smallText').text("Karel wouldn't stop trying to pick up beepers.");
+		setTimeout (loopAlert, 3000);
+		
+	} else if ((input.indexOf(move0)!='-1') || (input.indexOf(move1)!='-1') || (input.indexOf(move2)!='-1') || (input.indexOf(move3)!='-1') || (input.indexOf(move4)!='-1') || (input.indexOf(negMove0)!='-1') || (input.indexOf(negMove1)!='-1') || (input.indexOf(negMove2)!='-1') || (input.indexOf(negMove3)!='-1') || (input.indexOf(negMove4)!='-1')) {	
+		$('#loopAlert').popover('toggle');
+		$('#smallText').text("Karel wouldn't stop trying to move.");
+		setTimeout (loopAlert, 3000);
+		
+	} else if ((input.indexOf(turnLeft0)!='-1') || (input.indexOf(turnLeft1)!='-1') || (input.indexOf(negTurnLeft0)!='-1') || (input.indexOf(negTurnLeft1)!='-1')) {	
+		$('#loopAlert').popover('toggle');
+		$('#smallText').text("Karel wouldn't stop trying to turn to the left.");
+		setTimeout (loopAlert, 3000);
+		
+	} else
 		eval(input);
-	else	
-  		alert('Karel is in an infinite loop.');
+			
 	time = 0;
 }
 //
@@ -1271,10 +1372,33 @@ var forCounter = 0;
 // lastBracePos defines the legth of the string when operator is set.
 // lastBracePos -1 ergo is the position of the last right brace. 
 var lastBracePos = -1;
+
+// current position off cursor
+var cursorPos = null;
+// // insert text into textarea at cursor's position
+// $( '#textarea' ).on('click', function(){
+//             cursorPos = $('#textarea').prop('selectionStart');
+//             var v = $('#textarea').val();
+//             var textBefore = v.substring(0,  cursorPos );
+//             var textAfter  = v.substring( cursorPos, v.length );
+//             $('#textarea').val( textBefore+ '&&' +textAfter );
+//         });
+
+
 //
 // insert the value of the selection buttons by clicking into textarea
 //
 $(document).bind("click", function(e) {
+	
+	// check if user clicked in the texarea
+	// if so, he probably want to edit the his code at a certain position
+	// in this case it's necessary to insert the function at the cursor position and not as usual at the end of the textarea
+	if (e.target.id == 'textarea') {
+		cursorPos = $('#textarea').prop('selectionStart');
+	}
+	
+	
+	
 	// ==== DOCUMENT OBJECTS ==== 
 	// avoid to insert value of the following buttons and document objects
 	if ((e.target.value != undefined) && (e.target.id != "textarea") && (e.target.id != "functionName")) {
@@ -1286,58 +1410,115 @@ $(document).bind("click", function(e) {
 			// ==== OWN FUNCTIONS ==== 
 			// check if it's own function so we have to add a semicolon
 			if (e.target.className == 'btn btn-default conditions ownFunctions') {
-				
-				// check if there's already code within the textarea. If not, there's no line break necessary.
-				if ($('#textarea').val() == '')
-					$('#textarea').val('   '+ e.target.value).trigger('autosize.resize');
-				else
-					$('#textarea').val($('#textarea').val() + '\n' +'   '+ e.target.value + ';').trigger('autosize.resize');
-			
+				if (cursorPos == null) {
+					// check if there's already code within the textarea. If not, there's no line break necessary.
+					if ($('#textarea').val() == '')
+						$('#textarea').val('   '+ e.target.value + ';').trigger('autosize.resize');
+					else
+						$('#textarea').val($('#textarea').val() + '\n' +'   '+ e.target.value + ';').trigger('autosize.resize');
+				} else {
+					//cursorPos = $('#textarea').prop('selectionStart');
+		            var v = $('#textarea').val();
+		            var textBefore = v.substring(0,  cursorPos );
+		            var textAfter  = v.substring( cursorPos, v.length );
+		            $('#textarea').val( textBefore + '\n' + '   ' + e.target.value +';' + textAfter ).trigger('autosize.resize');
+					cursorPos += e.target.value.length + 5; // +5 because of the line break, the 3 spaces and the semicolon
+				}
 			// ==== BASIC FUNCTIONS ====
 			// check if it's a basic function so we indent this part in the textarea
 			// so the function will be easier to read in the textarea for user
 			} else if ((e.target.id == "move") || (e.target.id == "turnLeft") || (e.target.id == "pickBeeper") || (e.target.id == "putBeeper")) {
-				
-				// check if there's already code within the textarea. If not, there's no line break necessary.
-				if ($('#textarea').val() == '')
-					$('#textarea').val('   '+ e.target.value).trigger('autosize.resize');
-				else
-					$('#textarea').val($('#textarea').val()+ '\n' +'   '+ e.target.value).trigger('autosize.resize');
-			
+				if (cursorPos == null) {
+					// check if there's already code within the textarea. If not, there's no line break necessary.
+					if ($('#textarea').val() == '')
+						$('#textarea').val('   '+ e.target.value).trigger('autosize.resize');
+					else
+						$('#textarea').val($('#textarea').val()+ '\n' +'   '+ e.target.value).trigger('autosize.resize');
+				} else {
+					//cursorPos = $('#textarea').prop('selectionStart');
+		            var v = $('#textarea').val();
+		            var textBefore = v.substring(0,  cursorPos );
+		            var textAfter  = v.substring( cursorPos, v.length );
+		            $('#textarea').val( textBefore + '\n' + '   ' + e.target.value + textAfter ).trigger('autosize.resize');
+					cursorPos += e.target.value.length + 4; // +4 because of the line break and the 3 spaces
+				}
 			// ==== QUERIES ====
 			// check if it's a query
 			// in that case we don't need a semicolon.		
 			}else if((e.target.id == 'if') || (e.target.id == 'while') || (e.target.id == 'else')) {
-						// check if there's already code within the textarea. If not, there's no line break necessary.
-						if ($('#textarea').val() == '')
-							$('#textarea').val(e.target.value).trigger('autosize.resize');
-						else
-							$('#textarea').val($('#textarea').val() + '\n' + e.target.value).trigger('autosize.resize');
-
+				if (cursorPos == null) {
+					// check if there's already code within the textarea. If not, there's no line break necessary.
+					if ($('#textarea').val() == '')
+						$('#textarea').val(e.target.value).trigger('autosize.resize');
+					else
+						$('#textarea').val($('#textarea').val() + '\n' + e.target.value).trigger('autosize.resize');
+				} else {
+				//	cursorPos = $('#textarea').prop('selectionStart');
+		            var v = $('#textarea').val();
+		            var textBefore = v.substring(0,  cursorPos );
+		            var textAfter  = v.substring( cursorPos, v.length );
+		            $('#textarea').val( textBefore + '\n' + e.target.value + textAfter ).trigger('autosize.resize');
+					cursorPos += e.target.value.length + 1; // +1 because of one line break
+				}
+					
 			// ===== OPERATORS ====
 			// check if there's already a query with its condition in the code
 			// if not, there's no need of '&&' or '||'
 			} else if ((e.target.id == 'bitAnd') || (e.target.id == 'bitOr')) {
-				if (lastBracePos != -1) {
+				if ((lastBracePos != -1) && (cursorPos == null)) {
 					// cut off the last right brace and insert operator
 					$('#textarea').val($('#textarea').val().substring(0,lastBracePos-1));
 					$('#textarea').val($('#textarea').val() + ' ' + e.target.value + ' ').trigger('autosize.resize');
+				
+				} else {
+				//	cursorPos = $('#textarea').prop('selectionStart');
+		            var v = $('#textarea').val();
+		            var textBefore = v.substring(0,  cursorPos-1 );
+		            var textAfter  = v.substring( cursorPos, v.length );
+		            $('#textarea').val( textBefore + ' ' + e.target.value + ' ' + textAfter ).trigger('autosize.resize');
+					cursorPos += e.target.value.length + 1; // +2 because of two spaces, but -1 because of the shortening of textBefore
 				}
 		
 			// ===== BRACES ====
 			// left brace doesn't need line break, just space.
 			// right brace needs one.
 			} else if ((e.target.id == 'braceleft_L') || (e.target.id == 'braceleft_R')) {
-				$('#textarea').val($('#textarea').val() + ' ' + e.target.value).trigger('autosize.resize');
+				if (cursorPos == null) {
+					$('#textarea').val($('#textarea').val() + ' ' + e.target.value).trigger('autosize.resize');
+				} else {
+					//cursorPos = $('#textarea').prop('selectionStart');
+		            var v = $('#textarea').val();
+		            var textBefore = v.substring(0,  cursorPos );
+		            var textAfter  = v.substring( cursorPos, v.length );
+		            $('#textarea').val( textBefore + ' ' + e.target.value + textAfter ).trigger('autosize.resize');
+					cursorPos += e.target.value.length + 1; // +1 because of one space
+				}
 			} else if ((e.target.id == 'braceright_L') || (e.target.id == 'braceright_R')) {
-				$('#textarea').val($('#textarea').val() + '\n' + e.target.value).trigger('autosize.resize');
-			
+				if (cursorPos == null) {
+					$('#textarea').val($('#textarea').val() + '\n' + e.target.value).trigger('autosize.resize');
+				} else {
+				//	cursorPos = $('#textarea').prop('selectionStart');
+		            var v = $('#textarea').val();
+		            var textBefore = v.substring(0,  cursorPos );
+		            var textAfter  = v.substring( cursorPos, v.length );
+		            $('#textarea').val( textBefore + '\n' + e.target.value + textAfter ).trigger('autosize.resize');
+					cursorPos += e.target.value.length + 1; // +1 because of one line break
+				}
 			// ======= REST = CONDITIONS ========
 			// the rest don't get a line break
 			} else {
-				$('#textarea').val($('#textarea').val() + e.target.value).trigger('autosize.resize');
-				lastBracePos = $('#textarea').val().length;
-				console.log(lastBracePos);
+				if (cursorPos == null) {
+					$('#textarea').val($('#textarea').val() + e.target.value).trigger('autosize.resize');
+					lastBracePos = $('#textarea').val().length;
+				} else {
+				//	cursorPos = $('#textarea').prop('selectionStart');
+		            var v = $('#textarea').val();
+		            var textBefore = v.substring(0,  cursorPos );
+		            var textAfter  = v.substring( cursorPos, v.length );
+		            $('#textarea').val( textBefore + e.target.value + textAfter ).trigger('autosize.resize');
+					lastBracePos = $('#textarea').val().length;
+					cursorPos += e.target.value.length;
+				}
 			}
 		}
 	}
@@ -1374,12 +1555,22 @@ $(document).bind("click", function(e) {
 			break;
 	}
 	if (forCounter!=0) {
-		// check if there's already code within the textarea. If not, there's no line break necessary.
-		if ($('#textarea').val() == '')
-			$('#textarea').val('for(var i=0; i<' + forCounter + '; i++)').trigger('autosize.resize');
-		else
-			$('#textarea').val($('#textarea').val() + '\n' + 'for(var i=0; i<' + forCounter + '; i++)').trigger('autosize.resize');
-			
+		if (cursorPos == null) {
+			// check if there's already code within the textarea. If not, there's no line break necessary.
+			if ($('#textarea').val() == '')
+				$('#textarea').val('for(var i=0; i<' + forCounter + '; i++)').trigger('autosize.resize');
+			else
+				$('#textarea').val($('#textarea').val() + '\n' + 'for(var i=0; i<' + forCounter + '; i++)').trigger('autosize.resize');
+		} else {
+			var v = $('#textarea').val();
+            var textBefore = v.substring(0,  cursorPos );
+            var textAfter  = v.substring( cursorPos, v.length );
+            $('#textarea').val( textBefore + '\n' + 'for(var i=0; i<' + forCounter + '; i++)' + textAfter ).trigger('autosize.resize');
+			if (forCounter <10)
+				cursorPos += e.target.value.length + 23;
+			else
+				cursorPos += e.target.value.length + 24;
+		}
 		$('#for').popover('hide');
 		forCounter = 0;
 	}

@@ -738,20 +738,6 @@ $('#facingWestInfo').popover({
 	placement: 'facingWest'
 });
 
-$('#roundBracketleft_LInfo').popover({
-	html: true,
-	title: "roundBracketleft",
-	content: "If you want to prove more than one condition with a query, you have to use these round brackets. If you want e.g. Karel to turn to the left, but only if there's no wall to Karel's left <b>AND</b> he looks to the west, it would look like this:<hr>if( leftIsClear() && facingWest() )<br>&emsp;turnLeft();<hr> As you can see the two conditions are in brackets.<br><b<br><br><b>Watch out!</b><br>Use round brackets only to put conditions in brackets. For basic functions and your own ones use the braces.",
-	placement: 'roundBracketleft_L'
-});
-
-$('#roundBracketright_LInfo').popover({
-	html: true,
-	title: "roundBracketright",
-	content: "If you want to prove more than one condition with a query, you have to use these round brackets. If you want e.g. Karel to turn to the left, but only if there's no wall to Karel's left <b>AND</b> he looks to the west, it would look like this:<hr>if( leftIsClear() && facingWest() )<br>&emsp;turnLeft();<hr> As you can see the two conditions are in brackets.<br><b<br><br><b>Watch out!</b><br>Use round brackets only to put conditions in brackets. For basic functions and your own ones use the braces.",
-	placement: 'roundBracketright_L'
-});
-
 // ================= Initilization of negativ conditions popovers  =====================
 $('#negConditionsSurr').popover({
 	html: true,
@@ -821,20 +807,6 @@ $('#notFacingWestInfo').popover({
 	title: "notFacingWest",
 	content: "Is true if Karel's view is not west-facing; if so, the condition is false.",
 	placement: 'notFacingWest'
-});
-
-$('#roundBracketleft_RInfo').popover({
-	html: true,
-	title: "roundBracketleft",
-	content: "If you want to prove more than one condition with a query, you have to use these round brackets. If you want e.g. Karel to turn to the left, but only if there's no wall to Karel's left <b>AND</b> he looks to the west, it would look like this:<hr>if( leftIsClear() && facingWest() )<br>&emsp;turnLeft();<hr> As you can see the two conditions are in brackets.<br><b<br><br><b>Watch out!</b><br>Use round brackets only to put conditions in brackets. For basic functions and your own ones use the braces.",
-	placement: 'roundBracketleft_R'
-});
-
-$('#roundBracketright_RInfo').popover({
-	html: true,
-	title: "roundBracketright",
-	content: "If you want to prove more than one condition with a query, you have to use these round brackets. If you want e.g. Karel to turn to the left, but only if there's no wall to Karel's left <b>AND</b> he looks to the west, it would look like this:<hr>if( leftIsClear() && facingWest() )<br>&emsp;turnLeft();<hr> As you can see the two conditions are in brackets.<br><b<br><br><b>Watch out!</b><br>Use round brackets only to put conditions in brackets. For basic functions and your own ones use the braces.",
-	placement: 'roundBracketright_R'
 });
 
 
@@ -1020,16 +992,6 @@ $(document).bind("click", function(e) {
 		$('span[id$="Info"][id!="facingWestInfo"]').popover('hide');
 		$('#facingWestInfo').popover('toggle');
 
-	} else if (e.target.id=='roundBracketleft_L') {
-		$('#conditionsSurr').popover('hide');
-		$('span[id$="Info"][id!="roundBracketleft_LInfo"]').popover('hide');
-		$('#roundBracketleft_LInfo').popover('toggle');
-		
-	} else if (e.target.id=='roundBracketright_L') {
-		$('#conditionsSurr').popover('hide');
-		$('span[id$="Info"][id!="roundBracketright_LInfo"]').popover('hide');
-		$('#roundBracketright_LInfo').popover('toggle');
-
 
 // ===========  Popover for the button "Negativ Conditions" and its sub-buttons
 	} else if (e.target.id=="negConditions") {
@@ -1082,16 +1044,6 @@ $(document).bind("click", function(e) {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="notFacingWestInfo"]').popover('hide');
 		$('#notFacingWestInfo').popover('toggle');
-
-	} else if (e.target.id=='roundBracketleft_R') {
-		$('#negConditionsSurr').popover('hide');
-		$('span[id$="Info"][id!="roundBracketleft_RInfo"]').popover('hide');
-		$('#roundBracketleft_RInfo').popover('toggle');
-		
-	} else if (e.target.id=='roundBracketright_R') {
-		$('#negConditionsSurr').popover('hide');
-		$('span[id$="Info"][id!="roundBracketright_RInfo"]').popover('hide');
-		$('#roundBracketright_RInfo').popover('toggle');
 
 
 // ===========  Popover for the button "Basics" and its sub-buttons  =============		
