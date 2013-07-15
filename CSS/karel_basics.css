@@ -1,14 +1,20 @@
+/*#levelPreview {
+	border-width:0.1em;
+	border-color:darkgrey;
+	border-style:solid;
+}*/
+
 /*
 * loop alert
+* there's no need of an arrow for this popover
 */
-.popover.middle {
+.popover.loopAlert {
   background-color:red;
-  
   text-align:center;
   line-height: 2;
   min-width: 50%;
   min-height: 50%;
-  margin-left: 30%;
+  margin-left: 25%;
   margin-top: 30%;
 }
 .bigText {
@@ -19,6 +25,34 @@
   font-size: 1em;
   font-weight:bold;
 }
+
+/*
+* level info
+* there's no need of an arrow for this popover
+*/
+.popover.levelInfo {  
+  text-align:center;
+  line-height: 2;
+  min-width: 50%;
+  min-height: 50%;
+  margin-left: 25%;
+  margin-top: 30%;
+  z-index: 1111;
+}
+.levelHead {
+	font-size:1.25em;
+	font-weight:bold;
+	text-align:center;
+}
+.levelBody {
+	text-align:center;
+}
+#re_back_info {
+	position: absolute;
+	top: 2px;
+	right:2px;
+}
+
 
 /* 
 * customized popovers - basics
@@ -191,6 +225,19 @@
   	margin-left: 10px;
 }
 
+/* 
+* customized popovers - navigation and info
+*/
+.popover.home {
+  	margin-left: -300px;
+}
+.popover.reset {
+  	margin-left: -300px;
+}
+.popover.info{
+  	margin-left: -300px;
+}
+
 
 
 .popover.queriesSurr .arrow {
@@ -327,4 +374,24 @@
   left: 1px;
   border-right-color: #ffffff;
   border-left-width: 0;
+}
+
+.popover.home .arrow,
+.popover.info .arrow,
+.popover.reset .arrow {
+	top: 20px;
+	  right: -11px;
+	  margin-top: -11px;
+	  border-left-color: #999;
+	  border-left-color: rgba(0, 0, 0, 0.25);
+	  border-right-width: 0;
+}
+
+.popover.home .arrow:after,
+.popover.info .arrow:after,
+.popover.reset .arrow:after {
+	right: 1px;
+	  bottom: -10px;
+	  border-left-color: #eee;
+	  border-right-width: 0;
 }

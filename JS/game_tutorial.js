@@ -857,7 +857,7 @@ $('#functionNameInfo').popover({
 $('#textareaInfo').popover({
 	html: true,
 	title: "Function Content",
-	content: "This textarea contains the whole code you write by clicking on the buttons to the right.",
+	content: "This textarea contains the whole code you write by clicking on the buttons to the right. If you want to insert code at a certain position of your written code just click on that position.",
 	placement: 'right'
 });
 
@@ -887,6 +887,29 @@ $('#clearFuncInfo').popover({
 	title: "Clear",
 	content: "Click this button to clear the textarea.",
 	placement: 'right'
+});
+
+
+// ================= Initilization of navigation and info menu  =====================
+$('#homeInfo').popover({
+	html: true,
+	title: "Home",
+	content: "If you want to go back to the home screen, click the home button.<hr>Do you? <button type='button' class='btn' id='homeConfirm'>Yes</button>",
+	placement: 'home'
+});
+
+$('#infoInfo').popover({
+	html: true,
+	title: "Info",
+	content: "Here you can find information about the levels aim.",
+	placement: 'info'
+});
+
+$('#resetInfo').popover({
+	html: true,
+	title: "Reset",
+	content: "Click here if you want to reset the level.",
+	placement: 'reset'
 });
 // 
 // animates the textarea
@@ -1151,8 +1174,29 @@ $(document).bind("click", function(e) {
 		$('span[id$="Info"][id!="rngInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#rngInfo').popover('toggle');
+
+// ===========  Popover for the navigation and info buttons  =============			
+	}else if (e.target.id=="buttonBack") {
+		$('button[id$="s"]').popover('hide');
+		$('span[id$="Info"][id!="homeInfo"]').popover('hide');
+		$('span[id$="Surr"]').popover('hide');
+		$('#homeInfo').popover('toggle');
+
+	} else if (e.target.id=='buttonInfo') {
+		$('button[id$="s"]').popover('hide');
+		$('span[id$="Info"][id!="infoInfo"]').popover('hide');
+		$('span[id$="Surr"]').popover('hide');
+		$('#infoInfo').popover('toggle');
+
+	} else if (e.target.id=='buttonReset') {
+		$('button[id$="s"]').popover('hide');
+		$('span[id$="Info"][id!="resetInfo"]').popover('hide');
+		$('span[id$="Surr"]').popover('hide');
+		$('#resetInfo').popover('toggle');		
 		
-		
+	} else if (e.target.id=='homeConfirm') {
+		this.location.href="./karel_home.html"
+	
 	} else {
 		$('*').popover('hide');
 	}

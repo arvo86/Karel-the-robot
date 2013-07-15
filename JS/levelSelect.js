@@ -21,13 +21,13 @@ function init() {
 	imgObj2.style.left = '1280px'; 
 	imgObj2.style.top = height/2.5;
 	imgObj2.style.width = '35%'; 
-	setTimeout(move, 1000);
-	setTimeout(loadNext, 6000);
+	setTimeout(moveImg, 1000);
+	setTimeout(loadNext, 6500);
 }
 
-function move() {
-	$("#myImage").animate({"left": (width/3)}, 2100);
-	$("#myImage2").animate({"left": (width/3)}, 2100);
+function moveImg() {
+	$("#myImage").animate({"left": (width/3), opacity: 1}, 2100);
+	$("#myImage2").animate({"left": (width/3)}, 1900).fadeTo('slow',1);
 }
 
 function changeHref() {
@@ -54,11 +54,12 @@ function loadNext() {
 * level selection partition
 */
 
-function sichern () {
+function sichern() {
 	if (level!=undefined) {
 		storage.set("level", level);
 		storage.set("speed", 20);
 		storage.set("skill", skill);
+			
 		// usually smartphone size
 	 	if ((window.innerWidth < 1024) && (window.innerWidth > 800))
 			location.href = "../HTML/karel_game_mini.html";
@@ -69,8 +70,9 @@ function sichern () {
 			location.href = "../HTML/karel_game.html";
 	}
 }	
+
 var level;
-var skill = "_1";
+var skill = '_1';
 var isVisible = false;
 var clickAway = false;
 
@@ -104,6 +106,12 @@ $(document).ready(function() {
 		skill = $(this).val();
 		if (level != undefined)
 			$('#levelPreview').attr('src','../images/lvl'+level+skill+'.png');
+	});
+	
+	$('#writeCode').bind("click", function(e) {
+		level = 0;
+		skill = '_0';
+		sichern();
 	});
 	
 	//

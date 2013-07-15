@@ -88,8 +88,7 @@ var liste = storage.getAll();
 for (i in liste) {
 	var level = parseInt(liste["level"]);
 	var speed = parseInt(liste["speed"]);
-	var skill = liste["skill"];
-	
+	var skill = liste["skill"];	
 }
 
 //
@@ -215,6 +214,7 @@ function clearTextarea() {
 	$('#functionName').val('');
 	$('#textarea').val('').trigger('autosize.resize');
 	cursorPos = null;
+	lastBracePos = -1;
 }
 //
 // dynamically match popover to button "your functions", so popover will be updated with own functions
@@ -311,157 +311,419 @@ for(j=0; j<columns; j++) {
 // switch command to choose between the different levels and thus to set walls, beeper(s) and Karel
 //
 switch (level) {
-	// random level
-	case 0:
-		rows = Math.round(Math.random() * (15-2)) + 2;
-		columns = Math.round(Math.random() * (15-2)) + 2;
-		
-		// Karel
-		startX=Math.round(Math.random() * (columns-2)) + 1;
-		startY=Math.round(Math.random() * (rows-2)) + 1;
 	
-		var startDir = Math.round(Math.random() * (4-1)) + 1;
-		if (startDir==1) {
-			startDirection="east";
-			facing.east = true;
-			facing.west = false;
-			facing.south = false;
-			facing.north = false;
-		} else if (startDir==2) {
-			startDirection="west";
-			facing.east = false;
-			facing.west = true;
-			facing.south = false;
-			facing.north = false;
-		} else if (startDir==3) {
-			startDirection="south";
-			facing.east = false;
-			facing.west = false;
-			facing.south = true;
-			facing.north = false;	
-		} else {
-			startDirection="north";
-			facing.east = false;
-			facing.west = false;
-			facing.south = false;
-			facing.north = true;
-		}
-		break;
-		
-	// Level 1: Get the beeper
-	case 1:	
-		// rows and columns
-		rows = 11;
-		columns = 11;
-		// horizontal walls
-		for (i=4; i<8; i++)
-			wallH[i][3.5] = true;
-		for (i=4; i<8; i++)
-			wallH[i][7.5] = true;
-			// vertical walls	
-		for (i=4; i<8; i++)
-			wallV[3.5][i] = true;
-		for (i=4; i<6; i++)
-			wallV[7.5][i] = true;
-		wallV[7.5][7] = true;
-		// Beeper
-		beeperAtStart(8,6);
-		// Karel
-		startX=4;
-		startY=7;
-		startDirection="east";	
-		break;
-		
-	// Level 2: Use a Condition to get the beeper
-	case 2: 
-		// rows and columns
-		rows = 3;
-		columns = 12;
-		
-		// Beeper
-		beeperAtStart(10,1);
-		
-		// Karel
-		startX=1;
-		startY=1;
-		startDirection="east";
-		break;
-		
-	// Level 3: Let there be beepers
-	case 3:
-		// rows and columns
-		rows = 3;
-		columns = 11;
-		// Beeper
-		for (i=1; i<5; i++)
-			beeperAtStart(i,1);
-		for (i=6; i<11; i++)
-			beeperAtStart(i,1);
+	case 0:	
+			// rows and columns
+			rows = 10;
+			columns = 10;
+			// Beeper
+			beeperAtStart(4,3);
+			// horizontal walls
+			wallH[3][6.5] = true;
+			wallH[4][6.5] = true;
+			wallH[5][6.5] = true;
+			wallH[3][2.5] = true;
+			wallH[4][2.5] = true;
+			wallH[5][2.5] = true;
+			//vertical walls
+			wallV[2.5][3] = true;
+			wallV[2.5][4] = true;
+			wallV[2.5][5] = true;
+			wallV[2.5][6] = true;
 			// Karel
-		startX=1;
-		startY=1;
-		startDirection="east";
-		break;
+			startX=3;
+			startY=3;
+			startDirection="east";	
+			break;
+	
+	// Level 1: 
+	case 1:	
+		if(skill == '_1') {
+			// rows and columns
+			rows = 6;
+			columns = 10;
+			// Beeper
+			beeperAtStart(3,1);
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";	
+			break;
 		
-	// Level 4: Build columns out of beepers
+		} else if (skill == '_2') {
+			// rows and columns
+			rows = 4;
+			columns = 7;
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";	
+			break;
+			
+		} else if (skill == '_3') {
+			// rows and columns
+			rows = 12;
+			columns = 12;
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";	
+			break;
+		}
+		
+	// Level 2: 
+	case 2: 
+		if (skill == '_1') {
+			// rows and columns
+			rows = 6
+			columns = 10;
+			// Beeper
+			beeperAtStart(3,1);
+			beeperAtStart(3,2);
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";
+			break;
+			
+		} else if (skill == '_2') {
+			// rows and columns
+			rows = 4;
+			columns = 15;
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";	
+			break;
+			
+		} else if (skill == '_3') {
+			// rows and columns
+			rows = 12;
+			columns = 12;
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";	
+			break;
+		}
+		
+	// Level 3: 
+	case 3:
+		if (skill == '_1') {
+			// rows and columns
+			rows = 6;
+			columns = 10;
+			// Beeper
+			beeperAtStart(3,1);
+			// Karel
+			startX=1;
+			startY=3;
+			startDirection="east";
+			break;
+			
+		} else if (skill == '_2') {
+			// rows and columns
+			rows = 12;
+			columns = 12;
+			// Beeper
+			beeperAtStart(1,1);
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";
+			break;
+			
+		} 	else if (skill == '_3') {
+				// rows and columns
+				rows = 12;
+				columns = 12;
+				// Karel
+				startX=1;
+				startY=1;
+				startDirection="east";
+				break;
+		}
+		
+	// Level 4: 
 	case 4:
-		// rows and columns
-		rows = 10;
-		columns = 10;
-		// horizontal walls
-		for (i=1; i<10; i+=4)
-			wallH[i][5.5] = true;
-		for (i=2; i<10; i+=2)
-			wallH[i][6.5] = true;
-		for (i=3; i<10; i+=4)
-			wallH[i][7.5] = true;
+		if (skill == '_1') {
+			// rows and columns
+			rows = 7;
+			columns = 10;
+			// Beeper
+			beeperAtStart(3,4);
+			// Karel
+			startX=1;
+			startY=4;
+			startDirection="east";
+			break;
+			
+		} else if (skill =='_2') {
+			// rows and columns
+			rows = 6;
+			columns = 10;
+			// horizontal walls
+			for (i=1;i<5;i++)
+				wallH[i][4.5] = true;
+			for (i=6;i<10;i++)
+				wallH[i][4.5] = true;
 			// vertical walls
-		wallV[1.5][6] = true;
-		wallV[4.5][6] = true;
-		wallV[5.5][6] = true;
-		wallV[8.5][6] = true;
-		wallV[2.5][7] = true;
-		wallV[3.5][7] = true;
-		wallV[6.5][7] = true;
-		wallV[7.5][7] = true;
-		// Beeper
-		beeperAtStart(1,4);
-		beeperAtStart(1,5);
-		beeperAtStart(5,1);
-		beeperAtStart(5,2);
-		beeperAtStart(5,4);
-	 	beeperAtStart(9,1);
-		beeperAtStart(9,3);
-		beeperAtStart(9,5);
-		// Karel
-		startX=1;
-		startY=1;
-		startDirection="east";
-		break;
+			for (i=1;i<5;i++)
+				wallV[4.5][i] = true;
+			for (i=1;i<5;i++)
+				wallV[5.5][i] = true;
+			// beeper
+			for (j=1;j<5;j++) {
+				for (i=1;i<5;i++) {
+					beeperAtStart(j,i)
+				}
+			}
+			for (j=6;j<10;j++) {
+				for (i=1;i<5;i++) {
+					beeperAtStart(j,i);
+				}
+			}
+			// karel
+			startX=1;
+			startY=5;
+			startDirection="east";
+			break;
+			
+		} else if (skill == '_3') {
+			// rows and columns
+			rows = 12;
+			columns = 12;
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";
+			break;
+		}
 		
-	// Level 5: Make a chessfield 
+	// Level 5: 
 	case 5:
-		// rows and columns
-		rows = 10;
-		columns = 10;
-		// Karel
-		startX=1;
-		startY=1;
-		startDirection="east";
-		break;
-		
+		if (skill == '_1') {
+			// rows and columns
+			rows = 6;
+			columns = 10;
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";
+			break;
+			
+		} else if (skill == '_2') {
+			// rows and columns
+			rows = 12;
+			columns = 12;
+			// vertical walls
+			wallV[5.5][5] = true;
+			wallV[4.5][5] = true;
+			wallV[4.5][4] = true;
+			wallV[6.5][4] = true;
+			wallV[6.5][5] = true;
+			wallV[6.5][6] = true;
+			for (i=3;i<7;i++){
+				wallV[3.5][i] = true;
+			}
+			for (i=3;i<8;i++){
+				wallV[7.5][i] = true;
+			}
+			for (i=2;i<8;i++){
+				wallV[2.5][i] = true;
+			}
+			for (i=2;i<9;i++){
+				wallV[8.5][i] = true;
+			}
+			// horizontal walls
+			wallH[5][5.5] = true;
+			wallH[5][3.5] = true;
+			wallH[6][3.5] = true;
+			wallH[6][6.5] = true;
+			wallH[5][6.5] = true;
+			wallH[4][6.5] = true;
+			wallH[4][2.5] = true;
+			wallH[5][2.5] = true;
+			wallH[6][2.5] = true;
+			wallH[7][2.5] = true;
+			for (j=3;j<8;j++){
+				wallH[j][7.5] = true;
+			}
+			for (j=3;j<9;j++){
+				wallH[j][1.5] = true;
+			}
+			for (j=3;j<9;j++){
+				wallH[j][8.5] = true;
+			}
+			// beeper
+			beeperAtStart(2,8);
+			// Karel
+			startX=5;
+			startY=5;
+			startDirection="east";
+			break;	
+			
+		} else if (skill == '_3') {
+			// rows and columns
+			rows = 11;
+			columns = 11;
+			// beepers
+			for (j=6;j<11;j++) {
+				for (i=1;i<11;i++) {
+					beeperAtStart(j,i);
+				}
+			}
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";
+			break;
+		}
 	// Level 6: Find the middle
 	case 6:
-		// rows and columns
-		rows = 3;
-		columns = 10;
-		// Karel
-		startX=1;
-		startY=1;
-		startDirection="east";
-		break;
+		if (skill == '_1') {
+			// rows and columns
+			rows = 6;
+			columns = 10;
+			// beepers
+			for (i=1;i<5;i++)
+				beeperAtStart(i,1);
+			for (i=6;i<10;i++)
+				beeperAtStart(i,1);
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";
+			break;
+			
+		} else if (skill == '_2') {
+			// rows and columns
+			rows = 10;
+			columns = 10;
+			// horizontal walls
+			for (i=1; i<10; i+=4)
+				wallH[i][5.5] = true;
+			for (i=2; i<10; i+=2)
+				wallH[i][6.5] = true;
+			for (i=3; i<10; i+=4)
+				wallH[i][7.5] = true;
+				// vertical walls
+			wallV[1.5][6] = true;
+			wallV[4.5][6] = true;
+			wallV[5.5][6] = true;
+			wallV[8.5][6] = true;
+			wallV[2.5][7] = true;
+			wallV[3.5][7] = true;
+			wallV[6.5][7] = true;
+			wallV[7.5][7] = true;
+			// Beeper
+			beeperAtStart(1,4);
+			beeperAtStart(1,5);
+			beeperAtStart(5,1);
+			beeperAtStart(5,2);
+			beeperAtStart(5,4);
+		 	beeperAtStart(9,1);
+			beeperAtStart(9,3);
+			beeperAtStart(9,5);
+			// Karel
+			startX=1;
+			startY=1;
+			startDirection="east";
+			break;	
+			
+		} else if (skill == '_3') {
+			// rows and columns
+			rows = 12;
+			columns = 12;
+			// horizontal walls
+			for (j=1; j<2; j++) {
+				for(i=1; i<10; i+=3) {
+					wallH[j][i+0.5] = true;
+				}
+			}
+			for(i=1; i<10; i+=3) {
+				wallH[3][i+0.5] = true;
+			}
+			for (j=5; j<9; j++) {
+				for(i=1; i<10; i+=3) {
+					wallH[j][i+0.5] = true;
+				}
+			}
+			for (j=10; j<12; j++) {
+				for(i=1; i<10; i+=3) {
+					wallH[j][i+0.5] = true;
+				}
+			}
+			for (j=1; j<2; j++) {
+				for(i=2; i<10; i+=3) {
+					wallH[j][i+0.5] = true;
+				}
+			}
+			for(i=2; i<10; i+=3) {
+				wallH[3][i+0.5] = true;
+			}
+			for (j=5; j<9; j++) {
+				for(i=2; i<10; i+=3) {
+					wallH[j][i+0.5] = true;
+				}
+			}
+			for (j=10; j<12; j++) {
+				for(i=2; i<10; i+=3) {
+					wallH[j][i+0.5] = true;
+				}
+			}
+			for (j=3; j<12; j++) {
+				wallH[j][10.5] = true;
+			}
+			wallH[2][1.5] = true;
+			wallH[2][2.5] = true;
+			wallH[2][4.5] = true;
+			wallH[2][5.5] = true;
+			wallH[2][7.5] = true;
+			wallH[1][10.5] = true;
+			wallH[4][5.5] = true;
+			wallH[4][7.5] = true;
+			wallH[4][8.5] = true;
+			wallH[9][1.5] = true;
+			wallH[9][2.5] = true;
+			wallH[9][4.5] = true;
+			wallH[9][8.5] = true;
+			// vertical walls
+			wallV[3.5][3] = true;
+			wallV[3.5][4] = true;
+			wallV[4.5][3] = true;
+			wallV[4.5][4] = true;
+			wallV[4.5][1] = true;
+			wallV[8.5][6] = true;
+			wallV[9.5][7] = true;
+			wallV[8.5][7] = true;
+			wallV[9.5][6] = true;
+			wallV[1.5][9] = true;
+			wallV[1.5][10] = true;
+			wallV[2.5][9] = true;
+			wallV[2.5][10] = true;
+			wallV[3.5][1] = true;
+			// beeper
+			for (j=1;j<12;j++) {
+				for (i=2;i<12;i+=3) {
+					beeperAtStart(j,i);
+				}
+			}
+			beeperAtStart(4,1);
+			beeperAtStart(4,3);
+			beeperAtStart(4,4);
+			beeperAtStart(9,6);
+			beeperAtStart(9,7);
+			beeperAtStart(2,9);
+			beeperAtStart(2,10);
+			// Karel
+			startX=4;
+			startY=1;
+			startDirection="east";	
+			break;
+		}
 }
-//
+
 // set horizontal outer walls true
 //
 for(j=0; j<columns; j++) {
@@ -1152,13 +1414,248 @@ function test3() {
 		move();
 	}
 }
+
+
 // ==== LOOP ALERT ====
 // popover for loop alert
 $('#loopAlert').popover({
 	html: true,
-	content: "<br><hr><span class='bigText'>Infinite loop!!!</span><hr><span id='smallText'>Karel wouldn't stop putting beepers down.</span>",
-	placement: 'middle'
+	content: "<br><hr><span class='bigText'>Infinite loop!!!</span><hr><span id='smallText'>placeholder</span>",
+	placement: 'loopAlert'
 });
+
+// ==== LEVEL INFO ====
+// popover for level info
+$('#levelInfoFalse').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'><b>Oh! Something went wrong. <br><br>Please try it again.</b></span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_0').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>This is Karel's world. As you can see it's very simple.<br>Karel waits for you to give him some commands. He only knows 4 commands. He is able to <b>move</b>, to <b>turn left</b>, to <b>pick up</b> and to <b>put down</b> a beeper. You find these commands at the <b>'Basics'</b>-button.<br><br>Now try it yourself! Let Karel take one step forward with the <b>move</b> command. Just click on <b>move</b>. To let Karel begin click on the <b>Start<b>-button.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_1').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Great! You see, that was quite easy. Now say Karel he shall <b>pick up</b> the beeper he's standing on. Remember, you can find all comands at the <b>Basics</b>-button.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_2').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Really good! Now let's combine two commands. Let Karel take <b>one step forward</b> and after that he shall <b>put down</b> a beeper.<br></span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_3').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Great! You learn very fast! You already know how to control Karel. Now it's time to learn something new.<br><br>In the next exercise we want Karel to decide himself what he'll do. Sounds strange? It's very easy.<br>We want Karel to move one step forward, but only if he stands on a beeper. Take a look at the <b>Queries</b>-button; there you can find the <b>if</b>-button, with whom Karel can prove things. Those things Karel can prove are called <b>conditions</b>. Now let's prove if Karel stands on a beeper.<br>To do this click on the <b>if</b>-button and after that add a <b>condition</b> Karel shall prove. In our case <b>beepersPresent</b>. Only add <b>move</b> and we're done. Now Karel will prove if he stands on a beeper and if so, he will make a step forward.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_4').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Very good! Now write the same function again and see what happens.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_5').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>As you see you see nothing. :)<br>That's because Karel would have moved only if he would have stood on a beeper. As it wasn't the case, Karel didn't do anything. When Karel proves a condition and it isn't true, we can give Karel an alternative command for this case. To give Karel an alternative command you can use the <b>else</b>-button.<br>Now prove one more time if Karel stands on a beeper and if so let him <b>move</b>. After that click on the <b>else</b>-button to give Karel an <b>alternative command</b> and then click <b>putBeeper</b>. Karel will now check if he stands on a beeper; if so, he will make a step, if not, he'll put a <b>beeper down</b>.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_6').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Very fascinating, isn't it?<br>Okay enough <b>if</b>-queries for now. Let Karel walk to the wall. But instead of writing three times <b>move</b> we use a <b>for</b>-loop. A <b>for</b>-loop will reapeat a command as often as you say.<br>So let Karel repeat one <b>move</b> three times. Click on the <b>for</b>-button and choose 3. After that choose a command. In our case <b>move</b>.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_7').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Very good. Now you know the <b>for</b>-loop.<br>Let's try to save a function. As we stand against the wall write a function so Karel will turn around. Click twice on <b>turnLeft</b> and give your function a name. Call it <b>turnAround</b> and write it in the textfield above your function. Then click on <b>Save</b>. After you saved it, you can see your function at the <b>Own functions</b>-button. Click on the function <b>turnAround</b> and execute the code.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_8').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Nice job! There's only one more <b>query</b> to learn. Karel's now facing west. We want Karel to walk forward until he stands in front of a wall. To do that, we use the <b>while</b>-loop. Basically the <b>while</b>-loop works like the <b>if</b>-query. It proves a condition and if the condition is true, the function within the loop will be performed. Otherwise not.<br> But the big difference is that the <b>while</b>-loop proves the <b>condition</b> again and again until it is <b>false.</b> Only then it also stops with executing the function within.<br>So now click on the <b>while</b>-button and then on the <b>frontIsClear</b>-button. This condition is true, if there's no wall in front of Karel. Finally you have to tell Karel what to do after check the condition. So click on <b>move</b>. <br></span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_9').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Perfect! You're very good. Sometimes you want to prove more than one conditions. So let's try it.<br> For this purpose we got the <b>operators</b>. Therby we can distinguish between the <b>&&</b>- and the <b>| |</b>- operator. The first one is the <b>AND</b>-operator. It's been used to prove two conditions. <b>Only</b> if <b>both conditions</b> are <b>true</b>, the query will execute the function within. The second operator is the <b>OR</b>-operator. It also proves more than one condition, but the big difference to the <b>AND</b>-operator is, that Karel will perform the function within if <b>at least one condition</b> is <b>true</b>. Only if none of them is true, he won't do anything.<br>Try to prove if Karel <b>stands on a beeper</b> <b>and</b> if he's <b>facing west</b>. Then tell him to <b>turn around</b>.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_10').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Well, it really seems that you have got the knack!<br> One last thing yet. If you want to give Karel more than one command in a query you have to use braces. Otherwise your function won't work correctly. At the end let's use a <b>negativ condition</b> and check if Karel's <b>right side</b> is <b>blocked</b>. As there's a wall, Karel will perform your functions. After clicking the <b>negativ condition</b> insert an <b>open brace</b>. Add the functions <b>move</b> and <turnLeft</b> subsequently. Finally add a <b>close brace</b><br></span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo0_11').popover({
+	html: true,
+	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'><b>Congratulations!!!</b> <br> You've completed the tutorial! Now go to the real game and manhandle all levels in all severities.<br><br><b>GOOD LUCK!!</b></span>",
+	placement: 'levelInfo'
+});
+
+
+
+
+$('#levelInfo1_1').popover({
+	html: true,
+	title: "<span class='levelHead'> Beginner: Level 1</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>At the beginning you get a very easy task. As you can see, Karel stands bottom left in the corner. On position [3,1] there's a beeper. <br>(The 3 stands for the value of the x-axis, wich proceeds horizontally and the 1 stands for the value of the y-axis, wich proceeds vertically.)<br><br>Now just order Karel to move to the beeper and pick it up.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo2_1').popover({
+	html: true,
+	title: "<span class='levelHead'> Beginner: Level 2</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>This one is also quite easy. You have to go with Karel to the beeper and pick it up. After that you have to pick up the second beeper.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo3_1').popover({
+	html: true,
+	title: "<span class='levelHead'> Beginner: Level 3</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>You just learned the basic movements. <br>Now it's time to write your <b>first own function</b>.<br>In that level you have to do something Karel isn't able to do yet. To reach the beeper you have to turn to the right. Just write a function called turnRight and save it. Now use this new function to pick up the beeper.</span>",
+	placement: 'levelInfo'
+});
+$('#levelInfo4_1').popover({
+	html: true,
+	title: "<span class='levelHead'> Beginner: Level 4</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>In this level you're going to learn how to use the <b>if-query.</b><br> Move Karel to the beeper and then say Karel that he shall turn to the left but only if he stands on a beeper. If you this <b>if-query</b> beside the beeper, you'll see that Karel won't move.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo5_1').popover({
+	html: true,
+	title: "<span class='levelHead'> Beginner: Level 5</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>We want Karel to move from left to right. One way to order Karel this is to write sufficient 'move'-functions. But you shall know: most programmers are lazy people. :-) They don't like to write much code. So what's shorter than to wirite a lot of move's to get Karel to the other side?<br> The answer is the <b>for-loop</b>.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo6_1').popover({
+	html: true,
+	title: "<span class='levelHead'> Beginner: Level 6</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Now it's time for your first <b>while-loop</b>.<br> As you might already know the <b>while-loop</b> proves a condition and executes the function within the loop as long as the condition is proven as true.<br> In this level Karel stands in a row full of beepers except of one position. Say Karel he shall move as long as he stands on a beeper and than stop at the position where no beeper is and put one beeper down.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo1_2').popover({
+	html: true,
+	title: "<span class='levelHead'> Advanced: Level 1</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>You've already gained some experiences with the <b>while-loop</b>. Now try to write and save another function wich you could name walkToWall.<br> This function shall order Karel to move until the other side of his world. <br>But it also should work in all different sized levels.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo2_2').popover({
+	html: true,
+	title: "<span class='levelHead'> Advanced: Level 2</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>In the level before you saved a new function which let Karel walk till the opposite wall. All you got to do now is try your function in this world and see if it still works. If so, your function works just perfectly.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo3_2').popover({
+	html: true,
+	title: "<span class='levelHead'> Advanced: Level 3</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Karel stands in the buttom left corner again. Try to write a function which let Karel walk from corner to corner until he stands again bottom left on his beeper. To make it a bit harder, try to put down a beeper in each corner.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo4_2').popover({
+	html: true,
+	title: "<span class='levelHead'> Advanced: Level 4</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Karel stands on a street made of beepers. But there's a hole in the street where no beepers are. Try to fill up the hole with beepers and then go to the opposite wall.<br> Little hint: Use the <b>while-loop</b> and check the wall to the right of you, you walk on.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo5_2').popover({
+	html: true,
+	title: "<span class='levelHead'> Advanced: Level 5</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Karel is in the middle of a helix. Write a function that will lead out of the helix and get the beeper.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo6_2').popover({
+	html: true,
+	title: "<span class='levelHead'> Advanced: Level 6</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>As you can see there's a roof. The beeper shall form columns wich hold the roof. But the columns aren't completely yet. <br>Write a function to fill up the remaining holes of the coulumns with beepers.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo1_3').popover({
+	html: true,
+	title: "<span class='levelHead'> Expert: Level 1</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>This level is completely empty yet. Your job is to put down beepers in the complete level in form of a chessboard.<br> That means that you're not allowed to put two beepers next to each other in a row or a cloumn, only diagonally. </span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo2_3').popover({
+	html: true,
+	title: "<span class='levelHead'> Expert: Level 2</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Write a function so Karel will form a huge 'X' out of beepers from buttom left to top right and top left to buttom right. <br>The middle of this cross will be position [6,6]</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo3_3').popover({
+	html: true,
+	title: "<span class='levelHead'> Expert: Level 3</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Try to find the middle [6,6] of this level and put down a beeper.<br>Little hint: First try to find the middle of the horizontal plain and after that of the vertical.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo4_3').popover({
+	html: true,
+	title: "<span class='levelHead'> Expert: Level 4</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Do you remember the level before where you put a beeper in the middle? Now we do the opposite. Write some code that let Karel put down beepers on every single position of the level except of the middle [6,6].</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo5_3').popover({
+	html: true,
+	title: "<span class='levelHead'> Expert: Level 5</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>Half of this level is full of beepers, the other half is empty. Write a function for Karel, so he will pick up all the beepers from the right and put it down on the left.</span> ",
+	placement: 'levelInfo'
+});
+$('#levelInfo6_3').popover({
+	html: true,
+	title: "<span class='levelHead'> Expert: Level 6</span><button type='button' class='close' aria-hidden='false'>x</button>",
+	content: "<br><span class='levelBody'>This is the last level. If you're able to complete this one too, your programming skills are already quite good.<br> The task is very simple. Just collect all beepers.</span> ",
+	placement: 'levelInfo'
+});
+
+/*
+* this will open the popover with the info for the current level
+*/
+function levelInfo() {
+
+		$('#levelInfo'+level+skill).popover('toggle');
+}
+/*
+* this will open a popover if the user did not enter the correct code
+*/
+function levelInfoFalse() {
+	$('#levelInfoFalse').popover('toggle');
+}
+
+/*
+* ===== MENU BUTTONS =======
+* event listenter for the menu buttons in the upper right corner
+*/
+$(document).bind('click', function(e) {
+	
+	// this will show inofrmation about the level and how the player is able to solve it
+	if(e.target.id == 'buttonInfo') {
+		levelInfo();
+	
+	// this will the player redirect to the level selection
+	} else if (e.target.id == 'buttonBack') {
+		window.location.href = 'karel_home.html';
+	
+	// this will the player redirect to the level selection
+	} else if (e.target.id == 'buttonReset') {
+		window.location.href = 'karel_game.html';
+	
+	// hide the levelInfo popover by clicking anywhere
+	} else
+		$('#levelInfo'+level+skill).popover('hide');
+});
+
+
+
 
 /*
 * ===== INFINITE LOOPS ======
@@ -1229,16 +1726,170 @@ var negTurnLeft0 = "while(noBeepersPresent())\n   turnLeft();";
 var negTurnLeft1 = "while(noBeepersInBag())\n   turnLeft();";
 
 
-
-
+// will show a popover if the player wants to run a infinite loop
 function loopAlert() {
 	$('#loopAlert').popover('toggle');
 }
 
+
+/*
+* ====Tutorial variables =====
+* these variable prove if the user writes the correct code in the tutorial
+*/
+var step0 = "   move();"
+var step1 = "   pickBeeper();"
+var step2 = "   move();\n   putBeeper();"
+var step3 = "if(beepersPresent())\n   move();";
+var step4 = "if(beepersPresent())\n   move();";
+var step5 = "if(beepersPresent())\n   move();\nelse\n   putBeeper();";
+var step6 = "for(var i=0; i<3; i++)\n   move();";
+var step7 = "   turnAround();";
+var step8 = "while(frontIsClear())\n   move();";
+var step9 = "if(rightIsClear() && facingWest())\n   turnAround();";
+var step10 = "if(rightIsBlocked()) {\n   move();\n   turnLeft();\n}";
+
+
+// reference to the value of the textarea
+var input;
 function userInput() {
-	var input = $('#textarea').val();
 	
-	if ((input.indexOf(put0)!='-1') || (input.indexOf(put1)!='-1') || (input.indexOf(put2)!='-1') || (input.indexOf(put3)!='-1') || (input.indexOf(put4)!='-1') || (input.indexOf(put5)!='-1') || (input.indexOf(put6)!='-1') || (input.indexOf(put7)!='-1') || (input.indexOf(put8)!='-1') || (input.indexOf(negPut0)!='-1') || (input.indexOf(negPut1)!='-1') || (input.indexOf(negPut2)!='-1') || (input.indexOf(negPut3)!='-1') || (input.indexOf(negPut4)!='-1') || (input.indexOf(negPut5)!='-1') || (input.indexOf(negPut6)!='-1') || (input.indexOf(negPut7)!='-1') || (input.indexOf(negPut8)!='-1')) {
+	input = $('#textarea').val();
+	
+	
+	/*
+	* ====Tutorial =====
+	* this is only important for level zero aka tutorial
+	*/
+	if(level == '0') {
+
+		if (skill == '_0'){
+			if (input.indexOf(step0)!='-1') {
+				clearTextarea();
+				skill = '_1';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}	
+		} else if (skill == '_1'){
+			if (input.indexOf(step1)!='-1') {
+				clearTextarea();
+				skill = '_2';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		} else if (skill == '_2'){
+			if (input.indexOf(step2)!='-1') {
+				clearTextarea();
+				skill = '_3';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		} else if (skill == '_3'){
+			if (input.indexOf(step3)!='-1') {
+				clearTextarea();
+				skill = '_4';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		} else if (skill == '_4'){
+			if (input.indexOf(step4)!='-1') {
+				clearTextarea();
+				skill = '_5';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		} else if (skill == '_5'){
+			if (input.indexOf(step5)!='-1') {
+				clearTextarea();
+				skill = '_6';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		} else if (skill == '_6'){
+			if (input.indexOf(step6)!='-1') {
+				clearTextarea();
+				skill = '_7';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		} else if (skill == '_7'){
+			if (input.indexOf(step7)!='-1') {
+				clearTextarea();
+				skill = '_8';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		} else if (skill == '_8'){
+			if (input.indexOf(step8)!='-1') {
+				clearTextarea();
+				skill = '_9';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		} else if (skill == '_9'){
+			if (input.indexOf(step9)!='-1') {
+				clearTextarea();
+				skill = '_10';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		} else if (skill == '_10'){
+			if (input.indexOf(step10)!='-1') {
+				clearTextarea();
+				skill = '_11';
+				eval(input);
+				setTimeout(levelInfo,1000);
+			} else {
+				clearTextarea();
+				levelInfoFalse();
+				setTimeout(levelInfoFalse, 2000);
+			}
+		}
+	
+	/*
+	* ===== DETECT INFINITE LOOPS ===== 
+	* these queries are used to detect the infinte loops
+	*/
+	} else if ((input.indexOf(put0)!='-1') || (input.indexOf(put1)!='-1') || (input.indexOf(put2)!='-1') || (input.indexOf(put3)!='-1') || (input.indexOf(put4)!='-1') || (input.indexOf(put5)!='-1') || (input.indexOf(put6)!='-1') || (input.indexOf(put7)!='-1') || (input.indexOf(put8)!='-1') || (input.indexOf(negPut0)!='-1') || (input.indexOf(negPut1)!='-1') || (input.indexOf(negPut2)!='-1') || (input.indexOf(negPut3)!='-1') || (input.indexOf(negPut4)!='-1') || (input.indexOf(negPut5)!='-1') || (input.indexOf(negPut6)!='-1') || (input.indexOf(negPut7)!='-1') || (input.indexOf(negPut8)!='-1')) {
 		$('#loopAlert').popover('toggle');
 		$('#smallText').text("Karel wouldn't stop trying to put down beepers.");
 		setTimeout (loopAlert, 3000);
@@ -1256,8 +1907,11 @@ function userInput() {
 	} else if ((input.indexOf(turnLeft0)!='-1') || (input.indexOf(turnLeft1)!='-1') || (input.indexOf(negTurnLeft0)!='-1') || (input.indexOf(negTurnLeft1)!='-1')) {	
 		$('#loopAlert').popover('toggle');
 		$('#smallText').text("Karel wouldn't stop trying to turn to the left.");
-		setTimeout (loopAlert, 3000);
-		
+		setTimeout (loopAlert, 3000);	
+	
+	//
+	// if everything's fine the code will be executed
+	//	
 	} else
 		eval(input);
 			
@@ -1470,7 +2124,7 @@ $(document).bind("click", function(e) {
 					$('#textarea').val($('#textarea').val().substring(0,lastBracePos-1));
 					$('#textarea').val($('#textarea').val() + ' ' + e.target.value + ' ').trigger('autosize.resize');
 				
-				} else {
+				} else if ((lastBracePos != -1) && (cursorPos != null)) {
 				//	cursorPos = $('#textarea').prop('selectionStart');
 		            var v = $('#textarea').val();
 		            var textBefore = v.substring(0,  cursorPos-1 );

@@ -28,7 +28,13 @@
 <body>	
 <div id="fullScreen" class= "fullScreen">
 	<div id="upperScreen">
-		<img id="logo" src="../images/LogoO_L.png">
+		<img id="logo" src="../images/LogoO_L.png"><br>
+		
+		<div class="btn-group" id="re_back_info">
+			<button type="button" id="buttonBack" class="btn"><i id="buttonBack" class="icon-home"></i> Home</button>
+			<button type="button" id="buttonInfo" class="btn"><i id="buttonInfo" class="icon-info-sign"></i> Info</button>
+			<button type="button" id="buttonReset" class="btn"><i id="buttonReset" class="icon-refresh"></i> Reset</button>
+		</div>
 	</div>
 	
 	<!-- =========== left screen ============ -->
@@ -43,7 +49,7 @@
 				<input type="range" name="rng" value="50" id="rng" min="0" max="125" step="25" onchange="showValue(this.value)" /><br>
 			</form>
 			<div id="startSaveClear" class="btn-group">
-				<button type="button" name="start" class="btn btn-success" value="" id="start" onclick="userInput()"><i class="icon-play icon-white"></i> Start</button>	
+				<button type="button" name="start" class="btn btn-success" value="" id="start" onclick="userInput()"><i id="start" class="icon-play icon-white"></i> Start</button>	
 				<button type="button" name="saveFunc" class="btn btn-warning" value="" id="saveFunc" onclick="saveFunction()"><i class="icon-hdd icon-white"></i> Save</button>	
 				<button type="button" name="clearFunc" class="btn btn-danger" value="" id="clearFunc" onclick="clearTextarea()"><i class="icon-remove-circle icon-white"></i> Clear</button>	
 			</div>
@@ -53,7 +59,7 @@
 	<!-- =========== right screen ============ -->
 	
 	<div id= "rightScreen" class= "rightScreen">
-		<span id="loopAlert"></span>
+		<span id="loopAlert"></span><span id="levelInfoFalse"></span><span id="levelInfo0_0"></span><span id="levelInfo0_1"></span><span id="levelInfo0_2"></span><span id="levelInfo0_3"></span><span id="levelInfo0_4"></span><span id="levelInfo0_5"></span><span id="levelInfo0_6"></span><span id="levelInfo0_7"></span><span id="levelInfo0_8"></span><span id="levelInfo0_9"></span><span id="levelInfo0_10"></span><span id="levelInfo0_11"></span><span id="levelInfo1_1"></span><span id="levelInfo2_1"></span><span id="levelInfo3_1"></span><span id="levelInfo4_1"></span><span id="levelInfo5_1"></span><span id="levelInfo6_1"></span><span id="levelInfo1_2"></span><span id="levelInfo2_2"></span><span id="levelInfo3_2"></span><span id="levelInfo4_2"></span><span id="levelInfo5_2"></span><span id="levelInfo6_2"></span><span id="levelInfo1_3"></span><span id="levelInfo2_3"></span><span id="levelInfo3_3"></span><span id="levelInfo4_3"></span><span id="levelInfo5_3"></span><span id="levelInfo6_3"></span>
 		
 		<!-- =========== select buttons ============ -->
 		<div class="btn-group" id="upperRow">	
@@ -190,7 +196,103 @@
 		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   	})();
+	
 
+	$(window).load(function() {
+		levelInfo();
+	/*	if(level==1){
+			if (skill == '_1'){
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 1");
+				$('.levelBody').html("At the beginning you get a very easy task. As you can see, Karel stands bottom left in the corner. On position [3,1] there's a beeper. <br>(The 3 stands for the value of the x-axis, wich proceeds horizontally and the 1 stands for the value of the y-axis, wich proceeds vertically.)<br><br>Now just order Karel to move to the beeper and pick it up.");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 1");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 1");
+				$('.levelBody').html("Just do blablabla");
+			}
+		
+		} else if(level==2) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 2");
+				$('.levelBody').html("This onw is also quite easy. You have to go with Karel to the beeper and pick it up. After that you have to pick up the second beeper.");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 2");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 2");
+				$('.levelBody').html("Just do blablabla");
+			}
+			
+		} else if(level==3) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 3");
+				$('.levelBody').html("You just learned the basic movements. <br>Now it's time to wirte your <b>first own function</b>.<br>In that level you have to do something Karel isn't able to do yet. To reach the beeper you have to turn to the right. Just wirte a function called turnRight and save it. Now use this new function to pick up the beeper.");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 3");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 3");
+				$('.levelBody').html("Just do blablabla");
+			}
+			
+		} else if(level==4) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 4");
+				$('.levelBody').html("In this level you're going to learn how to use the <b>if-query.</b><br> Move Karel to the beeper and then say Karel that he shall turn to the left but only if he stands on a beeper. If you this <b>if-query</b> beside the beeper, you'll see that Karel won't move.");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 4");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 4");
+				$('.levelBody').html("Just do blablabla");
+			}
+			
+		} else if(level==5) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 5");
+				$('.levelBody').html("We want Karel to move from left to right. One way to order Karel this is to wirte sufficient 'move'-functions. But you shall know: most programmers are lazy people. :-) They don't like to write much code. So what's shorter than to wirite a lot of move's to get Karel to the other side?<br> The answer is the <b>for-loop</b>.  ");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 5");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 5");
+				$('.levelBody').html("Just do blablabla");
+			}
+			
+		} else if(level==6) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 6");
+				$('.levelBody').html("Now you're able to bubidiblu");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 6");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 6");
+				$('.levelBody').html("Just do blablabla");
+			}
+		}
+		*/
+	});
+	
 </script>
 
 </body>
