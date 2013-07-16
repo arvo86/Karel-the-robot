@@ -9,14 +9,14 @@ facing = {
 	"south" : false,
 	"west"  : false,
 	"east"  : true
-}
+};
 //
 //beeper conditions
 //
 beepers = {
 	"inBag"   : false, 
 	"present" : false
-}
+};
 //
 // wall conditions
 //
@@ -24,14 +24,14 @@ clear = {
 	"front" : false,
 	"left"  : false,
 	"right" : false
-}
+};
 
 //
 // show value of slider to user
 //
 function showValue(newValue) {
 
-	if (newValue == 0) {
+	if (newValue === 0) {
 		$('#showRange').html("&nbsp;slow&nbsp;");
 		wait = 250;
 	} else if (newValue == 25) {
@@ -83,11 +83,11 @@ var columns = 21;
 */
 
 var beeper = new Array(columns);
-for(j=0; j<columns; j++) 
+for(var j=0; j<columns; j++) 
 	beeper[j] = new Array(rows);
 
 for(j=0; j<columns; j++) {
-	for(i=0; i<rows; i++) {
+	for(var i=0; i<rows; i++) {
 		beeper[j][i] = false;
 	}
 }
@@ -130,7 +130,7 @@ for(j=0; j<columns; j++) {
 //
 var wallV = new Array(columns);
 for(j=0.5; j<columns; j++) 
-	wallV[j] = new Array(rows)
+	wallV[j] = new Array(rows);
 for(j=0.5; j<columns; j++) {
 	for(i=0; i<rows; i++)
 		wallV[j][i] = false;
@@ -141,7 +141,7 @@ for(j=0.5; j<columns; j++) {
 //
 var wallH = new Array(columns);
 for(j=0; j<columns; j++) 
-	wallH[j] = new Array(rows)
+	wallH[j] = new Array(rows);
 for(j=0; j<columns; j++) {
 	for(i=0.5; i<rows; i++)
 		wallH[j][i] = false;
@@ -271,7 +271,7 @@ switch (level) {
 		beeperAtStart(5,1);
 		beeperAtStart(5,2);
 		beeperAtStart(5,4);
-	 	beeperAtStart(9,1);
+		beeperAtStart(9,1);
 		beeperAtStart(9,3);
 		beeperAtStart(9,5);
 		// Karel
@@ -307,7 +307,7 @@ switch (level) {
 //
 for(j=0; j<columns; j++) {
 	for(i=0.5; i<rows; i++) {
- 		//
+		//
 		// if-query sets horizontal outer walls
 		//
 		if ((i==0.5 || i==rows-0.5) && (j>0 && j<columns)){
@@ -408,7 +408,7 @@ function draw(karelX, karelY, direction) {
 				//
 				// draw the X-axis' numbering
 				//
-				if (i==0 && j<columns) {
+				if (i===0 && j<columns) {
 					c.fillStyle = "#000";
 					c.font = "Arial";
 					c.textBaseline = 'bottom';
@@ -417,7 +417,7 @@ function draw(karelX, karelY, direction) {
 				//
 				// draw the Y-axis' numbering
 				//
-				if (j==0 && i<rows) {
+				if (j===0 && i<rows) {
 					c.fillStyle = "#000";
 					c.font = "Arial";
 					c.textBaseline = 'bottom';
@@ -468,8 +468,8 @@ function draw(karelX, karelY, direction) {
 				// check position of beeper(s) and draw beeper
 				//
 				if (beeperToDraw[j][i]) {
-					c.fillStyle = "#bbb" //grey
-					c.strokeStyle = "#000" //black
+					c.fillStyle = "#bbb"; //grey
+					c.strokeStyle = "#000"; //black
 					c.lineWidth = 2;
 					c.beginPath();
 					c.moveTo((j+0.5)/(partition)*canvas.width,  (partition-(i+0.25))/(partition)*canvas.height);
@@ -487,7 +487,7 @@ function draw(karelX, karelY, direction) {
 	// the short alert message that shows that the browser is unable to display canvas
 	//
 	} else
-		alert("You're not able to play 'Karel the robot' with your current browser. Please switch browser.")
+		alert("You're not able to play 'Karel the robot' with your current browser. Please switch browser.");
 
 	
 	if (direction == "north") 
@@ -507,25 +507,25 @@ function draw(karelX, karelY, direction) {
 // Source: http://www.javascriptkit.com/javatutors/preloadimagesplus.shtml
 //
 function preloadimages(arr){
-    var newimages=[], loadedimages=0
-    var arr=(typeof arr!="object")? [arr] : arr
+	var newimages=[], loadedimages=0;
+	arr=(typeof arr!="object")? [arr] : arr;
 
     function imageloadpost(){
-    	loadedimages++
+		loadedimages++;
 		// shows how many pictures are loaded
-      	if (loadedimages==arr.length){
-	 	// alert(arr.length);
-	  	}
+		if (loadedimages==arr.length){
+			// alert(arr.length);
+		}
     }
- 	for (var i=0; i<arr.length; i++){
-        newimages[i]=new Image()
-        newimages[i].src=arr[i]
+	for (var i=0; i<arr.length; i++){
+        newimages[i]=new Image();
+        newimages[i].src=arr[i];
         newimages[i].onload=function(){
-            imageloadpost()
+            imageloadpost();
         }
         newimages[i].onerror=function(){
-        imageloadpost()
-        }
+        imageloadpost();
+        };
     }
 }
 // sample run
@@ -1195,7 +1195,7 @@ $(document).bind("click", function(e) {
 		$('#resetInfo').popover('toggle');		
 		
 	} else if (e.target.id=='homeConfirm') {
-		this.location.href="./karel_home.html"
+		this.location.href="./karel_home.html";
 	
 	} else {
 		$('*').popover('hide');

@@ -136,6 +136,7 @@ h3 {
 #logoBottom {
 	position:relative;
 	margin-top:12.5%;
+	float:right;
 }
 #midThird{
 	text-align:center;

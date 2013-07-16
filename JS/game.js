@@ -1435,7 +1435,7 @@ $('#levelInfoFalse').popover({
 $('#levelInfo0_0').popover({
 	html: true,
 	title: "<span class='levelHead'>Tutorial</span><button type='button' class='close' aria-hidden='false'>x</button>",
-	content: "<br><span class='levelBody'>This is Karel's world. As you can see it's very simple.<br>Karel waits for you to give him some commands. He only knows 4 commands. He is able to <b>move</b>, to <b>turn left</b>, to <b>pick up</b> and to <b>put down</b> a beeper. You find these commands at the <b>'Basics'</b>-button.<br><br>Now try it yourself! Let Karel take one step forward with the <b>move</b> command. Just click on <b>move</b>. To let Karel begin click on the <b>Start<b>-button.</span>",
+	content: "<br><span class='levelBody'>This is Karel's world. As you can see it's very simple.<br>Karel waits for you to give him some commands. He only knows 4 commands. He is able to <b>move</b>, to <b>turn left</b>, to <b>pick up</b> and to <b>put down</b> a beeper. You find these commands at the <b>Basics</b>-button.<br><br>Now try it yourself! Let Karel take one step forward with the <b>move</b> command. Just click on <b>move</b>. To let Karel begin click on the <b>Start<b>-button.</span>",
 	placement: 'levelInfo'
 });
 $('#levelInfo0_1').popover({

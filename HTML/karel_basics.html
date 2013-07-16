@@ -2,7 +2,7 @@
 <html>
 <head>
 	
-<meta charset="UTF-8" content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name = "viewport" />
+<meta charset="UTF-8" content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
 
 <!-- ================= Sources ================= -->
 
@@ -28,7 +28,7 @@
 <body>	
 <div id="fullScreen" class= "fullScreen">
 	<div id="upperScreen">
-		<img id="logo" src="../images/LogoO_L.png">
+		<img alt="Logo" id="logo" src="../images/LogoO_L.png">
 		
 		<div class="btn-group" id="re_back_info">
 			<span id="homeInfo"></span> <button type="button" id="buttonBack" class="btn"><i id="buttonBack" class="icon-home"></i> Home</button>
@@ -43,11 +43,11 @@
 			
 		<form>
 		    <input disabled class='textInput' type="text" placeholder="Function name" value="" id="functionName" name="functionName"><span id="functionNameInfo"></span>
-			<textarea disabled class='animated' name="textarea" id="textarea" rows="" cols="" wrap="off" placeholder="Function content"></textarea><span id="textareaInfo"></span>
-			<form>
+			<textarea disabled class='animated' name="textarea" id="textarea" wrap="off" placeholder="Function content"></textarea><span id="textareaInfo"></span>
+		
 				<span>Speed of Karel :&nbsp;</span><span id="showRange" >&nbsp;medium&nbsp;</span>
 				<input type="range" name="rng" value="50" id="rng" min="0" max="125" step="25" onchange="showValue(this.value)" /><span id="rngInfo"></span><br>
-			</form>
+		
 			<div id="startSaveClear" class="btn-group">
 				<button type="button" name="start" class="btn btn-success" value="" id="start"><i id="start" class="icon-play icon-white"></i> Start</button><span id="startInfo"></span>	
 				<button type="button" name="saveFunc" class="btn btn-warning" value="" id="saveFunc"><i id="saveFunc" class="icon-hdd icon-white"></i> Save</button><span id="saveFuncInfo"></span>	
@@ -80,7 +80,7 @@
 					<span>operators</span>
 				</div><br>
 				<div class="btn-group">
-					<button type="button" class="btn btn-default braces" value="&&" id="bitAnd">&&</button>
+					<button type="button" class="btn btn-default braces" value="&#38;&#38;" id="bitAnd">&#38;&#38;</button>
 					<button type="button" class="btn btn-default braces" value="||" id="bitOr">| |</button>
 				</div>'>Queries 
 			</button><span id="queriesSurr"></span><span id="ifInfo"></span><span id="elseInfo"></span><span id="forInfo"></span><span id="whileInfo"></span><span id="braceleft_LInfo"></span><span id="braceright_LInfo"></span><span id="bitAndInfo"></span><span id="bitOrInfo"></span>
