@@ -1,3 +1,9 @@
+/**
+* @overview This is Karel the robot for JavaScript
+* @file manages the logic in the home screen. e.g. level selection and and the modals.
+* @author Armin Voit
+*/
+
 /*
 * intro screen
 * checks wich size the user's device got
@@ -7,7 +13,13 @@ var imgObj = null;
 var imgObj2 = null;
 var width = window.innerWidth;
 var height = window.innerHeight;
-
+/**
+* This calls the function which is responsible for the animation. It changes the link to the next site in case of small display
+* @function init
+* @see changeHref
+* @see moveImg
+* @see loadNext
+*/
 function init() {
 	changeHref();
 	imgObj = document.getElementById('myImage');
@@ -23,12 +35,19 @@ function init() {
 	setTimeout(moveImg, 1000);
 	setTimeout(loadNext, 6500);
 }
-
+/**
+* This is responsible for the animation in the intro
+* @function moveImg
+*/
 function moveImg() {
 	$("#myImage").animate({"left": (width/3), opacity: 1}, 2100);
 	$("#myImage2").animate({"left": (width/3)}, 1900).fadeTo('slow',1);
 }
 
+/**
+* This is changes the adress of the next site in case of small displays
+* @function changeHref
+*/
 function changeHref() {
 	// this size usally belongs to smartphones
 	if (window.innerWidth <= 800) {
@@ -37,6 +56,10 @@ function changeHref() {
 	}
 }
 
+/**
+* This loads the next page
+* @function loadNext
+*/
 function loadNext() {
 	// this size usally belongs to smartphones
 	if (window.innerWidth <= 800) {
@@ -49,10 +72,13 @@ function loadNext() {
 		this.document.location.href = "HTML/karel_home.html";
 }
 
+/**
+* This gives the values the user keys in by selcting a level to game.js
+* @function sichern 
+*/
 /*
 * level selection partition
 */
-
 function sichern() {
 	if (level!==undefined) {
 		storage.set("level", level);
@@ -71,8 +97,15 @@ function sichern() {
 			this.location.href = "../HTML/karel_game.html";
 	}
 }	
-
+/**
+* This represents the level the user has chosen
+* @type {number} 
+*/
 var level;
+/**
+* This represents the level the difficulty has chosen
+* @type {string} 
+*/
 var skill = '_1';
 var isVisible = false;
 var clickAway = false;

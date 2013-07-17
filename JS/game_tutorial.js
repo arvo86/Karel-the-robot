@@ -4,7 +4,7 @@
 //
 // karel's direction of view
 //
-facing = {
+var facing = {
 	"north" : false,
 	"south" : false,
 	"west"  : false,
@@ -13,14 +13,14 @@ facing = {
 //
 //beeper conditions
 //
-beepers = {
+var beepers = {
 	"inBag"   : false, 
 	"present" : false
 };
 //
 // wall conditions
 //
-clear = {
+var clear = {
 	"front" : false,
 	"left"  : false,
 	"right" : false
@@ -34,19 +34,19 @@ function showValue(newValue) {
 	if (newValue === 0) {
 		$('#showRange').html("&nbsp;slow&nbsp;");
 		wait = 250;
-	} else if (newValue == 25) {
+	} else if (newValue === 25) {
 		$('#showRange').html("&nbsp;still slow&nbsp;");
 		wait = 200;
-	} else if (newValue == 50) {
+	} else if (newValue === 50) {
 		$('#showRange').html("&nbsp;medium&nbsp;");
 		wait = 150;
-	} else if (newValue == 75) {
+	} else if (newValue === 75) {
 		$('#showRange').html("&nbsp;fast&nbsp;");
 		wait = 100;
-	} else if (newValue == 100) {
+	} else if (newValue === 100) {
 		$('#showRange').html("&nbsp;faster&nbsp;");
 		wait = 50;
-	} else if (newValue == 125) {
+	} else if (newValue === 125) {
 		$('#showRange').html("&nbsp;warp 10&nbsp;");
 		wait = 25;
 	}	
@@ -66,6 +66,7 @@ var time = 0;
 var wait = 150;
 var rows = 21;
 var columns = 21;
+var partition;
 
 
 
@@ -148,6 +149,11 @@ for(j=0; j<columns; j++) {
 }
 
 var level =1;
+var startDirection;
+var startX;
+var startY;
+var partition;
+
 //
 // switch command to choose between the different levels and thus to set walls, beeper(s) and Karel
 //
@@ -162,19 +168,19 @@ switch (level) {
 		startY=Math.round(Math.random() * (rows-2)) + 1;
 	
 		var startDir = Math.round(Math.random() * (4-1)) + 1;
-		if (startDir==1) {
+		if (startDir===1) {
 			startDirection="east";
 			facing.east = true;
 			facing.west = false;
 			facing.south = false;
 			facing.north = false;
-		} else if (startDir==2) {
+		} else if (startDir===2) {
 			startDirection="west";
 			facing.east = false;
 			facing.west = true;
 			facing.south = false;
 			facing.north = false;
-		} else if (startDir==3) {
+		} else if (startDir===3) {
 			startDirection="south";
 			facing.east = false;
 			facing.west = false;
@@ -310,11 +316,9 @@ for(j=0; j<columns; j++) {
 		//
 		// if-query sets horizontal outer walls
 		//
-		if ((i==0.5 || i==rows-0.5) && (j>0 && j<columns)){
+		if ((i===0.5 || i===rows-0.5) && (j>0 && j<columns)){
 			wallH[j][i] = true;
-		} else {
-		//	wallH[j][i] = false;
-		}
+		} 
 	}
 }
 
@@ -323,11 +327,9 @@ for(j=0.5; j<columns; j++) {
 		//
 		// if query sets vertical outer walls
 		//
-		if ((j==0.5 || j==columns-0.5) && (i<rows && i>0)) {
+		if ((j===0.5 || j===columns-0.5) && (i<rows && i>0)) {
 			wallV[j][i] = true;
-		} else {
-			//wallV[j][i] = false;
-		}
+		} 
 	}
 }
 /*
@@ -490,11 +492,11 @@ function draw(karelX, karelY, direction) {
 		alert("You're not able to play 'Karel the robot' with your current browser. Please switch browser.");
 
 	
-	if (direction == "north") 
+	if (direction === "north") 
 		imgKarel.src = "../images/karelNorth.png";
-	else if (direction == "south")
+	else if (direction === "south")
 		imgKarel.src = "../images/karelSouth.png";
-	else if (direction == "west") 
+	else if (direction === "west") 
 		imgKarel.src = "../images/karelWest.png";
 	else
 		imgKarel.src = "../images/karelEast.png";
@@ -508,21 +510,17 @@ function draw(karelX, karelY, direction) {
 //
 function preloadimages(arr){
 	var newimages=[], loadedimages=0;
-	arr=(typeof arr!="object")? [arr] : arr;
+	arr=(typeof arr!=="object")? [arr] : arr;
 
     function imageloadpost(){
 		loadedimages++;
-		// shows how many pictures are loaded
-		if (loadedimages==arr.length){
-			// alert(arr.length);
-		}
     }
 	for (var i=0; i<arr.length; i++){
         newimages[i]=new Image();
         newimages[i].src=arr[i];
         newimages[i].onload=function(){
             imageloadpost();
-        }
+        };
         newimages[i].onerror=function(){
         imageloadpost();
         };
@@ -926,182 +924,182 @@ $(function(){
 $(document).bind("click", function(e) {
 	
 // ===========  Popover for the button "Queries" and its sub-buttons  =============			
-	if (e.target.id=="queries") {
+	if (e.target.id==="queries") {
 		$('button[id$="s"][id!=queries]').popover('hide');
 		$('span[id$="Info"]').popover('hide');
 		$('span[id$="Surr"][id!="queriesSurr"]').popover('hide');
 		$('#queriesSurr').popover('toggle');
 		
-	} else if (e.target.id=='if') {
+	} else if (e.target.id==='if') {
 		$('#queriesSurr').popover('hide');
 		$('span[id$="Info"][id!="ifInfo"]').popover('hide');
 		$('#ifInfo').popover('toggle');
 		
-	} else if (e.target.id=='else') {
+	} else if (e.target.id==='else') {
 		$('#queriesSurr').popover('hide');
 		$('span[id$="Info"][id!="elseInfo"]').popover('hide');
 		$('#elseInfo').popover('toggle');
 		
-	} else if (e.target.id=='for') {
+	} else if (e.target.id==='for') {
 		$('#queriesSurr').popover('hide');
 		$('span[id$="Info"][id!="forInfo"]').popover('hide');
 		$('#forInfo').popover('toggle');
 		
-	} else if (e.target.id=='while') {
+	} else if (e.target.id==='while') {
 		$('#queriesSurr').popover('hide');
 		$('span[id$="Info"][id!="whileInfo"]').popover('hide');
 		$('#whileInfo').popover('toggle');
 		
-	} else if (e.target.id=='bitAnd') {
+	} else if (e.target.id==='bitAnd') {
 		$('#queriesSurr').popover('hide');
 		$('span[id$="Info"][id!="bitAndInfo"]').popover('hide');
 		$('#bitAndInfo').popover('toggle');
 		
-	} else if (e.target.id=='bitOr') {
+	} else if (e.target.id==='bitOr') {
 		$('#queriesSurr').popover('hide');
 		$('span[id$="Info"][id!="bitOrInfo"]').popover('hide');
 		$('#bitOrInfo').popover('toggle');
 	
 		
 // ===========  Popover for the button "Conditions" and its sub-buttons
-	} else if (e.target.id=="conditions") {
+	} else if (e.target.id==="conditions") {
 		$('button[id$="s"][id!=conditions]').popover('hide');
 		$('span[id$="Info"]').popover('hide');
 		$('span[id$="Surr"][id!="conditionsSurr"]').popover('hide');
 		$('#conditionsSurr').popover('toggle');
 		
-	} else if (e.target.id=='frontIsClear') {
+	} else if (e.target.id==='frontIsClear') {
 		$('#conditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="frontIsClearInfo"]').popover('hide');
 		$('#frontIsClearInfo').popover('toggle');
 		
-	} else if (e.target.id=='leftIsClear') {
+	} else if (e.target.id==='leftIsClear') {
 		$('#conditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="leftIsClearInfo"]').popover('hide');
 		$('#leftIsClearInfo').popover('toggle');
 		
-	} else if (e.target.id=='rightIsClear') {
+	} else if (e.target.id==='rightIsClear') {
 		$('#conditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="rightIsClearInfo"]').popover('hide');
 		$('#rightIsClearInfo').popover('toggle');
 		
-	} else if (e.target.id=='beepersPresent') {
+	} else if (e.target.id==='beepersPresent') {
 		$('#conditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="beepersPresentInfo"]').popover('hide');
 		$('#beepersPresentInfo').popover('toggle');
 		
-	} else if (e.target.id=='beepersInBag') {
+	} else if (e.target.id==='beepersInBag') {
 		$('#conditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="beepersInBagInfo"]').popover('hide');
 		$('#beepersInBagInfo').popover('toggle');
 		
-	} else if (e.target.id=='facingNorth') {
+	} else if (e.target.id==='facingNorth') {
 		$('#conditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="facingNorthInfo"]').popover('hide');
 		$('#facingNorthInfo').popover('toggle');
 		
-	} else if (e.target.id=='facingEast') {
+	} else if (e.target.id==='facingEast') {
 		$('#conditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="facingEastInfo"]').popover('hide');
 		$('#facingEastInfo').popover('toggle');
 		
-	} else if (e.target.id=='facingSouth') {
+	} else if (e.target.id==='facingSouth') {
 		$('#conditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="facingSouthInfo"]').popover('hide');
 		$('#facingSouthInfo').popover('toggle');
 		
-	} else if (e.target.id=='facingWest') {
+	} else if (e.target.id==='facingWest') {
 		$('#conditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="facingWestInfo"]').popover('hide');
 		$('#facingWestInfo').popover('toggle');
 
 
 // ===========  Popover for the button "Negativ Conditions" and its sub-buttons
-	} else if (e.target.id=="negConditions") {
+	} else if (e.target.id==="negConditions") {
 		$('button[id$="s"][id!=negConditions]').popover('hide');
 		$('span[id$="Info"]').popover('hide');
 		$('span[id$="Surr"][id!="negConditionsSurr"]').popover('hide');
 		$('#negConditionsSurr').popover('toggle');
 		
-	} else if (e.target.id=='frontIsBlocked') {
+	} else if (e.target.id==='frontIsBlocked') {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="frontIsBlockedInfo"]').popover('hide');
 		$('#frontIsBlockedInfo').popover('toggle');
 		
-	} else if (e.target.id=='leftIsBlocked') {
+	} else if (e.target.id==='leftIsBlocked') {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="leftIsBlockedInfo"]').popover('hide');
 		$('#leftIsBlockedInfo').popover('toggle');
 		
-	} else if (e.target.id=='rightIsBlocked') {
+	} else if (e.target.id==='rightIsBlocked') {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="rightIsBlockedInfo"]').popover('hide');
 		$('#rightIsBlockedInfo').popover('toggle');
 		
-	} else if (e.target.id=='noBeepersPresent') {
+	} else if (e.target.id==='noBeepersPresent') {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="noBeepersPresentInfo"]').popover('hide');
 		$('#noBeepersPresentInfo').popover('toggle');
 		
-	} else if (e.target.id=='noBeepersInBag') {
+	} else if (e.target.id==='noBeepersInBag') {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="noBeepersInBagInfo"]').popover('hide');
 		$('#noBeepersInBagInfo').popover('toggle');
 		
-	} else if (e.target.id=='notFacingNorth') {
+	} else if (e.target.id==='notFacingNorth') {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="notFacingNorthInfo"]').popover('hide');
 		$('#notFacingNorthInfo').popover('toggle');
 		
-	} else if (e.target.id=='notFacingEast') {
+	} else if (e.target.id==='notFacingEast') {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="notFacingEastInfo"]').popover('hide');
 		$('#notFacingEastInfo').popover('toggle');
 		
-	} else if (e.target.id=='notFacingSouth') {
+	} else if (e.target.id==='notFacingSouth') {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="notFacingSouthInfo"]').popover('hide');
 		$('#notFacingSouthInfo').popover('toggle');
 		
-	} else if (e.target.id=='notFacingWest') {
+	} else if (e.target.id==='notFacingWest') {
 		$('#negConditionsSurr').popover('hide');
 		$('span[id$="Info"][id!="notFacingWestInfo"]').popover('hide');
 		$('#notFacingWestInfo').popover('toggle');
 
 
 // ===========  Popover for the button "Basics" and its sub-buttons  =============		
-	} else if (e.target.id=="basics") {
+	} else if (e.target.id==="basics") {
 		$('button[id$="s"][id!=basics]').popover('hide');
 		$('span[id$="Info"]').popover('hide');
 		$('span[id$="Surr"][id!="basicsSurr"]').popover('hide');
 		$('#basicsSurr').popover('toggle');
 
-	} else if (e.target.id=='move') {
+	} else if (e.target.id==='move') {
 		$('#basicsSurr').popover('hide');
 		$('span[id$="Info"][id!="moveInfo"]').popover('hide');
 		$('#moveInfo').popover('toggle');	
 		
-	} else if (e.target.id=='turnLeft') {
+	} else if (e.target.id==='turnLeft') {
 		$('#basicsSurr').popover('hide');
 		$('span[id$="Info"][id!="turnLeftInfo"]').popover('hide');
 		$('#turnLeftInfo').popover('toggle');
 		
-	} else if (e.target.id=='pickBeeper') {
+	} else if (e.target.id==='pickBeeper') {
 		$('#basicsSurr').popover('hide');
 		$('span[id$="Info"][id!="pickBeeperInfo"]').popover('hide');
 		$('#pickBeeperInfo').popover('toggle');
 		
-	} else if (e.target.id=='putBeeper') {
+	} else if (e.target.id==='putBeeper') {
 		$('#basicsSurr').popover('hide');
 		$('span[id$="Info"][id!="putBeeperInfo"]').popover('hide');
 		$('#putBeeperInfo').popover('toggle');
 		
-	} else if (e.target.id=='braceleft_L') {
+	} else if (e.target.id==='braceleft_L') {
 		$('#basicsSurr').popover('hide');
 		$('span[id$="Info"][id!="braceleft_LInfo"]').popover('hide');
 		$('#braceleft_LInfo').popover('toggle');
 		
-	} else if (e.target.id=='braceright_L') {
+	} else if (e.target.id==='braceright_L') {
 		$('#basicsSurr').popover('hide');
 		$('span[id$="Info"][id!="braceright_LInfo"]').popover('hide');
 		$('#braceright_LInfo').popover('toggle');
@@ -1109,28 +1107,28 @@ $(document).bind("click", function(e) {
 		
 
 // ===========  Popover for the button "own functions" and its sub-buttons  =============			
-	} else if (e.target.id=='ownFunctions') {
+	} else if (e.target.id==='ownFunctions') {
 		$('button[id$="s"][id!=ownFunctions]').popover('hide');
 		$('span[id$="Info"]').popover('hide');
 		$('span[id$="Surr"][id!="ownFunctionsSurr"]').popover('hide');
 		$('#ownFunctionsSurr').popover('toggle');
 		
-	} else if (e.target.id=='deleteOwnFunction') {
+	} else if (e.target.id==='deleteOwnFunction') {
 		$('#ownFunctionsSurr').popover('hide');
 		$('span[id$="Info"][id!="deleteOwnFunctionInfo"]').popover('hide');
 		$('#deleteOwnFunctionInfo').popover('toggle');
 		
-	} else if (e.target.id=='editOwnFunction') {
+	} else if (e.target.id==='editOwnFunction') {
 		$('#ownFunctionsSurr').popover('hide');
 		$('span[id$="Info"][id!="editOwnFunctionInfo"]').popover('hide');
 		$('#editOwnFunctionInfo').popover('toggle');
 		
-	} else if (e.target.id=='braceleft_R') {
+	} else if (e.target.id==='braceleft_R') {
 		$('#ownFunctionsSurr').popover('hide');
 		$('span[id$="Info"][id!="braceleft_RInfo"]').popover('hide');
 		$('#braceleft_RInfo').popover('toggle');
 		
-	} else if (e.target.id=='braceright_R') {
+	} else if (e.target.id==='braceright_R') {
 		$('#ownFunctionsSurr').popover('hide');
 		$('span[id$="Info"][id!="braceright_RInfo"]').popover('hide');
 		$('#braceright_RInfo').popover('toggle');
@@ -1139,62 +1137,62 @@ $(document).bind("click", function(e) {
 		
 
 // ===========  Popover for the control panel  =============				
-	} else if (e.target.id=='start') {
+	} else if (e.target.id==='start') {
 		$('button[id$="s"]').popover('hide');
 		$('span[id$="Info"][id!="startInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#startInfo').popover('toggle');
 		
-	} else if (e.target.id=='saveFunc') {
+	} else if (e.target.id==='saveFunc') {
 		$('button[id$="s"]').popover('hide');
 		$('span[id$="Info"][id!="saveFuncInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#saveFuncInfo').popover('toggle');
 		
-	} else if (e.target.id=='clearFunc') {
+	} else if (e.target.id==='clearFunc') {
 		$('button[id$="s"]').popover('hide');
 		$('span[id$="Info"][id!="clearFuncInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#clearFuncInfo').popover('toggle');
 		
-	} else if (e.target.id=='functionName') {
+	} else if (e.target.id==='functionName') {
 		$('button[id$="s"]').popover('hide');
 		$('span[id$="Info"][id!="functionNameInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#functionNameInfo').popover('toggle');
 		
-	} else if (e.target.id=='textarea') {
+	} else if (e.target.id==='textarea') {
 		$('button[id$="s"]').popover('hide');
 		$('span[id$="Info"][id!="textareaInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#textareaInfo').popover('toggle');
 		
-	} else if ((e.target.id=='rng')||(e.target.id=='showRange')) {
+	} else if ((e.target.id==='rng')||(e.target.id==='showRange')) {
 		$('button[id$="s"]').popover('hide');
 		$('span[id$="Info"][id!="rngInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#rngInfo').popover('toggle');
 
 // ===========  Popover for the navigation and info buttons  =============			
-	}else if (e.target.id=="buttonBack") {
+	}else if (e.target.id==="buttonBack") {
 		$('button[id$="s"]').popover('hide');
 		$('span[id$="Info"][id!="homeInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#homeInfo').popover('toggle');
 
-	} else if (e.target.id=='buttonInfo') {
+	} else if (e.target.id==='buttonInfo') {
 		$('button[id$="s"]').popover('hide');
 		$('span[id$="Info"][id!="infoInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#infoInfo').popover('toggle');
 
-	} else if (e.target.id=='buttonReset') {
+	} else if (e.target.id==='buttonReset') {
 		$('button[id$="s"]').popover('hide');
 		$('span[id$="Info"][id!="resetInfo"]').popover('hide');
 		$('span[id$="Surr"]').popover('hide');
 		$('#resetInfo').popover('toggle');		
 		
-	} else if (e.target.id=='homeConfirm') {
+	} else if (e.target.id==='homeConfirm') {
 		this.location.href="./karel_home.html";
 	
 	} else {

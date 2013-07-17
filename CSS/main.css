@@ -1,5 +1,5 @@
 body {
-	background-image:url(../images/pattern.png);
+	background-image:url(../images/back.gif);
 }
 
 #upperScreen img {
@@ -12,7 +12,6 @@ body {
 	width: 22%;
 	height: 85%;
 	border-right:10px ridge;
-	background-color: ;
 }
 
 
@@ -21,8 +20,6 @@ body {
 	margin-left: 22%;
 	height: 80%;
 	width:78%;
-	background-color: ;
-
 }
 
 .textInput {
@@ -147,7 +144,6 @@ h3 {
 #buttomThird{
 	position:absolute;
 	width:95%;
-	background-color:;
 	margin-top:40%;
 	margin-left:2.5%;
 	z-index:-1;
