@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+<meta charset="UTF-8" content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+
+<!-- ================= Sources ================= -->
+
+<script src="../JS/storage.js"></script>
+<script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../JS/bootstrap.min.js"></script>
+<script src="http://axemclion.github.com/IndexedDBShim/dist/IndexedDBShim.min.js"></script> 
+<script src='../JS/jquery.autosize.js'></script>
+
+<link href="../CSS/main.css" rel="stylesheet" media="screen">
+<link href="../CSS/bootstrap.css" rel="stylesheet" media="screen">
+<link href="../CSS/karel_basics.css" rel="stylesheet" media="screen">
+<link rel="shortcut icon" href="../images/favicon.ico" >
+<link rel="icon" type="image/gif" href="../images/animated_favicon1.gif" >
+
+<title>Karel the Robot</title>
+</head>
+
+<!-- =========== BODY ============ -->
+
+<body>	
+<div id="fullScreen" class= "fullScreen">
+	<div id="upperScreen">
+		<img alt="Logo" id="logo" src="../images/LogoO_L.png">
+		
+		<div class="btn-group" id="re_back_info">
+			<span id="homeInfo"></span> <button type="button" id="buttonBack" class="btn"><i id="buttonBack" class="icon-home"></i> Home</button>
+			<span id="infoInfo"></span><button type="button" id="buttonInfo" class="btn"><i id="buttonInfo" class="icon-info-sign"></i> Info</button>
+			<span id="resetInfo"></span><button type="button" id="buttonReset" class="btn"><i id="buttonReset" class="icon-refresh"></i> Reset</button>
+		</div>
+	</div>
+	
+	<!-- =========== left screen ============ -->
+	
+	<div id= "leftScreen" class= "leftScreen">
+			
+		<form>
+		    <input disabled class='textInput' type="text" placeholder="Function name" value="" id="functionName" name="functionName"><span id="functionNameInfo"></span>
+			<textarea disabled class='animated' name="textarea" id="textarea" wrap="off" placeholder="Function content"></textarea><span id="textareaInfo"></span>
+		
+				<span>Speed of Karel :&nbsp;</span><span id="showRange" >&nbsp;medium&nbsp;</span>
+				<input type="range" name="rng" value="50" id="rng" min="0" max="125" step="25" onchange="showValue(this.value)" /><span id="rngInfo"></span><br>
+		
+			<div id="startSaveClear" class="btn-group">
+				<button type="button" name="start" class="btn btn-success" value="" id="start"><i id="start" class="icon-play icon-white"></i> Start</button><span id="startInfo"></span>	
+				<button type="button" name="saveFunc" class="btn btn-warning" value="" id="saveFunc"><i id="saveFunc" class="icon-hdd icon-white"></i> Save</button><span id="saveFuncInfo"></span>	
+				<button type="button" name="clearFunc" class="btn btn-danger" value="" id="clearFunc"><i id="clearFunc" class="icon-remove-circle icon-white"></i> Clear</button><span id="clearFuncInfo"></span>
+			</div>
+		</form>	
+	</div>
+	
+	<!-- =========== right screen ============ -->
+	
+	<div id= "rightScreen" class= "rightScreen">
+		
+		<!-- =========== select buttons ============ -->
+		<div class="btn-group" id="upperRow">	
+			<button type="button" class="btn btn-large" value="" id="queries" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+				<div class="structure">
+					<span>branches</span>
+				</div><br>
+				<button type="button" class="btn btn-default conditions" value="if(" id="if">if</button><br>
+				<button type="button" class="btn btn-default conditions" value="else" id="else">else</button><br><br>
+				<div class="structure">
+					<span>loops</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" id="for" rel="popover" data-html="true" data-placement="top" data-content="<div class=structure><span>How often?</span></div><br><button id=for_2 class=btn btn-default type=button>2</button><button id=for_3 class=btn btn-default type=button>3</button><button id=for_4 class=btn btn-default type=button>4</button><button id=for_5 class=btn btn-default type=button>5</button><button id=for_6 class=btn btn-default type=button>6</button><button id=for_7 class=btn btn-default type=button>7</button><button id=for_8 class=btn btn-default type=button>8</button><button id=for_9 class=btn btn-default type=button>9</button><button id=for_10 class=btn btn-default type=button>10</button>">for</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="while(" id="while">while</button><br><br>
+				</div>
+				<div class="structure">
+					<span>operators</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default braces" value="&#38;&#38;" id="bitAnd">&#38;&#38;</button>
+					<button type="button" class="btn btn-default braces" value="||" id="bitOr">| |</button>
+				</div>'>Queries 
+			</button><span id="queriesSurr"></span><span id="ifInfo"></span><span id="elseInfo"></span><span id="forInfo"></span><span id="whileInfo"></span><span id="braceleft_LInfo"></span><span id="braceright_LInfo"></span><span id="bitAndInfo"></span><span id="bitOrInfo"></span>
+		
+			<button type="button" class="btn btn-large" value="" id="basics" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+				<div class="structure">
+					<span>braces</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default braces" value="{" id="braceleft_L">{</button>
+					<button type="button" class="btn btn-default braces" value="}" id="braceright_L">}</button>
+				</div><br><br>
+				<div class="structure">
+					<span>movement</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" value="move();" id="move">move</button><br>
+					<button type="button" class="btn btn-default conditions" value="turnLeft();" id="turnLeft">turnLeft</button><br><br>
+				</div>
+				<div class="structure">
+					<span>action</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br>
+				</div>'>Basics
+			</button><span id="basicsSurr"></span><span id="moveInfo"></span><span id="turnLeftInfo"></span><span id="pickBeeperInfo"></span><span id="putBeeperInfo"></span>
+			
+			<button type="button" class="btn btn-large" value="" id="conditions" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+					<div class="structure">
+						<span>walls</span>
+					</div>
+					<div class="btn-group"><br>				
+						<button type="button" class="btn btn-default conditions topList" value="frontIsClear())" id="frontIsClear">frontIsClear</button><br>
+						<button type="button" class="btn btn-default conditions" value="leftIsClear())" id="leftIsClear">leftIsClear</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="rightIsClear())" id="rightIsClear">rightIsClear</button><br><br>
+					</div>
+					<div class="structure">
+						<span>beepers</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn  btn-default conditions topList" value="beepersPresent())" id="beepersPresent">beepersPresent</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="beepersInBag())" id="beepersInBag">beepersInBag</button><br><br>
+					</div>
+					<div class="structure">
+						<span>directions</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default conditions topList" value="facingNorth())" id="facingNorth">facingNorth</button><br>
+						<button type="button" class="btn btn-default conditions" value="facingEast())" id="facingEast">facingEast</button><br>
+						<button type="button" class="btn btn-default conditions" value="facingSouth())" id="facingSouth">facingSouth</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="facingWest())" id="facingWest">facingWest</button>
+					</div>'>Conditions
+			</button><span id="conditionsSurr"></span><span id="frontIsClearInfo"></span><span id="leftIsClearInfo"></span><span id="rightIsClearInfo"></span><span id="beepersPresentInfo"></span><span id="beepersInBagInfo"></span><span id="facingNorthInfo"></span><span id="facingEastInfo"></span><span id="facingSouthInfo"></span><span id="facingWestInfo"></span><span id="negConditionsSurr"></span><span id="frontIsBlockedInfo"></span><span id="leftIsBlockedInfo"></span><span id="rightIsBlockedInfo"></span><span id="noBeepersPresentInfo"></span><span id="noBeepersInBagInfo"></span><span id="notFacingNorthInfo"></span><span id="notFacingEastInfo"></span><span id="notFacingSouthInfo"></span><span id="notFacingWestInfo"></span>
+	        <button type="button" class="btn btn-large" value="" id="negConditions" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+					<div class="structure">
+						<span>walls</span>
+					</div>
+					<div class="btn-group"><br>	
+						<button type="button" class="btn btn-default conditions topList" value="frontIsBlocked())" id="frontIsBlocked">frontIsBlocked</button><br>
+						<button type="button" class="btn btn-default conditions" value="leftIsBlocked())" id="leftIsBlocked">leftIsBlocked</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="rightIsBlocked())" id="rightIsBlocked">rightIsBlocked</button><br><br>
+					</div>
+					<div class="structure">
+						<span>beepers</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default conditions topList" value="noBeepersPresent())" id="noBeepersPresent">noBeepersPresent</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="noBeepersInBag())" id="noBeepersInBag">noBeepersInBag</button><br><br>
+					</div>
+					<div class="structure">
+						<span>directions</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default conditions topList" value="notFacingNorth())" id="notFacingNorth">notFacingNorth</button><br>
+						<button type="button" class="btn btn-default conditions" value="notFacingEast())" id="notFacingEast">notFacingEast</button><br>
+						<button type="button" class="btn btn-default conditions" value="notFacingSouth())" id="notFacingSouth">notFacingSouth</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="notFacingWest())" id="notFacingWest">notFacingWest</button>
+					</div>'>Negativ conditions
+			</button><span id="ownFunctionsSurr"></span><span id="deleteOwnFunctionInfo"></span><span id="editOwnFunctionInfo"></span><span id="braceleft_RInfo"></span><span id="braceright_RInfo"></span>
+			
+			<button type="button" class="btn btn-large" value="" id="ownFunctions" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+					<div class="structure">
+						<span>braces</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default braces" value="{" id="braceleft_R">{</button>
+						<button type="button" class="btn btn-default braces" value="}" id="braceright_R">}</button>
+					</div><br><br>
+					<div class="structure">
+						<span>delete/edit</span><br></div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-danger" value="" id="deleteOwnFunction"><i id="deleteOwnFunction" class="icon-trash icon-white"></i> delete</button>
+						<button type="button" class="btn btn-warning" value="" id="editOwnFunction"><i id="editOwnFunction" class="icon-pencil icon-white"></i> edit</button>
+					</div><br><br>
+					<div class="structure">
+						<span>own functions</span><br>
+					</div>'>Own functions 
+			</button>
+		</div>	
+		<canvas id="ausgabe"></canvas>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+
+	// load game logic via game.js after HTML page is loaded
+   	var script = document.createElement('script');
+   	script.setAttribute('src', '../JS/game_tutorial.js');
+   	script.setAttribute('type', 'text/javascript');
+   	document.getElementsByTagName('head')[0].appendChild(script);
+
+	// google analytics
+ 	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-41646797-1']);
+	_gaq.push(['_setDomainName', 'karel-the-robot.com']);
+	_gaq.push(['_trackPageview']);
+
+ 	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  	})();
+
+</script>
+
+</body>
+</html>

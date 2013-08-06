@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+	
+<meta charset="UTF-8" content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+
+<!-- ================= Sources ================= -->
+
+<script src="../JS/storage.js"></script>
+<script src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../JS/bootstrap.min.js"></script>
+<script src="http://axemclion.github.com/IndexedDBShim/dist/IndexedDBShim.min.js"></script> 
+<script src='../JS/jquery.autosize.js'></script>
+
+<link href="../CSS/main.css" rel="stylesheet" media="screen">
+<link href="../CSS/bootstrap.css" rel="stylesheet" media="screen">
+<link href="../CSS/karel_basics.css" rel="stylesheet" media="screen">
+<link rel="shortcut icon" href="../images/favicon.ico" >
+<link rel="icon" type="image/gif" href="../images/animated_favicon1.gif" >
+
+<title>Karel the Robot</title>
+</head>
+
+<!-- =========== BODY ============ -->
+
+<body>	
+<div id="fullScreen" class= "fullScreen">
+	<div id="upperScreen">
+		<img alt="Logo" id="logo" src="../images/LogoO_L.png"><br>
+		
+		<div class="btn-group" id="re_back_info">
+			<button type="button" id="buttonBack" class="btn btn-mini"><i id="buttonBack" class="icon-home"></i> Home</button>
+			<button type="button" id="buttonInfo" class="btn btn-mini"><i id="buttonInfo" class="icon-info-sign"></i> Info</button>
+			<button type="button" id="buttonReset" class="btn btn-mini"><i id="buttonReset" class="icon-refresh"></i> Reset</button>
+		</div>
+	</div>
+	
+	<!-- =========== left screen ============ -->
+	
+	<div id= "leftScreen" class= "leftScreen">
+			
+		<form>
+		    <input class='textInput' type="text" placeholder="function name" value="" id="functionName" name="functionName">
+			<textarea class='animated' name="textarea" id="textarea" wrap="off" placeholder="Insert your own code here" ></textarea>
+		
+				<span>Speed of Karel :<br></span><span id="showRange" >&nbsp;medium&nbsp;</span>
+				<input type="range" name="rng" value="50" id="rng" min="0" max="125" step="25" onchange="showValue(this.value)" /><br>
+		
+			<button type="button" name="start" class="btn btn-success"  id="start" onclick="userInput()"><i id="start" class="icon-play icon-white"></i> Start</button>	<br>
+			<button type="button" name="saveFunc" class="btn btn-warning"  id="saveFunc" onclick="saveFunction()"><i class="icon-hdd icon-white"></i> Save</button><br>	
+			<button type="button" name="clearFunc" class="btn btn-danger" id="clearFunc" onclick="clearTextarea()"><i class="icon-remove-circle icon-white"></i> Clear</button><br>	
+		</form>	
+	</div>
+	
+	<!-- =========== right screen ============ -->
+	
+	<div id= "rightScreen" class= "rightScreen">
+		<span id="loopAlert"></span><span id="levelInfoFalse"></span><span id="levelInfo0_0"></span><span id="levelInfo0_1"></span><span id="levelInfo0_2"></span><span id="levelInfo0_3"></span><span id="levelInfo0_4"></span><span id="levelInfo0_5"></span><span id="levelInfo0_6"></span><span id="levelInfo0_7"></span><span id="levelInfo0_8"></span><span id="levelInfo0_9"></span><span id="levelInfo0_10"></span><span id="levelInfo0_11"></span><span id="levelInfo1_1"></span><span id="levelInfo2_1"></span><span id="levelInfo3_1"></span><span id="levelInfo4_1"></span><span id="levelInfo5_1"></span><span id="levelInfo6_1"></span><span id="levelInfo1_2"></span><span id="levelInfo2_2"></span><span id="levelInfo3_2"></span><span id="levelInfo4_2"></span><span id="levelInfo5_2"></span><span id="levelInfo6_2"></span><span id="levelInfo1_3"></span><span id="levelInfo2_3"></span><span id="levelInfo3_3"></span><span id="levelInfo4_3"></span><span id="levelInfo5_3"></span><span id="levelInfo6_3"></span><span id="functionTitleInfo"></span>
+		
+		<!-- =========== select buttons ============ -->
+		<div class="btn-group" id="upperRow">	
+			<button type="button" class="btn" id="queries" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+				<div class="structure">
+					<span>branches</span>
+				</div><br>
+				<div class="btn-group">
+				<button type="button" class="btn btn-default conditions topList" value="if(" id="if">if</button><br>
+				<button type="button" class="btn btn-default conditions bottomList" value="else" id="else">else</button><br><br>
+				</div>
+				<div class="structure">
+					<span>loops</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" id="for" rel="popover" data-html="true" data-placement="top" data-content="<div class=structure><span>How often?</span></div><br><button id=for_2 class=btn btn-default type=button>2</button><button id=for_3 class=btn btn-default type=button>3</button><button id=for_4 class=btn btn-default type=button>4</button><button id=for_5 class=btn btn-default type=button>5</button><button id=for_6 class=btn btn-default type=button>6</button><button id=for_7 class=btn btn-default type=button>7</button><button id=for_8 class=btn btn-default type=button>8</button><button id=for_9 class=btn btn-default type=button>9</button><button id=for_10 class=btn btn-default type=button>10</button>">for</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="while(" id="while">while</button><br><br>
+				</div>
+				<div class="structure">
+					<span>operators</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default braces" value="&#38;&#38;" id="bitAnd">&#38;&#38;</button>
+					<button type="button" class="btn btn-default braces" value="||" id="bitOr">| |</button>
+				</div>'>Queries
+			</button>
+		
+			<button type="button" class="btn" id="basics" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+				<div class="structure">
+					<span>braces</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default braces" value="{" id="braceleft_L">{</button>
+					<button type="button" class="btn btn-default braces" value="}" id="braceright_L">}</button>
+				</div><br><br>
+				<div class="structure">
+					<span>movement</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions topList" value="move();" id="move">move</button><br>
+					<button type="button" class="btn btn-default conditions" value="turnLeft();"id="turnLeft">turnLeft</button><br><br>
+				</div>
+				<div class="structure">
+					<span>action</span>
+				</div><br>
+				<div class="btn-group">
+					<button type="button" class="btn btn-default conditions" value="pickBeeper();" id="pickBeeper">pickBeeper</button><br>
+					<button type="button" class="btn btn-default conditions bottomList" value="putBeeper();"id="putBeeper">putBeeper</button><br>
+				</div>'>Basics
+			</button>
+		
+			<button type="button" class="btn"  id="conditions" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+					<div class="structure">
+						<span>walls</span>
+					</div>
+					<div class="btn-group"><br>				
+						<button type="button" class="btn btn-default conditions topList" value="frontIsClear())" id="frontIsClear">frontIsClear</button><br>
+						<button type="button" class="btn btn-default conditions" value="leftIsClear())" id="leftIsClear">leftIsClear</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="rightIsClear())" id="rightIsClear">rightIsClear</button><br><br>
+					</div>
+					<div class="structure">
+						<span>beepers</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn  btn-default conditions topList" value="beepersPresent())" id="beepersPresent">beepersPresent</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="beepersInBag())" id="beepersInBag">beepersInBag</button><br><br>
+					</div>
+					<div class="structure">
+						<span>directions</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default conditions topList" value="facingNorth())" id="facingNorth">facingNorth</button><br>
+						<button type="button" class="btn btn-default conditions" value="facingEast())" id="facingEast">facingEast</button><br>
+						<button type="button" class="btn btn-default conditions" value="facingSouth())" id="facingSouth">facingSouth</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="facingWest())" id="facingWest">facingWest</button>
+					</div>'>Conditions
+			</button>
+
+	        <button type="button" class="btn"  id="negConditions" rel="popover" data-html="true" data-placement="bottom"
+				data-content='
+					<div class="structure">
+						<span>walls</span>
+					</div>
+					<div class="btn-group"><br>	
+						<button type="button" class="btn btn-default conditions topList" value="frontIsBlocked())" id="frontIsBlocked">frontIsBlocked</button><br>
+						<button type="button" class="btn btn-default conditions" value="leftIsBlocked())" id="leftIsBlocked">leftIsBlocked</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="rightIsBlocked())" id="rightIsBlocked">rightIsBlocked</button><br><br>
+					</div>
+					<div class="structure">
+						<span>beepers</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default conditions topList" value="noBeepersPresent())" id="noBeepersPresent">noBeepersPresent</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="noBeepersInBag())" id="noBeepersInBag">noBeepersInBag</button><br><br>
+					</div>
+					<div class="structure">
+						<span>directions</span>
+					</div><br>
+					<div class="btn-group">
+						<button type="button" class="btn btn-default conditions topList" value="notFacingNorth())" id="notFacingNorth">notFacingNorth</button><br>
+						<button type="button" class="btn btn-default conditions" value="notFacingEast())" id="notFacingEast">notFacingEast</button><br>
+						<button type="button" class="btn btn-default conditions" value="notFacingSouth())" id="notFacingSouth">notFacingSouth</button><br>
+						<button type="button" class="btn btn-default conditions bottomList" value="notFacingWest())" id="notFacingWest">notFacingWest</button>
+					</div>'>Negativ conditions
+			</button>
+			<button type="button" class="btn" id="ownFunctions" rel="popover" 
+				data-content="">Own functions 
+			</button>
+		</div>	
+		<canvas id="ausgabe"></canvas>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+
+	// load game logic via game.js after HTML page is loaded
+   	var script = document.createElement('script');
+   	script.setAttribute('src', '../JS/game.js');
+   	script.setAttribute('type', 'text/javascript');
+   	document.getElementsByTagName('head')[0].appendChild(script);
+
+	// google analytics
+ 	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-41646797-1']);
+	_gaq.push(['_setDomainName', 'karel-the-robot.com']);
+	_gaq.push(['_trackPageview']);
+
+ 	(function() {
+		var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  	})();
+	
+
+	$(window).load(function() {
+		levelInfo();
+	/*	if(level==1){
+			if (skill == '_1'){
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 1");
+				$('.levelBody').html("At the beginning you get a very easy task. As you can see, Karel stands bottom left in the corner. On position [3,1] there's a beeper. <br>(The 3 stands for the value of the x-axis, wich proceeds horizontally and the 1 stands for the value of the y-axis, wich proceeds vertically.)<br><br>Now just order Karel to move to the beeper and pick it up.");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 1");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 1");
+				$('.levelBody').html("Just do blablabla");
+			}
+		
+		} else if(level==2) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 2");
+				$('.levelBody').html("This onw is also quite easy. You have to go with Karel to the beeper and pick it up. After that you have to pick up the second beeper.");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 2");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 2");
+				$('.levelBody').html("Just do blablabla");
+			}
+			
+		} else if(level==3) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 3");
+				$('.levelBody').html("You just learned the basic movements. <br>Now it's time to wirte your <b>first own function</b>.<br>In that level you have to do something Karel isn't able to do yet. To reach the beeper you have to turn to the right. Just wirte a function called turnRight and save it. Now use this new function to pick up the beeper.");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 3");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 3");
+				$('.levelBody').html("Just do blablabla");
+			}
+			
+		} else if(level==4) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 4");
+				$('.levelBody').html("In this level you're going to learn how to use the <b>if-query.</b><br> Move Karel to the beeper and then say Karel that he shall turn to the left but only if he stands on a beeper. If you this <b>if-query</b> beside the beeper, you'll see that Karel won't move.");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 4");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 4");
+				$('.levelBody').html("Just do blablabla");
+			}
+			
+		} else if(level==5) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 5");
+				$('.levelBody').html("We want Karel to move from left to right. One way to order Karel this is to wirte sufficient 'move'-functions. But you shall know: most programmers are lazy people. :-) They don't like to write much code. So what's shorter than to wirite a lot of move's to get Karel to the other side?<br> The answer is the <b>for-loop</b>.  ");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 5");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 5");
+				$('.levelBody').html("Just do blablabla");
+			}
+			
+		} else if(level==6) {
+			if (skill == '_1') {
+				levelInfo();
+				$('.levelHead').html("Beginner: Level 6");
+				$('.levelBody').html("Now you're able to bubidiblu");
+			} else if (skill == '_2') {
+				levelInfo();
+				$('.levelHead').html("Advanced: Level 6");
+				$('.levelBody').html("Just do blablabla");
+			} else if (skill == '_3') {
+				levelInfo();
+				$('.levelHead').html("Expert: Level 6");
+				$('.levelBody').html("Just do blablabla");
+			}
+		}
+		*/
+	});
+	
+</script>
+
+</body>
+</html>

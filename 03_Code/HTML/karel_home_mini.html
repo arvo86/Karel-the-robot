@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta content = "width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" name = "viewport" />
+<title>Karel the robot - Startscreen</title>
+	
+
+<!-- ================= Sources ================= -->
+
+<script src="http://code.jquery.com/jquery-2.0.0.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
+<script src="../JS/storage.js"></script>
+<script src="http://code.jquery.com/jquery.js"></script>
+<script src="../JS/bootstrap.min.js"></script>
+<script src="../JS/levelSelect.js"></script>
+
+<link href="../CSS/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="../CSS/mini.css" rel="stylesheet" media="screen">
+<link rel="shortcut icon" href="../images/favicon.ico" >
+<link rel="icon" type="image/gif" href="../images/animated_favicon1.gif" >
+<link href="../CSS/main.css" rel="stylesheet" media="screen">
+
+
+</head>
+<body>
+
+<!-- =============== top third ================ -->	
+
+<div id="topThird">
+	<img alt="Logo" id="logo" src="../images/LogoO_L.png">
+</div>
+
+<!-- =============== mid third ================ -->	
+	
+<div id="midThird" >
+	
+	<div class="btn-group">
+		<button type="button" href="#whoIsKarel" class="btn"  data-toggle="modal">Who is Karel?</button>
+		<button type="button" href="#howto" class="btn" data-toggle="modal">HowTo</button>
+		<button type="button" id="btnLevelSelect" class="btn" data-toggle="collapse" href="#levelSelect">Let's play!</button>
+		<button type="button" href="#links" class="btn"  data-toggle="modal">Links</button>
+		<button type="button" href="#about" class="btn"  data-toggle="modal">About</button>
+	</div>
+	
+	
+	
+	<!-- ================ Collapse content for level selection ================== -->
+	<div id="levelSelect" class="collapse">
+		
+		<div id="collapseContentLeft" class="btn-group alignment" name="btn-group" data-toggle="buttons-radio">
+		  	<br><br><br>
+			<button type="button" class="btn lvl" value="1" id="lvlFirst">&ensp;Level 1&ensp;</button><br>
+		  	<button type="button" class="btn lvl" value="2">&ensp;Level 2&ensp;</button><br>
+		  	<button type="button" class="btn lvl" value="3">&ensp;Level 3&ensp;</button><br>
+			<button type="button" class="btn lvl" value="4">&ensp;Level 4&ensp;</button><br>
+		  	<button type="button" class="btn lvl" value="5">&ensp;Level 5&ensp;</button><br>
+		  	<button type="button" class="btn lvl" value="6" id="lvlLast">&ensp;Level 6&ensp;</button><br>
+		</div>
+		<br>
+		<div id= "collapseContentMiddle">
+			<div class="btn-group" data-toggle="buttons-radio">
+				<button id="beginner" type="button" class="btn skill active" value="_1">Beginner</button>
+				<button id="advanced" type="button" class="btn skill" value="_2">Advanced</button>
+		  		<button id="expert" type="button" class="btn skill" value="_3">Expert</button>
+			</div><br>
+				<img alt="Level preview" id="levelPreview" src="../images/aaa.png">
+		</div>
+		<div id= "collapseContentRight">
+		<form name="formular" onsubmit="sichern(); return false;">
+			<br>
+			<br>
+			<button type="submit" class="btn btn-success" rel="popover" data-placement="left" data-content="Please choose a level first!" value="" id="confirmLevel" name="confirmLevel">Play level!</button>
+		</form>
+		</div>
+	</div>
+</div>
+
+<img alt="Logo" id="logoBottom" src="../images/LogoBottom.png">
+
+
+
+
+
+<!-- =============== Content of modal: "whoIsKarel" ================ -->
+
+<div id="whoIsKarel" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="whoIsKarelLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    	<h3 id="whoIsKarelLabel">Karel the robot</h3>
+	</div>
+	<div class="modal-body">
+		<img alt="Karel" class="modalImg" src="../images/karelEast.png">&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelNorth.png">&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelWest.png">&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelSouth.png"><br><hr>                
+		<p>Karel is a small simple robot. He also lives in a very simple world.</p>
+		<p>He's the hero of the game <b><u>Karel the robot.</u></b><p>
+		<p>His world is limited by walls and he's only able to walk top down and from left to right or reverse. These waymarks are characterized by little crosses.
+			</p><br>
+			<p>You can control Karel by writing some code. Writing code is not as hard as you might think now. Just try it and you'll see Karel the robot is a lot of fun and learning to code is quite easy.</p><hr><hr>
+	
+			But why should you learn to program? Look at these quotes of famous and influential people and what they say about programming.</p><hr>	
+		<div id="myCarousel" class="carousel slide">
+			<ol class="carousel-indicators">
+		    	<li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+		    	<li data-target="#myCarousel" data-slide-to="1"></li>
+		    	<li data-target="#myCarousel" data-slide-to="2"></li>
+			</ol>
+			<!-- Carousel items -->
+			<div class="carousel-inner">
+				<div class="active item"><img alt="quote" src= "../images/take1.png"></div>
+		    	<div class="item"><img alt="quote" src= "../images/take2.png"></div>
+		    	<div class="item"><img alt="quote" src= "../images/take3.png"></div>
+				<div class="item"><img alt="quote" src= "../images/take4.png"></div>
+				<div class="item"><img alt="quote" src= "../images/take5.png"></div>
+				<div class="item"><img alt="quote" src= "../images/take6.png"></div>
+				<div class="item"><img alt="quote" src= "../images/take7.png"></div>
+				<div class="item"><img alt="quote" src= "../images/take8.png"></div>
+				<div class="item"><img alt="quote" src= "../images/take9.png"></div>
+		  	</div>
+		  	<!-- Carousel nav -->
+			 <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a> 
+			 <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a> 
+		</div>		
+	</div>
+</div>
+
+<!-- =============== Content of modal: "links" ================ -->
+
+<div id="links" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="linksLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    	<h3 id="linksLabel">Links</h3>
+	</div>
+	<div class="modal-body">                                                                          
+		<img alt="Karel" class="modalImg" src="../images/karelEast.png">&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelNorth.png">&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelWest.png">&emsp;&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelSouth.png"><br><hr>                     
+		<br>                                                                                          
+		<div class="structure">
+			<span>Read about the original Karel on Wikipedia.</span>
+		</div>
+		<h3><a href= "http://en.wikipedia.org/wiki/Karel_(programming_language)" target="_blank">Karel (Wikipedia)</a></h3><br>
+		
+		<div class="structure">
+			<span>Richard E. Pattis. The author of Karel the robot.</span>
+		</div>
+		<h3><a href= "http://www.ics.uci.edu/~pattis/" target="_blank">Richard E. Pattis</a></h3>
+		<br>
+		<div class="structure">
+			<span>Homepage of the Georg-Simon-Ohm University</span>
+		</div>
+		<h3><a href= "http://www.th-nuernberg.de/" target="_blank">GSO University</a></h3>
+	</div>
+</div>
+
+<!-- =============== Content of modal: "howto" ================ -->
+
+<div id="howto" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="linksLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    	<h3 id="linksLabel">HowTo</h3>
+	</div>
+	<div class="modal-body">
+		<img alt="Karel" class="modalImg" src="../images/karelEast.png">&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelNorth.png">&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelWest.png">&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelSouth.png"><br><hr>               
+		<br>
+				
+		<div class="structure">
+			<span>Writing your own code</span>
+		</div><br><br>
+		<div class="modalButton"><button type="button" class="btn btn-large" id="writeCode">Coding tutorial</button></div>
+		<p>To learn how to write your own code click on the button to the left.</p><br><br>
+		
+		<div class="structure">
+			<span>Complete description to the game control</span>
+		</div><br><br>
+		<div class="modalButton"><a href="karel_basics_micro.html"><button type="button" class="btn btn-large " id="basicInfo">Full description</button></a></div>
+		<div>Here you can find a detailed description of all elements of the game control.</div>
+	  	
+	</div>
+</div>
+
+<!-- =============== Content of modal: "About" ================ -->
+
+<div id="about" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="linksLabel" aria-hidden="true">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+    	<h3 id="linksLabel">About</h3>
+	</div>
+	<div class="modal-body">
+		<img alt="Karel" class="modalImg" src="../images/karelEast.png">&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelNorth.png">&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelWest.png">&emsp;&emsp;&emsp;&emsp;
+		<img alt="Karel" class="modalImg" src="../images/karelSouth.png"><br><hr>               
+		<br>
+		<img alt="LogoOhm" src="../images/Logo-Ohm-Hochschule.jpg"><hr>
+		<p>This site has been created by Armin Voit, as a result of a bachelor thesis in Media Engineering at the Georg-Simon-Ohm University in Nuremberg.</p>
+		<p>The original author of Karel the robot is Richard E. Pattis.</p>
+		<hr><hr>
+		<p><strong>Limitation of liability for internal content</strong></p>
+		<p>The content of our website has been compiled with meticulous care and to the best of our knowledge. However, we cannot assume any liability for the up-to-dateness, completeness or accuracy of any of the pages.</p>
+		<p>Pursuant to section 7, para. 1 of the TMG (Telemediengesetz - Tele Media Act by German law), we as service providers are liable for our own content on these pages in accordance with general laws. However, pursuant to sections 8 to 10 of the TMG, we as service providers are not under obligation to monitor external information provided or stored on our website. Once we have become aware of a specific infringement of the law, we will immediately remove the content in question. Any liability concerning this matter can only be assumed from the point in time at which the infringement becomes known to us.</p>
+		<p><strong>Limitation of liability for external links</strong></p>
+		<p>Our website contains links to the websites of third parties ("external links"). As the content of these websites is not under our control, we cannot assume any liability for such external content. In all cases, the provider of information of the linked websites is liable for the content and accuracy of the information provided. At the point in time when the links were placed, no infringements of the law were recognisable to us. As soon as an infringement of the law becomes known to us, we will immediately remove the link in question.</p>
+		<p><strong>Copyright</strong></p>
+		<p>The content and works published on this website are governed by the copyright laws of Germany. Any duplication, processing, distribution or any form of utilisation beyond the scope of copyright law shall require the prior written consent of the author or authors in question.</p>
+		<p><strong>Data protection</strong></p>
+		<p>A visit to our website can result in the storage on our server of information about the access (date, time, page accessed). This does not represent any analysis of personal data (e.g., name, address or e-mail address). If personal data are collected, this only occurs - to the extent possible - with the prior consent of the user of the website. Any forwarding of the data to third parties without the express consent of the user shall not take place.</p>
+		<p>We would like to expressly point out that the transmission of data via the Internet (e.g., by e-mail) can offer security vulnerabilities. It is therefore impossible to safeguard the data completely against access by third parties. We cannot assume any liability for damages arising as a result of such security vulnerabilities.</p>
+		<p>The use by third parties of all published contact details for the purpose of advertising is expressly excluded. We reserve the right to take legal steps in the case of the unsolicited sending of advertising information; e.g., by means of spam mail.</p>
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+$(document).ready(function(e) {
+       
+       $('#btnLevelSelect').bind('click', function(e) {
+           e.preventDefault();
+           $('html,body').animate({scrollTop: $('#levelSelect').offset().top});                                                         
+       });
+   });
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-41646797-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

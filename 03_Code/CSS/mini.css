@@ -1,0 +1,16 @@
+#whoIsKarel .modal-body,
+#howto .modal-body,
+#links .modal-body,
+#about .modal-body {
+	max-height: 300px;
+}
+
+#whoIsKarel,
+#howto,
+#links,
+#about {
+	position: relative;
+	top: 50px;
+	width: 70%; /* SET THE WIDTH OF THE MODAL */
+	margin: -150px 0 0 -150px; /* CHANGE MARGINS TO ACCOMODATE THE NEW WIDTH (original = margin: -250px 0 0 -280px;) */
+}
